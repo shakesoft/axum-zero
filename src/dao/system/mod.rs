@@ -1,0 +1,10 @@
+pub mod sys_dept_dao;
+pub mod sys_dict_data_dao;
+pub mod sys_dict_type_dao;
+pub mod sys_login_log_dao;
+pub mod sys_menu_dao;
+pub mod sys_operate_log_dao;
+pub mod sys_post_dao;
+pub mod sys_role_dao;
+pub mod sys_user_dao;
+pub mod sys_notice_dao;

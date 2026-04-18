@@ -1,0 +1,5 @@
+struct SysOperateLogDao;
+
+impl SysOperateLogDao {
+    
+}

@@ -1,0 +1,165 @@
+use crate::common::error::AppError;
+use crate::common::result::{ok_result, ok_result_data};
+use crate::model::system::sys_menu_model::{select_count_menu_by_parent_id, Menu};
+use crate::model::system::sys_role_menu_model::select_count_menu_by_menu_id;
+use crate::vo::system::sys_menu_vo::*;
+use crate::AppState;
+use axum::extract::State;
+use axum::response::IntoResponse;
+use axum::Json;
+use log::info;
+use rbs::value;
+use std::sync::Arc;
+use crate::dao::system::sys_menu_dao::SysMenuDao;
+/*
+ *添加菜单信息
+ *author：刘飞华
+ *date：2024/12/12 14:41:44
+ */
+#[function_name::named]
+pub async fn add_sys_menu(State(state): State<Arc<AppState>>, Json(mut item): Json<MenuReq>) -> impl IntoResponse {
+    info!("{function_name}:{item:?}",function_name = function_name!());
+    let rb = &state.batis;
+
+    if Menu::select_by_menu_name(rb, &item.menu_name).await?.is_some() {
+        return Err(AppError::BusinessError("菜单名称已存在"));
+    }
+
+    if let Some(url) = item.menu_url.clone() {
+        if Menu::select_by_menu_url(rb, &url).await?.is_some() {
+            return Err(AppError::BusinessError("路由路径已存在"));
+        }
+    }
+
+    item.id = None;
+    Menu::insert(rb, &Menu::from(item)).await.map(|_| ok_result())?
+}
+
+/*
+ *删除菜单信息
+ *author：刘飞华
+ *date：2024/12/12 14:41:44
+ */
+#[function_name::named]
+pub async fn delete_sys_menu(State(state): State<Arc<AppState>>, Json(item): Json<DeleteMenuReq>) -> impl IntoResponse {
+    info!("{function_name}:{item:?}",function_name = function_name!());
+    let rb = &state.batis;
+
+    //有下级的时候 不能直接删除
+
+    if select_count_menu_by_parent_id(rb, &item.id).await? > 0 {
+        return Err(AppError::BusinessError("存在子菜单,不允许删除"));
+    }
+
+    if select_count_menu_by_menu_id(rb, &item.id).await? > 0 {
+        return Err(AppError::BusinessError("菜单已分配,不允许删除"));
+    }
+
+    Menu::delete_by_map(rb, value! {"id": &item.id}).await.map(|_| ok_result())?
+}
+
+/*
+ *更新菜单信息
+ *author：刘飞华
+ *date：2024/12/12 14:41:44
+ */
+#[function_name::named]
+pub async fn update_sys_menu(State(state): State<Arc<AppState>>, Json(item): Json<MenuReq>) -> impl IntoResponse {
+    info!("{function_name}:{item:?}",function_name = function_name!());
+    let rb = &state.batis;
+
+    let id = item.id;
+
+    if item.id.is_none() {
+        return Err(AppError::BusinessError("主键不能为空"));
+    }
+
+    if Menu::select_by_id(rb, &id.unwrap_or_default()).await?.is_none() {
+        return Err(AppError::BusinessError("菜单信息不存在"));
+    }
+
+    if let Some(x) = Menu::select_by_menu_name(rb, &item.menu_name).await? {
+        if x.id != id {
+            return Err(AppError::BusinessError("菜单名称已存在"));
+        }
+    }
+
+    if let Some(url) = item.menu_url.clone() {
+        if let Some(x) = Menu::select_by_menu_url(rb, &url).await? {
+            if x.id != id {
+                return Err(AppError::BusinessError("路由路径已存在"));
+            }
+        }
+    }
+
+    Menu::update_by_map(rb, &Menu::from(item), value! {"id": &id}).await.map(|_| ok_result())?
+}
+
+/*
+ *更新菜单信息状态
+ *author：刘飞华
+ *date：2024/12/12 14:41:44
+ */
+#[function_name::named]
+pub async fn update_sys_menu_status(State(state): State<Arc<AppState>>, Json(item): Json<UpdateMenuStatusReq>) -> impl IntoResponse {
+    info!("{function_name}:{item:?}",function_name = function_name!());
+    let rb = &state.batis;
+
+    // use dao function to perform the DB update
+    SysMenuDao::update_menu_status(rb, item.status, &item.ids).await.map(|_| ok_result())?
+}
+
+/*
+ *查询菜单信息详情
+ *author：刘飞华
+ *date：2024/12/12 14:41:44
+ */
+#[function_name::named]
+pub async fn query_sys_menu_detail(State(state): State<Arc<AppState>>, Json(item): Json<QueryMenuDetailReq>) -> impl IntoResponse {
+    info!("{function_name}:{item:?}",function_name = function_name!());
+    let rb = &state.batis;
+
+    Menu::select_by_id(rb, &item.id).await?.map_or_else(
+        || Err(AppError::BusinessError("菜单信息不存在")),
+        |x| {
+            let data: MenuResp = x.into();
+            ok_result_data(data)
+        },
+    )
+}
+
+/*
+ *查询菜单信息列表
+ *author：刘飞华
+ *date：2024/12/12 14:41:44
+ */
+#[function_name::named]
+pub async fn query_sys_menu_list(State(state): State<Arc<AppState>>, Json(item): Json<QueryMenuListReq>) -> impl IntoResponse {
+    info!("{function_name}:{item:?}",function_name = function_name!());
+    let rb = &state.batis;
+
+    Menu::select_all(rb).await.map(|x| ok_result_data(x.into_iter().map(|x| x.into()).collect::<Vec<MenuResp>>()))?
+}
+
+/*
+ *查询菜单信息(排除按钮)
+ *author：刘飞华
+ *date：2024/12/12 14:41:44
+ */
+#[function_name::named]
+pub async fn query_sys_menu_list_simple(State(state): State<Arc<AppState>>) -> impl IntoResponse {
+    info!("{function_name}",function_name = function_name!());
+    let rb = &state.batis;
+
+    let list = Menu::select_menu_list(rb).await?;
+
+    let mut menu_list: Vec<MenuListSimpleDataResp> = Vec::new();
+
+    list.into_iter().map(|x| MenuListSimpleDataResp {
+        id: x.id,               //主键
+        menu_name: x.menu_name, //菜单名称
+        parent_id: x.parent_id, //父ID
+    }).for_each(|x| menu_list.push(x));
+
+    ok_result_data(menu_list)
+}
