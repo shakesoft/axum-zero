@@ -244,7 +244,7 @@ async fn main() {
 
 
     let test_router = Router::new().route("/test", get(async||-> String {
-        let body = reqwest::get("http://dev.muche365.com/enter/lutong/order-request")
+        let body = reqwest::get("http://dev.domain.com/enter/lutong/order-request")
             .await.unwrap()
             .text()
             .await.unwrap();
