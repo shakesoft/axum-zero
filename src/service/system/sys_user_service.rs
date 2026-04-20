@@ -95,7 +95,7 @@ impl SysUserService {
 		let permissions_str: String = conn.hget(&key, "permissions").unwrap_or_else(|_| "".to_string());
 		let roles_str: String = conn.hget(&key, "roles").unwrap_or_else(|_| "".to_string());
 		let expires_at: String = conn.hget(&key, "expires_at").unwrap_or_else(|_| "".to_string());
-		info!("Fetched session info for user_id {}: token={}, is_admin={}, permissions={}, roles={}, expires_at={}", user_id, token, is_admin, permissions_str,roles_str, expires_at);
+		//info!("Fetched session info for user_id {}: token={}, is_admin={}, permissions={}, roles={}, expires_at={}", user_id, token, is_admin, permissions_str,roles_str, expires_at);
 		Ok((permissions_str,roles_str, token, is_admin))
 	}
 }

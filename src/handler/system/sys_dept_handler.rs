@@ -16,6 +16,7 @@ use rbs::value;
 use std::sync::Arc;
 use aspect_macros::{aspect};
 use aspect_std::{LoggingAspect, TimingAspect};
+use tracing::instrument;
 // use std::time::Duration;
 // use tokio::time::sleep;
 use validator::Validate;
@@ -32,6 +33,7 @@ use crate::vo::system::sys_user_vo::UserSession;
     request_body = DeptReq,
     responses((status = 200, description = "successfully", body = EmptyResponse))
 )]
+#[instrument]
 // #[function_name::named]
 pub async fn add_sys_dept(State(state): State<Arc<AppState>>, ValidatedJson(item): ValidatedJson<DeptReq>) -> impl IntoResponse {
     // panic!("test");
