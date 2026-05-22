@@ -52,7 +52,8 @@ use crate::common::error::AppError;
 // use crate::middleware::error::{ handle_middleware_error};
 // use crate::middleware::swagger::swagger_auth;
 use axum::routing::get;
-use chrono::Utc;
+use chrono::{Local, Utc};
+use rbatis::rbdc::DateTime;
 use reqwest::StatusCode;
 // use garde::rules::ip::IpKind::Any;
 use tower_http::cors::CorsLayer;
@@ -198,8 +199,8 @@ async fn main() {
     let module =Arc::new(
         AutoFacModule::builder()
             .with_component_parameters::<TodayWriter>(TodayWriterParameters {
-                today: "November 5".to_string(),
-                year: 2020,
+                today: Local::now().format("%Y-%m-%d %H:%M:%S").to_string(),
+                year: DateTime::now().year() as usize,
             })
             .build());
 
