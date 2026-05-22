@@ -11,7 +11,8 @@ pub mod vo;
 pub mod dao;
 pub mod workflow;
 pub mod service;
-mod aop;
+pub mod aop;
+pub mod inject;
 
 use std::net::SocketAddr;
 use axum::{middleware as md, Json, Router};
@@ -34,6 +35,7 @@ use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use std::time::Duration;
 use axum::body::Body;
+use axum::extract::FromRef;
 use axum::http::{Method, Request, Response};
 use axum::response::IntoResponse;
 // use tower::{ServiceBuilder};
@@ -56,17 +58,26 @@ use reqwest::StatusCode;
 use tower_http::cors::CorsLayer;
 use tower_http::timeout::TimeoutLayer;
 use tracing_appender::rolling;
+use crate::common::autofac::{AutoFacModule, TodayWriter, TodayWriterParameters};
 use crate::common::result::ok_result_msg;
 use crate::workflow::state::traffic_light::TrafficLight;
 // use crate::common::daily_logfile::DailyLogFile;
 // use crate::handler::system::sys_user_handler::reset_sys_user_password;
 
 // 定义应用状态结构体，包含数据库连接池
-#[derive(Debug)]
+#[derive(Clone)]
 pub struct AppState {
     pub batis: RBatis,
     pub redis: Client,
+    pub container: Arc<AutoFacModule>,
 }
+
+impl FromRef<AppState> for Arc<AutoFacModule> {
+    fn from_ref(app_state: &AppState) -> Arc<AutoFacModule> {
+        app_state.container.clone()
+    }
+}
+
 
 impl AppState {
     /// 返回一些安全的诊断信息（不依赖内部类型的 Debug 实现）
@@ -184,8 +195,16 @@ async fn main() {
     let rb = init_db(config.db.url.as_str()).await;
     let rd = init_redis(config.redis.url.as_str()).await;
 
+    let module =Arc::new(
+        AutoFacModule::builder()
+            .with_component_parameters::<TodayWriter>(TodayWriterParameters {
+                today: "November 5".to_string(),
+                year: 2020,
+            })
+            .build());
+
     // 创建共享应用状态，包含数据库连接池
-    let shared_state = Arc::new(AppState { batis: rb, redis: rd });
+    let shared_state = Arc::new(AppState { batis: rb, redis: rd,container:module });
 
     // 跨域中间件
     let cors = CorsLayer::new()

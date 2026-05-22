@@ -20,6 +20,9 @@ use tracing::instrument;
 // use std::time::Duration;
 // use tokio::time::sleep;
 use validator::Validate;
+use crate::common::autofac::{AutoFacModule, HelloWorld, IDateWriter};
+use crate::inject::inject_component::Inject;
+use crate::inject::inject_provided::InjectProvided;
 use crate::service::system::sys_dept_service::SysDeptService;
 use crate::vo::system::sys_user_vo::UserSession;
 /*
@@ -33,7 +36,7 @@ use crate::vo::system::sys_user_vo::UserSession;
     request_body = DeptReq,
     responses((status = 200, description = "successfully", body = EmptyResponse))
 )]
-#[instrument]
+// #[instrument]
 // #[function_name::named]
 pub async fn add_sys_dept(State(state): State<Arc<AppState>>, ValidatedJson(item): ValidatedJson<DeptReq>) -> impl IntoResponse {
     // panic!("test");
@@ -108,6 +111,26 @@ pub async fn delete_sys_dept(State(state): State<Arc<AppState>>,Extension(sessio
     }
 
     Dept::delete_by_map(rb, value! {"id": &item.id}).await.map(|_| ok())?
+}
+
+#[utoipa::path(
+    post,
+    path = "/api/system/dept/deleteDept1",
+    request_body = DeleteDeptReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
+// #[function_name::named]
+pub async fn delete_sys_dept1(
+    writer: Inject<AutoFacModule, dyn IDateWriter>,
+    hello_world: InjectProvided<AutoFacModule, dyn HelloWorld>,
+    State(state): State<Arc<AppState>>,
+    Extension(session): Extension<UserSession>,
+    Json(item): Json<DeleteDeptReq>) -> impl IntoResponse {
+    writer.write_date();
+    writer.get_date();
+    let result =  hello_world.greet();
+    println!("{}", result);
+    ok()
 }
 
 /*

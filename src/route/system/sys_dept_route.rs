@@ -12,6 +12,7 @@ pub fn build_sys_dept_route() -> Router<Arc<AppState>> {
     Router::new()
         .route("/system/dept/addDept", post(sys_dept_handler::add_sys_dept))
         .route("/system/dept/deleteDept", post(sys_dept_handler::delete_sys_dept))
+        .route("/system/dept/deleteDept1", post(sys_dept_handler::delete_sys_dept1))
         .route("/system/dept/updateDept", post(sys_dept_handler::update_sys_dept))
         .route("/system/dept/updateDeptStatus", post(sys_dept_handler::update_sys_dept_status))
         .route("/system/dept/queryDeptDetail", post(sys_dept_handler::query_sys_dept_detail))
