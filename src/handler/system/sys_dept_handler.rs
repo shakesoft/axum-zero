@@ -129,7 +129,7 @@ pub async fn delete_sys_dept1(
     writer.write_date();
     writer.get_date();
     let result =  hello_world.greet();
-    println!("{}", result);
+    info!("{}", result);
     ok()
 }
 
