@@ -72,6 +72,12 @@ pub struct AppState {
     pub container: AutoFacModule,
 }
 
+// impl FromRef<AppState> for Arc<AutoFacModule> {
+//     fn from_ref(app_state: &AppState) -> Arc<AutoFacModule> {
+//         app_state.container.clone()
+//     }
+// }
+
 impl AppState {
     /// 返回一些安全的诊断信息（不依赖内部类型的 Debug 实现）
     pub fn diag(&self) -> String {
