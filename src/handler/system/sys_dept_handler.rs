@@ -16,6 +16,7 @@ use rbs::value;
 use std::sync::Arc;
 use aspect_macros::{aspect};
 use aspect_std::{LoggingAspect, TimingAspect};
+use shaku::HasProvider;
 use tracing::instrument;
 // use std::time::Duration;
 // use tokio::time::sleep;
@@ -130,6 +131,7 @@ pub async fn delete_sys_dept1(
     writer.get_date();
     let result =  hello_world.greet();
     info!("{}", result);
+    let container  =  &state.container;
     ok()
 }
 
