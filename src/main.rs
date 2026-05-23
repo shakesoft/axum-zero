@@ -66,17 +66,18 @@ use crate::workflow::state::traffic_light::TrafficLight;
 // use crate::handler::system::sys_user_handler::reset_sys_user_password;
 
 // 定义应用状态结构体，包含数据库连接池
+#[derive(Clone)]
 pub struct AppState {
     pub batis: RBatis,
     pub redis: Client,
-    pub container: AutoFacModule,
+    pub container: Arc<AutoFacModule>,
 }
 
-// impl FromRef<AppState> for Arc<AutoFacModule> {
-//     fn from_ref(app_state: &AppState) -> Arc<AutoFacModule> {
-//         app_state.container.clone()
-//     }
-// }
+impl FromRef<AppState> for Arc<AutoFacModule> {
+    fn from_ref(app_state: &AppState) -> Arc<AutoFacModule> {
+        app_state.container.clone()
+    }
+}
 
 impl AppState {
     /// 返回一些安全的诊断信息（不依赖内部类型的 Debug 实现）
@@ -194,13 +195,13 @@ async fn main() {
     let rb = init_db(config.db.url.as_str()).await;
     let rd = init_redis(config.redis.url.as_str()).await;
 
-    let module =
+    let module =Arc::new(
         AutoFacModule::builder()
             .with_component_parameters::<TodayWriter>(TodayWriterParameters {
                 today: Local::now().format("%Y-%m-%d %H:%M:%S").to_string(),
                 year: DateTime::now().year() as usize,
             })
-            .build();
+            .build());
 
     // 创建共享应用状态，包含数据库连接池
     let shared_state = Arc::new(AppState { batis: rb, redis: rd,container:module });

@@ -1,4 +1,4 @@
-use axum::extract::FromRequestParts;
+use axum::extract::{FromRef, FromRequestParts};
 use axum::http::request::Parts;
 use axum::http::StatusCode;
 use shaku::{HasComponent, HasProvider, Interface, ModuleInterface};
@@ -85,7 +85,7 @@ pub struct InjectProvided<M: ModuleInterface + HasProvider<I> + ?Sized, I: Inter
 
 impl<I> FromRequestParts<Arc<AppState>> for InjectProvided<AutoFacModule, I>
 where
-    AutoFacModule: HasProvider<I>,
+    AutoFacModule: ModuleInterface + HasProvider<I>,
     I: Interface + ?Sized,
 {
     type Rejection = (StatusCode, String);
@@ -94,7 +94,7 @@ where
         _req: &mut Parts,
         state: &Arc<AppState>,
     ) -> Result<Self, Self::Rejection> {
-        let service = state.container.provide(). map_err(|e| {
+        let service = Arc::<AutoFacModule>::from_ref(state.deref()).provide().map_err(|e| {
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 format!("Failed to provide service: {}", e),

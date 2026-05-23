@@ -7,7 +7,7 @@ use shaku::{HasComponent, Interface, ModuleInterface};
 use std::marker::PhantomData;
 use std::ops::Deref;
 use std::sync::Arc;
-
+use axum::extract::FromRef;
 use crate::common::autofac::AutoFacModule;
 use crate::AppState;
 
@@ -87,7 +87,7 @@ pub struct Inject<M: ModuleInterface + HasComponent<I> + ?Sized, I: Interface + 
 
 impl<I> FromRequestParts<Arc<AppState>> for Inject<AutoFacModule, I>
 where
-    AutoFacModule: HasComponent<I>,
+    AutoFacModule: ModuleInterface + HasComponent<I>,
     I: Interface + ?Sized,
 {
     type Rejection = (StatusCode, String);
@@ -96,7 +96,7 @@ where
         _req: &mut Parts,
         state: &Arc<AppState>,
     ) -> Result<Self, Self::Rejection> {
-        let component = state.container.resolve();
+        let component = Arc::<AutoFacModule>::from_ref(state.deref()).resolve();
 
         Ok(Self(component, PhantomData))
     }
