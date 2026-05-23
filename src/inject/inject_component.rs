@@ -85,18 +85,20 @@ pub struct Inject<M: ModuleInterface + HasComponent<I> + ?Sized, I: Interface + 
     PhantomData<M>,
 );
 
-impl<I> FromRequestParts<Arc<AppState>> for Inject<AutoFacModule, I>
+impl<S,M,I> FromRequestParts<Arc<S>> for Inject<M, I>
 where
-    AutoFacModule: ModuleInterface + HasComponent<I>,
+    S: Send + Sync,
+    M: ModuleInterface + HasComponent<I>,
     I: Interface + ?Sized,
+    Arc<M>: FromRef<S>,
 {
     type Rejection = (StatusCode, String);
 
     async fn from_request_parts(
         _req: &mut Parts,
-        state: &Arc<AppState>,
+        state: &Arc<S>,
     ) -> Result<Self, Self::Rejection> {
-        let component = Arc::<AutoFacModule>::from_ref(state.deref()).resolve();
+        let component = Arc::<M>::from_ref(state.deref()).resolve();
 
         Ok(Self(component, PhantomData))
     }
