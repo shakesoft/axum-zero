@@ -59,7 +59,7 @@ use reqwest::StatusCode;
 use tower_http::cors::CorsLayer;
 use tower_http::timeout::TimeoutLayer;
 use tracing_appender::rolling;
-use crate::common::autofac::{AutoFacModule, TodayWriter, TodayWriterParameters};
+use inject::autofac::{AutoFacModule, TodayWriter, TodayWriterParameters};
 use crate::common::result::ok_result_msg;
 use crate::workflow::state::traffic_light::TrafficLight;
 // use crate::common::daily_logfile::DailyLogFile;

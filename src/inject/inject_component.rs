@@ -8,7 +8,7 @@ use std::marker::PhantomData;
 use std::ops::Deref;
 use std::sync::Arc;
 use axum::extract::FromRef;
-use crate::common::autofac::AutoFacModule;
+use crate::inject::autofac::AutoFacModule;
 use crate::AppState;
 
 /// Used to retrieve a reference to a component from a shaku `Module`.

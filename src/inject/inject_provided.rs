@@ -6,7 +6,7 @@ use std::marker::PhantomData;
 use std::ops::Deref;
 use std::sync::Arc;
 
-use crate::common::autofac::AutoFacModule;
+use crate::inject::autofac::AutoFacModule;
 use crate::AppState;
 
 /// Used to create a provided service from a shaku `Module`.

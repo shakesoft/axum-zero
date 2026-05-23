@@ -21,7 +21,7 @@ use tracing::instrument;
 // use std::time::Duration;
 // use tokio::time::sleep;
 use validator::Validate;
-use crate::common::autofac::{AutoFacModule, HelloWorld, IDateWriter};
+use crate::inject::autofac::{AutoFacModule, HelloWorld, IDateWriter};
 use crate::inject::inject_component::Inject;
 use crate::inject::inject_provided::InjectProvided;
 use crate::service::system::sys_dept_service::SysDeptService;
