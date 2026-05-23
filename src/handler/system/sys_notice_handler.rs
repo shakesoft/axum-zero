@@ -134,7 +134,7 @@ pub async fn query_sys_notice_request(State(state): State<Arc<AppState>>, Json(i
     //let mut body = String::new();
     // res.read_to_string(&mut body)?;
 
-    println!("{}", body);
+    info!("{}", body);
 
 
     ok()

@@ -2,6 +2,7 @@ use chrono::Local;
 use std::fs::{OpenOptions, create_dir_all};
 use std::io;
 use std::path::PathBuf;
+use tracing::info;
 use tracing_subscriber::fmt::writer::MakeWriter;
 
 pub struct DailyLogFile {
@@ -29,7 +30,7 @@ impl<'a> MakeWriter<'a> for DailyLogFile {
 
         let mut path = self.directory.clone();
         if let Err(e) = create_dir_all(&path) {
-            eprintln!("Failed to create log directory: {:?}", e);
+            info!("Failed to create log directory: {:?}", e);
         }
         path.push(filename);
 

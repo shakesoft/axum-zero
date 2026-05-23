@@ -56,7 +56,7 @@ pub async fn add_sys_dept(State(state): State<Arc<AppState>>, ValidatedJson(item
     // info!("{}",c);
     // info!("{}",d);
     // info!("{}",e);
-    // println!("{}: {}: {}: {}", b, c, d, e);
+    // info!("{}: {}: {}: {}", b, c, d, e);
     // info!("{}: {:?}", function_name!(), item);
     // info!("{}: {item:?}",function_name!());
     let rb = &state.batis;

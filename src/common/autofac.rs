@@ -1,5 +1,6 @@
 use shaku::{module, Component, Interface, Provider};
 use std::sync::Arc;
+use tracing::info;
 
 module! {
     pub AutoFacModule {
@@ -18,7 +19,7 @@ pub struct ConsoleOutput;
 
 impl IOutput for ConsoleOutput {
     fn write(&self, content: String) {
-        println!("{}", content);
+        info!("{}", content);
     }
 }
 

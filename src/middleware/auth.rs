@@ -110,6 +110,6 @@ async fn validate_and_get_user_info(redis_client: &Client, user_id: i64) -> Resu
         .iter()
         .map(|p| p.strip_prefix("/api").unwrap_or(p).to_string())
         .collect();
-    // println!("{user_id},{vec_permissions:?},{vec_roles:?}");
+    // info!("{user_id},{vec_permissions:?},{vec_roles:?}");
     Ok((user_id, vec_permissions,vec_roles, token, is_admin))
 }

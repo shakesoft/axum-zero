@@ -83,6 +83,7 @@ impl JwtToken {
 
 #[cfg(test)]
 mod tests {
+    use tracing::info;
     use crate::utils::jwt_util;
     use crate::utils::jwt_util::JwtToken;
 
@@ -90,8 +91,8 @@ mod tests {
     fn test_jwt() {
         let jwt = JwtToken::new(1, "koobe");
         let res = jwt.create_token(jwt_util::JWT_SECRET).unwrap_or_default();
-        println!("{:?}", res);
+        info!("{:?}", res);
         let token = JwtToken::verify(jwt_util::JWT_SECRET, &res);
-        println!("{:?}", token)
+        info!("{:?}", token)
     }
 }
