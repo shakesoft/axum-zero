@@ -1,6 +1,6 @@
 use crate::common::error::AppError;
 use crate::common::result::{ok_result, ok_result_data, ok_result_page};
-use crate::model::system::sys_login_log_model::{clean_login_log, LoginLog};
+use crate::model::system::sys_login_log_model::{LoginLog};
 use crate::vo::system::sys_login_log_vo::*;
 use crate::AppState;
 use axum::extract::State;
@@ -10,6 +10,7 @@ use log::info;
 use rbatis::plugin::page::PageRequest;
 use rbs::value;
 use std::sync::Arc;
+use crate::dao::system::sys_login_log_dao;
 /*
  *删除系统访问记录
  *author：刘飞华
@@ -33,7 +34,7 @@ pub async fn clean_sys_login_log(State(state): State<Arc<AppState>>) -> impl Int
     info!("{function_name}",function_name = function_name!());
     let rb = &state.batis;
 
-    clean_login_log(rb).await.map(|_| ok_result())?
+    sys_login_log_dao::clean_login_log(rb).await.map(|_| ok_result())?
 }
 
 /*

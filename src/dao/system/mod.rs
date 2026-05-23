@@ -8,3 +8,7 @@ pub mod sys_post_dao;
 pub mod sys_role_dao;
 pub mod sys_user_dao;
 pub mod sys_notice_dao;
+pub mod sys_role_dept_dao;
+pub mod sys_role_menu_dao;
+pub mod sys_user_post_dao;
+pub mod sys_user_role_dao;

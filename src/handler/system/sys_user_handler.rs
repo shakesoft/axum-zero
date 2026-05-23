@@ -6,7 +6,7 @@ use crate::model::system::sys_menu_model::Menu;
 use crate::model::system::sys_role_model::Role;
 use crate::model::system::sys_user_model::User;
 use crate::model::system::sys_user_post_model::UserPost;
-use crate::model::system::sys_user_role_model::{is_admin, UserRole};
+use crate::model::system::sys_user_role_model::{UserRole};
 use crate::dao::system::sys_user_dao::SysUserDao;
 use crate::utils::jwt_util::JwtToken;
 use crate::utils::user_agent_util::UserAgentUtil;

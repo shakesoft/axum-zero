@@ -3,6 +3,7 @@ use rbs::value;
 use crate::model::system::sys_role_menu_model::RoleMenu;
 use crate::model::system::sys_role_dept_model::RoleDept;
 use crate::model::system::sys_role_model::Role;
+use crate::vo::system::sys_role_vo::QueryRoleListReq;
 
 pub struct SysRoleDao;
 
@@ -38,3 +39,59 @@ impl SysRoleDao {
         Ok(())
     }
 }
+
+
+/*
+ *角色信息基本操作
+ *author：刘飞华
+ *date：2024/12/12 14:41:44
+ */
+rbatis::crud!(Role {}, "sys_role");
+
+
+/*
+ *根据id查询角色信息
+ *author：刘飞华
+ *date：2024/12/12 14:41:44
+ */
+impl_select!(Role{select_by_id(id:&i64) -> Option => "`where id = #{id} limit 1`"}, "sys_role");
+
+/*
+ *根据role_name查询角色信息
+ *author：刘飞华
+ *date：2024/12/12 14:41:44
+ */
+impl_select!(Role{select_by_role_name(role_name:&str) -> Option => "`where role_name = #{role_name} limit 1`"}, "sys_role");
+
+/*
+ *根据role_key查询角色信息
+ *author：刘飞华
+ *date：2024/12/12 14:41:44
+ */
+impl_select!(Role{select_by_role_key(role_key:&str) -> Option => "`where role_key = #{role_key} limit 1`"}, "sys_role");
+
+/*
+ *分页查询角色信息
+ *author：刘飞华
+ *date：2024/12/12 14:41:44
+ */
+impl_select_page!(Role{select_page() =>"
+     if !sql.contains('count'):
+       order by create_time desc"
+},"sys_role");
+
+/*
+ *根据条件分页查询角色信息
+ *author：刘飞华
+ *date：2024/12/12 14:41:44
+ */
+impl_select_page!(Role{select_sys_role_list(req:&QueryRoleListReq) =>"
+      where 1=1
+     if req.roleName != null && req.roleName != '':
+       ` and role_name like concat('%', #{req.roleName}, '%') `
+     if req.roleKey != null && req.roleKey != '':
+       ` and role_key like concat('%', #{req.roleKey}, '%') `
+     if req.status != 2:
+       ` and status = #{req.status} `
+     if !sql.contains('count'):
+        ` order by create_time desc `"},"sys_role");

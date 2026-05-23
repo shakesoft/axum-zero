@@ -1,6 +1,5 @@
 use crate::common::error::AppError;
 use crate::common::result::{ok_result, ok_result_data, ok_result_page};
-use crate::model::system::sys_dict_data_model::{count_dict_data_by_type, update_dict_data_type};
 use crate::model::system::sys_dict_type_model::DictType;
 use crate::dao::system::sys_dict_type_dao::{SysDictTypeDao};
 use crate::vo::system::sys_dict_type_vo::*;
@@ -12,6 +11,7 @@ use log::info;
 use rbatis::plugin::page::PageRequest;
 use rbs::value;
 use std::sync::Arc;
+use crate::dao::system::sys_dict_data_dao;
 /*
  *添加字典类型
  *author：刘飞华
@@ -47,7 +47,7 @@ pub async fn delete_sys_dict_type(State(state): State<Arc<AppState>>, Json(item)
             Some(p) => p,
         };
 
-        if count_dict_data_by_type(rb, &p.dict_type).await? > 0 {
+        if sys_dict_data_dao::count_dict_data_by_type(rb, &p.dict_type).await? > 0 {
             return Err(AppError::BusinessError("已分配,不能删除"));
         }
     }
@@ -81,7 +81,7 @@ pub async fn update_sys_dict_type(State(state): State<Arc<AppState>>, Json(item)
         }
 
         let dict_type = x.dict_type;
-        update_dict_data_type(rb, &*item.dict_type, &dict_type).await?;
+        sys_dict_data_dao::update_dict_data_type(rb, &*item.dict_type, &dict_type).await?;
     }
 
     DictType::update_by_map(rb, &DictType::from(item), value! {"id": &id}).await.map(|_| ok_result())?

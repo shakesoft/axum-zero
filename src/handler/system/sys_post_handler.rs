@@ -1,7 +1,6 @@
 use crate::common::error::AppError;
 use crate::common::result::{ok_result, ok_result_data, ok_result_page};
 use crate::model::system::sys_post_model::Post;
-use crate::model::system::sys_user_post_model::count_user_post_by_id;
 use crate::dao::system::sys_post_dao::SysPostDao;
 use crate::vo::system::sys_post_vo::*;
 use crate::AppState;
@@ -12,6 +11,7 @@ use log::info;
 use rbatis::plugin::page::PageRequest;
 use rbs::value;
 use std::sync::Arc;
+use crate::dao::system::sys_user_post_dao;
 /*
  *添加岗位信息表
  *author：刘飞华
@@ -46,7 +46,7 @@ pub async fn delete_sys_post(State(state): State<Arc<AppState>>, Json(item): Jso
 
     let ids = item.ids.clone();
     for id in ids {
-        if count_user_post_by_id(rb, id).await? > 0 {
+        if sys_user_post_dao::count_user_post_by_id(rb, id).await? > 0 {
             return Err(AppError::BusinessError("已分配,不能删除"));
         }
     }

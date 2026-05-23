@@ -1,7 +1,6 @@
 use crate::common::error::AppError;
 use crate::common::result::{ok_result, ok_result_data};
-use crate::model::system::sys_menu_model::{select_count_menu_by_parent_id, Menu};
-use crate::model::system::sys_role_menu_model::select_count_menu_by_menu_id;
+use crate::model::system::sys_menu_model::{ Menu};
 use crate::vo::system::sys_menu_vo::*;
 use crate::AppState;
 use axum::extract::State;
@@ -11,6 +10,7 @@ use log::info;
 use rbs::value;
 use std::sync::Arc;
 use crate::dao::system::sys_menu_dao::SysMenuDao;
+use crate::dao::system::{sys_menu_dao, sys_role_menu_dao};
 /*
  *添加菜单信息
  *author：刘飞华
@@ -47,11 +47,11 @@ pub async fn delete_sys_menu(State(state): State<Arc<AppState>>, Json(item): Jso
 
     //有下级的时候 不能直接删除
 
-    if select_count_menu_by_parent_id(rb, &item.id).await? > 0 {
+    if sys_menu_dao::select_count_menu_by_parent_id(rb, &item.id).await? > 0 {
         return Err(AppError::BusinessError("存在子菜单,不允许删除"));
     }
 
-    if select_count_menu_by_menu_id(rb, &item.id).await? > 0 {
+    if sys_role_menu_dao::select_count_menu_by_menu_id(rb, &item.id).await? > 0 {
         return Err(AppError::BusinessError("菜单已分配,不允许删除"));
     }
 

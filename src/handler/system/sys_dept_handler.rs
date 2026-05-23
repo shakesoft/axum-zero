@@ -1,7 +1,7 @@
 use crate::common::error::{AppError};
 use crate::common::extractor::ValidatedJson;
 use crate::common::result::{ok, ok_result_data, BaseResponse, EmptyResponse};
-use crate::model::system::sys_dept_model::{check_dept_exist_user, select_children_dept_by_id, select_dept_count, select_normal_children_dept_by_id, Dept};
+use crate::model::system::sys_dept_model::{Dept};
 use crate::vo::system::sys_dept_vo::*;
 use crate::AppState;
 use crate::dao::system::sys_dept_dao::SysDeptDao;
@@ -21,6 +21,7 @@ use tracing::instrument;
 // use std::time::Duration;
 // use tokio::time::sleep;
 use validator::Validate;
+use crate::dao::system::sys_dept_dao;
 use crate::inject::autofac::{AutoFacModule, HelloWorld, IDateWriter};
 use crate::inject::inject_component::Inject;
 use crate::inject::inject_provided::InjectProvided;
@@ -103,11 +104,11 @@ pub async fn delete_sys_dept(State(state): State<Arc<AppState>>,Extension(sessio
     let permissons = &session.permissions;
     let rb = &state.batis;
 
-    if select_dept_count(rb, &item.id).await? > 0 {
+    if sys_dept_dao::select_dept_count(rb, &item.id).await? > 0 {
         return Err(AppError::BusinessError("存在下级部门,不允许删除"));
     }
 
-    if check_dept_exist_user(rb, &item.id).await? > 0 {
+    if sys_dept_dao::check_dept_exist_user(rb, &item.id).await? > 0 {
         return Err(AppError::BusinessError("部门存在用户,不允许删除"));
     }
 
@@ -179,11 +180,11 @@ pub async fn update_sys_dept(State(state): State<Arc<AppState>>, ValidatedJson(m
         }
     }
 
-    if select_normal_children_dept_by_id(rb, &id.unwrap_or_default()).await? > 0 && item.status == 0 {
+    if sys_dept_dao::select_normal_children_dept_by_id(rb, &id.unwrap_or_default()).await? > 0 && item.status == 0 {
         return Err(AppError::BusinessError("该部门包含未停用的子部门"));
     }
 
-    for mut x in select_children_dept_by_id(rb, &id.unwrap_or_default()).await? {
+    for mut x in sys_dept_dao::select_children_dept_by_id(rb, &id.unwrap_or_default()).await? {
         x.ancestors = Some(x.ancestors.unwrap_or_default().replace(old_ancestors.as_str(), ancestors.as_str()));
         Dept::update_by_map(rb, &x, value! {"id": &x.id}).await?;
     }

@@ -1,6 +1,10 @@
 use rbatis::RBatis;
-use rbs::value;
+use rbs::{value, Error};
 use std::collections::HashMap;
+use rbatis::executor::Executor;
+use crate::dao::system::sys_user_role_dao;
+use crate::model::system::sys_user_model::User;
+use crate::vo::system::sys_user_vo::QueryUserListReq;
 
 pub struct SysUserDao;
 
@@ -18,7 +22,7 @@ impl SysUserDao {
     // 保持签名与原函数兼容：接收 RBatis 的 owned 值和用户 id
     pub async fn query_btn_menu(rb: &RBatis, id: &i64) -> (Vec<String>, bool) {
         // 使用模型层提供的 is_admin 函数判断是否是超级管理员
-        let count = crate::model::system::sys_user_role_model::is_admin(&rb, id).await.unwrap_or_default();
+        let count = sys_user_role_dao::is_admin(&rb, id).await.unwrap_or_default();
         let mut btn_menu: Vec<String> = Vec::new();
         if count == 1 {
             // 超级管理员：返回所有菜单的 api_url
@@ -55,4 +59,135 @@ impl SysUserDao {
             rb.query_decode(sql, vec![value!(user_id)]).await
         }
     }
+}
+
+
+
+/*
+ *用户信息基本操作
+ *author：刘飞华
+ *date：2024/12/12 14:41:44
+ */
+rbatis::crud!(User {}, "sys_user");
+
+/*
+ *根据id查询用户信息
+ *author：刘飞华
+ *date：2024/12/12 14:41:44
+ */
+impl_select!(User{select_by_id(id:i64) -> Option => "`where id = #{id} limit 1`"}, "sys_user");
+
+/*
+ *根据mobile查询用户信息
+ *author：刘飞华
+ *date：2024/12/12 14:41:44
+ */
+impl_select!(User{select_by_mobile(mobile:&str) -> Option => "`where mobile = #{mobile} limit 1`"},"sys_user");
+
+/*
+ *根据user_name查询用户信息
+ *author：刘飞华
+ *date：2024/12/12 14:41:44
+ */
+impl_select!(User{select_by_user_name(user_name:&str) -> Option => "`where user_name = #{user_name} limit 1`"}, "sys_user");
+
+/*
+ *根据email查询用户信息
+ *author：刘飞华
+ *date：2024/12/12 14:41:44
+ */
+impl_select!(User{select_by_email(email:&str) -> Option => "`where email = #{email} limit 1`"}, "sys_user");
+
+/*
+ *分页查询用户信息
+ *author：刘飞华
+ *date：2024/12/12 14:41:44
+ */
+impl_select_page!(User{select_page() =>"
+     if !sql.contains('count'):
+       order by create_time desc"
+},"sys_user");
+
+/*
+ *根据条件分页查询用户信息
+ *author：刘飞华
+ *date：2024/12/12 14:41:44
+ */
+impl_select_page!(User{select_sys_user_list(req:&QueryUserListReq) =>"
+      where 1=1
+      if req.mobile != null && req.mobile != '':
+       ` and mobile like concat('%', #{req.mobile}, '%') `
+     if req.userName != null && req.userName != '':
+       ` and user_name like concat('%', #{req.userName}, '%') `
+     if req.status != 2:
+       ` and status = #{req.status} `
+     if req.deptId != 0:
+       ` and (dept_id = #{req.deptId} OR dept_id IN (SELECT id FROM sys_dept WHERE find_in_set(#{req.deptId}, ancestors))) `
+     if !sql.contains('count'):
+        ` order by create_time desc `"},"sys_user");
+
+/*
+ *根据条件分页查询已配用户角色列表
+ *author：刘飞华
+ *date：2024/12/12 14:41:44
+ */
+#[py_sql(
+    "`select u.* from sys_user u left join sys_user_role ur on u.id = ur.user_id where u.del_flag = 1 and ur.role_id = #{role_id} `
+            if mobile != '':
+                ` and u.mobile = #{mobile} `
+            if user_name != '':
+                ` and u.user_name = #{user_name} `
+            limit #{page_no},#{page_size}` "
+)]
+async fn select_allocated_list(rb: &dyn Executor, role_id: i64, user_name: &str, mobile: &str, page_no: u64, page_size: u64) -> Result<Vec<User>, Error> {
+    impled!()
+}
+
+/*
+ * 描述：根据条件分页查询已配用户角色数量
+ * author：刘飞华
+ * date：2025/1/6 16:13
+ */
+#[py_sql(
+    "`select count(1) from sys_user u left join sys_user_role ur on u.id = ur.user_id where u.del_flag = 1 and ur.role_id = #{role_id} `
+            if mobile != '':
+                ` and u.mobile = #{mobile} `
+            if user_name != '':
+                ` and u.user_name = #{user_name} `"
+)]
+async fn count_allocated_list(rb: &dyn Executor, role_id: i64, user_name: &str, mobile: &str) -> Result<u64, Error> {
+    impled!()
+}
+
+/*
+ * 描述：根据条件分页查询未分配用户角色列表
+ * author：刘飞华
+ * date：2025/1/6 16:17
+ */
+#[py_sql(
+    "`select u.* from sys_user u left join sys_user_role ur on u.id = ur.user_id where u.del_flag = 1 and (ur.role_id != #{role_id} or ur.role_id is null) `
+            if mobile != '':
+                ` and u.mobile = #{mobile} `
+            if user_name != '':
+                ` and u.user_name = #{user_name} `
+            limit #{page_no},#{page_size}` "
+)]
+pub async fn select_unallocated_list(rb: &dyn Executor, role_id: i64, user_name: &str, mobile: &str, page_no: u64, page_size: u64) -> rbatis::Result<Vec<User>> {
+    impled!()
+}
+
+/*
+ * 描述：根据条件分页查询未分配用户角色数量
+ * author：刘飞华
+ * date：2025/1/6 16:17
+ */
+#[py_sql(
+    "`select count(1) from sys_user u left join sys_user_role ur on u.id = ur.user_id where u.del_flag = 1 and (ur.role_id != #{role_id} or ur.role_id is null) `
+            if mobile != '':
+                ` and u.mobile = #{mobile} `
+            if user_name != '':
+                ` and u.user_name = #{user_name} `"
+)]
+pub async fn count_unallocated_list(rb: &dyn Executor, role_id: i64, user_name: &str, mobile: &str) -> rbatis::Result<u64> {
+    impled!()
 }

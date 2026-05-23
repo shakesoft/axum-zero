@@ -2,10 +2,9 @@ use crate::common::error::AppError;
 use crate::common::result::{ok_result, ok_result_data, ok_result_page};
 use crate::model::system::sys_menu_model::Menu;
 use crate::model::system::sys_role_dept_model::RoleDept;
-use crate::model::system::sys_role_menu_model::{query_menu_by_role, RoleMenu};
+use crate::model::system::sys_role_menu_model::{ RoleMenu};
 use crate::model::system::sys_role_model::Role;
-use crate::model::system::sys_user_model::{count_allocated_list, count_unallocated_list, select_allocated_list, select_unallocated_list};
-use crate::model::system::sys_user_role_model::{count_user_role_by_role_id, delete_user_role_by_role_id_user_id, UserRole};
+use crate::model::system::sys_user_role_model::{UserRole};
 use crate::dao::system::sys_role_dao::SysRoleDao;
 use crate::vo::system::sys_role_vo::*;
 use crate::vo::system::sys_user_vo::UserResp;
@@ -21,6 +20,7 @@ use std::sync::Arc;
 use aspect_macros::aspect;
 use crate::aop::aspects::logger::Logger;
 use crate::aop::aspects::timer::Timer;
+use crate::dao::system::{sys_role_menu_dao, sys_user_dao, sys_user_role_dao};
 
 // use std::time::Duration;
 // use tokio::time::sleep;
@@ -67,7 +67,7 @@ pub async fn delete_sys_role(State(state): State<Arc<AppState>>, Json(item): Jso
             return Err(AppError::BusinessError("角色不存在,不能删除"));
         }
 
-        if count_user_role_by_role_id(rb, id).await? > 0 {
+        if sys_user_role_dao::count_user_role_by_role_id(rb, id).await? > 0 {
             return Err(AppError::BusinessError("分配,不能删除"));
         }
     }
@@ -200,7 +200,7 @@ pub async fn query_role_menu(State(state): State<Arc<AppState>>, Json(item): Jso
     //不是超级管理员的时候,就要查询角色和菜单的关联
     if item.role_id != 1 {
         menu_ids.clear();
-        let list = query_menu_by_role(rb, item.role_id).await?;
+        let list = sys_role_menu_dao::query_menu_by_role(rb, item.role_id).await?;
 
         for x in list {
             let m_id = x.get("menu_id").unwrap().clone();
@@ -262,14 +262,14 @@ pub async fn query_allocated_list(State(state): State<Arc<AppState>>, Json(item)
     let user_name = item.user_name.as_deref().unwrap_or_default();
 
     let page_no = (page_no - 1) * page_size;
-    let p = select_allocated_list(rb, role_id, user_name, mobile, page_no, page_size).await?;
+    let p = sys_user_dao::select_allocated_list(rb, role_id, user_name, mobile, page_no, page_size).await?;
 
     let mut list: Vec<UserResp> = Vec::new();
     for x in p {
         list.push(x.into())
     }
 
-    let total = count_allocated_list(rb, role_id, user_name, mobile).await?;
+    let total = sys_user_dao::count_allocated_list(rb, role_id, user_name, mobile).await?;
     ok_result_page(list, total)
 }
 
@@ -291,14 +291,14 @@ pub async fn query_unallocated_list(State(state): State<Arc<AppState>>, Json(ite
     let user_name = item.user_name.as_deref().unwrap_or_default();
 
     let page_no = (page_no - 1) * page_size;
-    let d = select_unallocated_list(rb, role_id, user_name, mobile, page_no, page_size).await?;
+    let d = sys_user_dao::select_unallocated_list(rb, role_id, user_name, mobile, page_no, page_size).await?;
 
     let mut list: Vec<UserResp> = Vec::new();
     for x in d {
         list.push(x.into())
     }
 
-    let total = count_unallocated_list(rb, role_id, user_name, mobile).await?;
+    let total = sys_user_dao::count_unallocated_list(rb, role_id, user_name, mobile).await?;
     ok_result_page(list, total)
 }
 
@@ -313,7 +313,7 @@ pub async fn cancel_auth_user(State(state): State<Arc<AppState>>, Json(item): Js
 
     let rb = &state.batis;
 
-    delete_user_role_by_role_id_user_id(rb, item.role_id, item.user_id).await.map(|_| ok_result())?
+    sys_user_role_dao::delete_user_role_by_role_id_user_id(rb, item.role_id, item.user_id).await.map(|_| ok_result())?
 }
 
 /*
