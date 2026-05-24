@@ -8,3 +8,4 @@ pub mod sys_operate_log_route;
 pub mod sys_post_route;
 pub mod sys_role_route;
 pub mod sys_user_route;
+pub mod sys_account_route;

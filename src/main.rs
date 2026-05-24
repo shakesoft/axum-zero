@@ -61,6 +61,7 @@ use tower_http::timeout::TimeoutLayer;
 use tracing_appender::rolling;
 use inject::autofac::{AutoFacModule, TodayWriter, TodayWriterParameters};
 use crate::common::result::ok_result_msg;
+use crate::route::system::sys_account_route::build_sys_account_route;
 use crate::workflow::state::traffic_light::TrafficLight;
 // use crate::common::daily_logfile::DailyLogFile;
 // use crate::handler::system::sys_user_handler::reset_sys_user_password;
@@ -282,6 +283,7 @@ async fn main() {
     // 构建应用路由，并合并多个子路由
     let app = Router::new().merge(swagger_ui).merge(home_router).merge(index_router).merge(test_router).merge(test_router1)//.route_layer(md::from_fn(swagger_auth))
         .nest("/api",Router::new()
+            .merge(build_sys_account_route())
             .merge(build_sys_user_route())
             .merge(build_sys_role_route())
             .merge(build_sys_menu_route())
