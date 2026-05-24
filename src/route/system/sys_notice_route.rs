@@ -6,7 +6,7 @@ use std::sync::Arc;
 use reqwest::get;
 /*
  *构建通知公告表路由
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 14:07:37
  */
 pub fn build_sys_notice_route() -> Router<Arc<AppState>> {

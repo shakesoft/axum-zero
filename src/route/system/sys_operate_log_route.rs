@@ -5,7 +5,7 @@ use axum::Router;
 use std::sync::Arc;
 /*
  *构建操作日志记录路由
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 14:07:37
  */
 pub fn build_sys_operate_log_route() -> Router<Arc<AppState>> {

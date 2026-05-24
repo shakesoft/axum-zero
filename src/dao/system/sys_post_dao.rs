@@ -19,7 +19,7 @@ impl SysPostDao {
 
 /*
  *岗位信息基本操作
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 10:01:11
  */
 rbatis::crud!(Post {}, "sys_post");
@@ -27,28 +27,28 @@ rbatis::crud!(Post {}, "sys_post");
 
 /*
  *根据id查询岗位信息
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 10:01:11
  */
 impl_select!(Post{select_by_id(id:&i64) -> Option => "`where id = #{id} limit 1`"}, "sys_post");
 
 /*
  *根据post_code查询岗位信息
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 10:01:11
  */
 impl_select!(Post{select_by_code(post_code:&str) -> Option => "`where post_code = #{post_code} limit 1`"}, "sys_post");
 
 /*
  *根据post_name查询岗位信息
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 10:01:11
  */
 impl_select!(Post{select_by_name(post_name:&str) -> Option => "`where post_name = #{post_name} limit 1`"}, "sys_post");
 
 /*
  *分页查询岗位信息
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 10:01:11
  */
 impl_select_page!(Post{select_page() =>"
@@ -58,7 +58,7 @@ impl_select_page!(Post{select_page() =>"
 
 /*
  *根据条件分页查询岗位信息
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 10:01:11
  */
 impl_select_page!(Post{select_post_list(req:&QueryPostListReq) =>"

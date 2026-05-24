@@ -43,7 +43,7 @@ use crate::service::system::sys_user_service::SysUserService;
 use crate::utils::{jwt_util, time_util};
 /*
  *添加用户信息
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]
@@ -77,7 +77,7 @@ pub async fn add_sys_user(State(state): State<Arc<AppState>>, Json(mut item): Js
 
 /*
  *删除用户信息
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]
@@ -109,7 +109,7 @@ pub async fn delete_sys_user(headers: HeaderMap, State(state): State<Arc<AppStat
 
 /*
  *更新用户信息
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]
@@ -169,7 +169,7 @@ pub async fn update_sys_user(State(state): State<Arc<AppState>>, Json(item): Jso
 
 /*
  *更新用户信息状态
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]
@@ -194,7 +194,7 @@ pub async fn update_sys_user_status(State(state): State<Arc<AppState>>, Json(ite
 
 /*
  *重置用户密码
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]
@@ -225,7 +225,7 @@ pub async fn reset_sys_user_password(State(state): State<Arc<AppState>>, Json(it
 
 /*
  *用户修改自己的密码
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]
@@ -251,7 +251,7 @@ pub async fn update_sys_user_password(headers: HeaderMap, State(state): State<Ar
 
 /*
  *查询用户信息详情
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]
@@ -286,7 +286,7 @@ pub async fn query_sys_user_detail(State(state): State<Arc<AppState>>, Json(item
 
 /*
  *查询用户信息列表
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 
@@ -320,7 +320,7 @@ async fn add(num1: i32, num2: i32) -> i32 {
 
 /*
  *用户登录
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]
@@ -379,7 +379,7 @@ pub async fn login(
 
 /*
  *查询用户角色
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]

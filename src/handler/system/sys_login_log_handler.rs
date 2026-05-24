@@ -13,7 +13,7 @@ use std::sync::Arc;
 use crate::dao::system::sys_login_log_dao;
 /*
  *删除系统访问记录
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[function_name::named]
@@ -26,7 +26,7 @@ pub async fn delete_sys_login_log(State(state): State<Arc<AppState>>, Json(item)
 
 /*
  *清空系统登录日志
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[function_name::named]
@@ -39,7 +39,7 @@ pub async fn clean_sys_login_log(State(state): State<Arc<AppState>>) -> impl Int
 
 /*
  *查询系统访问记录详情
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[function_name::named]
@@ -58,7 +58,7 @@ pub async fn query_sys_login_log_detail(State(state): State<Arc<AppState>>, Json
 
 /*
  *查询系统访问记录列表
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[function_name::named]

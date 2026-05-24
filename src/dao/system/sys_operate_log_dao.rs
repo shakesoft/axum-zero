@@ -11,21 +11,21 @@ impl SysOperateLogDao {
 
 /*
  *操作日志记录基本操作
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 10:01:11
  */
 rbatis::crud!(OperateLog {}, "sys_operate_log");
 
 /*
  *根据id查询操作日志记录
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 10:01:11
  */
 impl_select!(OperateLog{select_by_id(id:&i64) -> Option => "`where id = #{id} limit 1`"}, "sys_operate_log");
 
 /*
  *分页查询操作日志记录
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 10:01:11
  */
 impl_select_page!(OperateLog{select_page() =>"
@@ -35,7 +35,7 @@ impl_select_page!(OperateLog{select_page() =>"
 
 /*
  *根据条件分页查询操作日志记录
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 10:01:11
  */
 impl_select_page!(OperateLog{select_page_by_name(
@@ -67,7 +67,7 @@ impl_select_page!(OperateLog{select_page_by_name(
 
 /*
  *清空操作日志
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[sql("truncate table sys_operate_log")]

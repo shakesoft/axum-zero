@@ -2,7 +2,7 @@ use rbatis::rbdc::DateTime;
 
 /*
  *时间转字符串
- *author：刘飞华
+ *author：罗京生
  *date：2025/01/02 14:38:11
  */
 pub fn time_to_string(t: Option<DateTime>) -> String {

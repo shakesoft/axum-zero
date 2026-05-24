@@ -44,28 +44,28 @@ impl SysDeptDao {
 
 /*
  *部门基本操作
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 10:01:11
  */
 rbatis::crud!(Dept {}, "sys_dept");
 
 /*
  *根据id查询部门
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 10:01:11
  */
 impl_select!(Dept{select_by_id(id:&i64) -> Option => "`where id = #{id} limit 1`"}, "sys_dept");
 
 /*
  *根据部门名称查询部门
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 10:01:11
  */
 impl_select!(Dept{select_by_dept_name(dept_name:&str, parent_id:&i64) -> Option => "`where dept_name = #{dept_name} and parent_id = #{parent_id} limit 1`"}, "sys_dept");
 
 /*
  *分页查询部门
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 10:01:11
  */
 impl_select_page!(Dept{select_page() =>"
@@ -75,7 +75,7 @@ impl_select_page!(Dept{select_page() =>"
 
 /*
  *根据条件分页查询部门
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 10:01:11
  */
 impl_select!(Dept{select_page_dept_list(req:&QueryDeptListReq) =>"
@@ -90,7 +90,7 @@ impl_select!(Dept{select_page_dept_list(req:&QueryDeptListReq) =>"
 
 /*
  *根据部门id查询是否有下级部门
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[sql("select count(*) from sys_dept where status = 1 and del_flag = '1' and find_in_set(?, ancestors)")]
@@ -100,7 +100,7 @@ pub async fn select_normal_children_dept_by_id(rb: &RBatis, id: &i64) -> rbatis:
 
 /*
  *根据父部门id查询下级部门数量
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[sql("select count(1) from sys_dept where del_flag = '1' and parent_id = ?")]
@@ -110,7 +110,7 @@ pub async fn select_dept_count(rb: &RBatis, id: &i64) -> rbatis::Result<i64> {
 
 /*
  *查询部门是否存在用户
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[sql("select count(1) from sys_user where dept_id = ? and del_flag = '1'")]
@@ -120,7 +120,7 @@ pub async fn check_dept_exist_user(rb: &RBatis, id: &i64) -> rbatis::Result<i64>
 
 /*
  * 描述：根据部门id查询是所有下级部门
- * author：刘飞华
+ * author：罗京生
  * date：2025/1/6 11:29
  */
 #[sql("select * from sys_dept where find_in_set(?, ancestors)")]

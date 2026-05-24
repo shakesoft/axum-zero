@@ -1,7 +1,7 @@
 
 /*
  *角色用户关联表基本操作
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 use rbatis::RBatis;
@@ -11,7 +11,7 @@ rbatis::crud!(UserRole {}, "sys_user_role");
 
 /*
  *查询是否为超级管理员(role_id=1是预设超级管理的id)
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[sql("select count(1) from sys_user_role where role_id = 1 and user_id = ?")]
@@ -21,7 +21,7 @@ pub async fn is_admin(rb: &RBatis, user_id: &i64) -> rbatis::Result<i64> {
 
 /*
  *通过角色id查询角色使用数量
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[sql("select count(1) from sys_user_role where role_id = ?")]
@@ -31,7 +31,7 @@ pub async fn count_user_role_by_role_id(rb: &RBatis, role_id: i64) -> rbatis::Re
 
 /*
  *通过角色id和用户id删除
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[sql("delete from sys_user_role where role_id = ? and user_id = ?")]

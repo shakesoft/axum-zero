@@ -14,7 +14,7 @@ use std::sync::Arc;
 use crate::dao::system::sys_user_post_dao;
 /*
  *添加岗位信息表
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[function_name::named]
@@ -36,7 +36,7 @@ pub async fn add_sys_post(State(state): State<Arc<AppState>>, Json(mut item): Js
 
 /*
  *删除岗位信息表
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[function_name::named]
@@ -56,7 +56,7 @@ pub async fn delete_sys_post(State(state): State<Arc<AppState>>, Json(item): Jso
 
 /*
  *更新岗位信息表
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[function_name::named]
@@ -91,7 +91,7 @@ pub async fn update_sys_post(State(state): State<Arc<AppState>>, Json(item): Jso
 
 /*
  *更新岗位信息表状态
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[function_name::named]
@@ -104,7 +104,7 @@ pub async fn update_sys_post_status(State(state): State<Arc<AppState>>, Json(ite
 
 /*
  *查询岗位信息表详情
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[function_name::named]
@@ -123,7 +123,7 @@ pub async fn query_sys_post_detail(State(state): State<Arc<AppState>>, Json(item
 
 /*
  *查询岗位信息表列表
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[function_name::named]

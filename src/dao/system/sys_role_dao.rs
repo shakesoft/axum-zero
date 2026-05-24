@@ -43,7 +43,7 @@ impl SysRoleDao {
 
 /*
  *角色信息基本操作
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 rbatis::crud!(Role {}, "sys_role");
@@ -51,28 +51,28 @@ rbatis::crud!(Role {}, "sys_role");
 
 /*
  *根据id查询角色信息
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 impl_select!(Role{select_by_id(id:&i64) -> Option => "`where id = #{id} limit 1`"}, "sys_role");
 
 /*
  *根据role_name查询角色信息
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 impl_select!(Role{select_by_role_name(role_name:&str) -> Option => "`where role_name = #{role_name} limit 1`"}, "sys_role");
 
 /*
  *根据role_key查询角色信息
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 impl_select!(Role{select_by_role_key(role_key:&str) -> Option => "`where role_key = #{role_key} limit 1`"}, "sys_role");
 
 /*
  *分页查询角色信息
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 impl_select_page!(Role{select_page() =>"
@@ -82,7 +82,7 @@ impl_select_page!(Role{select_page() =>"
 
 /*
  *根据条件分页查询角色信息
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 impl_select_page!(Role{select_sys_role_list(req:&QueryRoleListReq) =>"

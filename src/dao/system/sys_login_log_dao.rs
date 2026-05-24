@@ -11,21 +11,21 @@ impl SysLoginLogDao {
 
 /*
  *系统访问记录基本操作
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 10:01:11
  */
 rbatis::crud!(LoginLog {}, "sys_login_log");
 
 /*
  *根据id查询系统访问记录
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 10:01:11
  */
 impl_select!(LoginLog{select_by_id(id:&i64) -> Option => "`where id = #{id} limit 1`"}, "sys_login_log");
 
 /*
  *分页查询系统访问记录
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 10:01:11
  */
 impl_select_page!(LoginLog{select_page() =>"
@@ -35,7 +35,7 @@ impl_select_page!(LoginLog{select_page() =>"
 
 /*
  *根据条件分页查询系统访问记录
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 10:01:11
  */
 impl_select_page!(LoginLog{select_login_log_list(req:&QueryLoginLogListReq) =>"
@@ -56,7 +56,7 @@ impl_select_page!(LoginLog{select_login_log_list(req:&QueryLoginLogListReq) =>"
 
 /*
  *清空系统登录日志
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[sql("truncate table sys_login_log")]

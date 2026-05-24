@@ -26,7 +26,7 @@ use crate::dao::system::{sys_role_menu_dao, sys_user_dao, sys_user_role_dao};
 // use tokio::time::sleep;
 /*
  *添加角色信息
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]
@@ -48,7 +48,7 @@ pub async fn add_sys_role(State(state): State<Arc<AppState>>, Json(mut item): Js
 
 /*
  *删除角色信息
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]
@@ -78,7 +78,7 @@ pub async fn delete_sys_role(State(state): State<Arc<AppState>>, Json(item): Jso
 
 /*
  *更新角色信息
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]
@@ -116,7 +116,7 @@ pub async fn update_sys_role(State(state): State<Arc<AppState>>, Json(item): Jso
 
 /*
  *更新角色信息状态
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]
@@ -133,7 +133,7 @@ pub async fn update_sys_role_status(State(state): State<Arc<AppState>>, Json(ite
 
 /*
  *查询角色信息详情
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]
@@ -152,7 +152,7 @@ pub async fn query_sys_role_detail(State(state): State<Arc<AppState>>, Json(item
 
 /*
  *查询角色信息列表
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]
@@ -170,7 +170,7 @@ pub async fn query_sys_role_list(State(state): State<Arc<AppState>>, Json(item):
 
 /*
  *查询角色关联的菜单
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]
@@ -213,7 +213,7 @@ pub async fn query_role_menu(State(state): State<Arc<AppState>>, Json(item): Jso
 
 /*
  *更新角色关联的菜单
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]
@@ -246,7 +246,7 @@ pub async fn update_role_menu(State(state): State<Arc<AppState>>, Json(item): Js
 
 /*
  *查询已分配用户角色列表
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]
@@ -275,7 +275,7 @@ pub async fn query_allocated_list(State(state): State<Arc<AppState>>, Json(item)
 
 /*
  *查询未分配用户角色列表
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]
@@ -304,7 +304,7 @@ pub async fn query_unallocated_list(State(state): State<Arc<AppState>>, Json(ite
 
 /*
  *取消授权用户
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]
@@ -318,7 +318,7 @@ pub async fn cancel_auth_user(State(state): State<Arc<AppState>>, Json(item): Js
 
 /*
  *批量取消授权用户
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]
@@ -332,7 +332,7 @@ pub async fn batch_cancel_auth_user(State(state): State<Arc<AppState>>, Json(ite
 
 /*
  *批量选择用户授权
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]

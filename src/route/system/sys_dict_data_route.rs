@@ -5,7 +5,7 @@ use axum::Router;
 use std::sync::Arc;
 /*
  *构建字典数据表路由
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 14:07:37
  */
 pub fn build_sys_dict_data_route() -> Router<Arc<AppState>> {

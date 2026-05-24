@@ -65,42 +65,42 @@ impl SysUserDao {
 
 /*
  *用户信息基本操作
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 rbatis::crud!(User {}, "sys_user");
 
 /*
  *根据id查询用户信息
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 impl_select!(User{select_by_id(id:i64) -> Option => "`where id = #{id} limit 1`"}, "sys_user");
 
 /*
  *根据mobile查询用户信息
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 impl_select!(User{select_by_mobile(mobile:&str) -> Option => "`where mobile = #{mobile} limit 1`"},"sys_user");
 
 /*
  *根据user_name查询用户信息
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 impl_select!(User{select_by_user_name(user_name:&str) -> Option => "`where user_name = #{user_name} limit 1`"}, "sys_user");
 
 /*
  *根据email查询用户信息
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 impl_select!(User{select_by_email(email:&str) -> Option => "`where email = #{email} limit 1`"}, "sys_user");
 
 /*
  *分页查询用户信息
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 impl_select_page!(User{select_page() =>"
@@ -110,7 +110,7 @@ impl_select_page!(User{select_page() =>"
 
 /*
  *根据条件分页查询用户信息
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 impl_select_page!(User{select_sys_user_list(req:&QueryUserListReq) =>"
@@ -128,7 +128,7 @@ impl_select_page!(User{select_sys_user_list(req:&QueryUserListReq) =>"
 
 /*
  *根据条件分页查询已配用户角色列表
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[py_sql(
@@ -145,7 +145,7 @@ async fn select_allocated_list(rb: &dyn Executor, role_id: i64, user_name: &str,
 
 /*
  * 描述：根据条件分页查询已配用户角色数量
- * author：刘飞华
+ * author：罗京生
  * date：2025/1/6 16:13
  */
 #[py_sql(
@@ -161,7 +161,7 @@ async fn count_allocated_list(rb: &dyn Executor, role_id: i64, user_name: &str, 
 
 /*
  * 描述：根据条件分页查询未分配用户角色列表
- * author：刘飞华
+ * author：罗京生
  * date：2025/1/6 16:17
  */
 #[py_sql(
@@ -178,7 +178,7 @@ pub async fn select_unallocated_list(rb: &dyn Executor, role_id: i64, user_name:
 
 /*
  * 描述：根据条件分页查询未分配用户角色数量
- * author：刘飞华
+ * author：罗京生
  * date：2025/1/6 16:17
  */
 #[py_sql(

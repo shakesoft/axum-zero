@@ -13,7 +13,7 @@ use rbs::value;
 use std::sync::Arc;
 /*
  *添加通知公告表
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[function_name::named]
@@ -31,7 +31,7 @@ pub async fn add_sys_notice(State(state): State<Arc<AppState>>, Json(mut item): 
 
 /*
  *删除通知公告表
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[function_name::named]
@@ -44,7 +44,7 @@ pub async fn delete_sys_notice(State(state): State<Arc<AppState>>, Json(item): J
 
 /*
  *更新通知公告表
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[function_name::named]
@@ -72,7 +72,7 @@ pub async fn update_sys_notice(State(state): State<Arc<AppState>>, Json(item): J
 
 /*
  *更新通知公告表状态
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[function_name::named]
@@ -86,7 +86,7 @@ pub async fn update_sys_notice_status(State(state): State<Arc<AppState>>, Json(i
 
 /*
  *查询通知公告表详情
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[function_name::named]
@@ -105,7 +105,7 @@ pub async fn query_sys_notice_detail(State(state): State<Arc<AppState>>, Json(it
 
 /*
  *查询通知公告表列表
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[function_name::named]

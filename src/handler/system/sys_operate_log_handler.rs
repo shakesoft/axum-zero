@@ -13,7 +13,7 @@ use std::sync::Arc;
 use crate::dao::system::sys_operate_log_dao;
 /*
  *删除操作日志记录
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[function_name::named]
@@ -26,7 +26,7 @@ pub async fn delete_sys_operate_log(State(state): State<Arc<AppState>>, Json(ite
 
 /*
  *清空操作日志记录
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[function_name::named]
@@ -39,7 +39,7 @@ pub async fn clean_sys_operate_log(State(state): State<Arc<AppState>>) -> impl I
 
 /*
  *查询操作日志记录详情
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[function_name::named]
@@ -57,7 +57,7 @@ pub async fn query_sys_operate_log_detail(State(state): State<Arc<AppState>>, Js
 }
 /*
  *查询操作日志记录列表
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[function_name::named]

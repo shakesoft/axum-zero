@@ -8,7 +8,7 @@ pub struct SysLoginLogService;
 impl SysLoginLogService{
     /*
  *添加登录日志
- *author：刘飞华
+ *author：罗京生
  *date：2025/01/02 17:01:13
  */
     pub async fn add_login_log(rb: &RBatis, name: String, status: i8, msg: &str, agent: UserAgentUtil) {

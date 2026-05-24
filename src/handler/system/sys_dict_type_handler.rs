@@ -14,7 +14,7 @@ use std::sync::Arc;
 use crate::dao::system::sys_dict_data_dao;
 /*
  *添加字典类型
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[function_name::named]
@@ -32,7 +32,7 @@ pub async fn add_sys_dict_type(State(state): State<Arc<AppState>>, Json(mut item
 
 /*
  *删除字典类型
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[function_name::named]
@@ -57,7 +57,7 @@ pub async fn delete_sys_dict_type(State(state): State<Arc<AppState>>, Json(item)
 
 /*
  *更新字典类型
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[function_name::named]
@@ -89,7 +89,7 @@ pub async fn update_sys_dict_type(State(state): State<Arc<AppState>>, Json(item)
 
 /*
  *更新字典类型状态
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[function_name::named]
@@ -102,7 +102,7 @@ pub async fn update_sys_dict_type_status(State(state): State<Arc<AppState>>, Jso
 
 /*
  *查询字典类型详情
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[function_name::named]
@@ -121,7 +121,7 @@ pub async fn query_sys_dict_type_detail(State(state): State<Arc<AppState>>, Json
 
 /*
  *查询字典类型列
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[function_name::named]

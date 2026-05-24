@@ -29,7 +29,7 @@ use crate::service::system::sys_dept_service::SysDeptService;
 use crate::vo::system::sys_user_vo::UserSession;
 /*
  *添加部门表
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[utoipa::path(
@@ -86,7 +86,7 @@ pub async fn add_sys_dept(State(state): State<Arc<AppState>>, ValidatedJson(item
 
 /*
  *删除部门表
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[utoipa::path(
@@ -138,7 +138,7 @@ pub async fn delete_sys_dept1(
 
 /*
  *更新部门表
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[utoipa::path(
@@ -203,7 +203,7 @@ pub async fn update_sys_dept(State(state): State<Arc<AppState>>, ValidatedJson(m
 
 /*
  *更新部门表状态
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[utoipa::path(
@@ -229,7 +229,7 @@ pub async fn update_sys_dept_status(State(state): State<Arc<AppState>>, Json(ite
 }
 /*
  *查询部门表详情
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[utoipa::path(
@@ -253,7 +253,7 @@ pub async fn query_sys_dept_detail(State(state): State<Arc<AppState>>, Json(item
 
 /*
  *查询部门表列表
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 11:36:48
  */
 #[utoipa::path(

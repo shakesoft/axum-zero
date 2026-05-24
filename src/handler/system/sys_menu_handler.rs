@@ -13,7 +13,7 @@ use crate::dao::system::sys_menu_dao::SysMenuDao;
 use crate::dao::system::{sys_menu_dao, sys_role_menu_dao};
 /*
  *添加菜单信息
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]
@@ -37,7 +37,7 @@ pub async fn add_sys_menu(State(state): State<Arc<AppState>>, Json(mut item): Js
 
 /*
  *删除菜单信息
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]
@@ -60,7 +60,7 @@ pub async fn delete_sys_menu(State(state): State<Arc<AppState>>, Json(item): Jso
 
 /*
  *更新菜单信息
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]
@@ -97,7 +97,7 @@ pub async fn update_sys_menu(State(state): State<Arc<AppState>>, Json(item): Jso
 
 /*
  *更新菜单信息状态
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]
@@ -111,7 +111,7 @@ pub async fn update_sys_menu_status(State(state): State<Arc<AppState>>, Json(ite
 
 /*
  *查询菜单信息详情
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]
@@ -130,7 +130,7 @@ pub async fn query_sys_menu_detail(State(state): State<Arc<AppState>>, Json(item
 
 /*
  *查询菜单信息列表
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]
@@ -143,7 +143,7 @@ pub async fn query_sys_menu_list(State(state): State<Arc<AppState>>, Json(item):
 
 /*
  *查询菜单信息(排除按钮)
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]

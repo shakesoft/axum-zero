@@ -22,7 +22,7 @@ impl SysDictTypeDao {
 
 /*
  *字典类型基本操作
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 10:01:11
  */
 rbatis::crud!(DictType {}, "sys_dict_type");
@@ -30,21 +30,21 @@ rbatis::crud!(DictType {}, "sys_dict_type");
 
 /*
  *根据id查询字典类型
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 10:01:11
  */
 impl_select!(DictType{select_by_id(id:&i64) -> Option => "`where id = #{id} limit 1`"}, "sys_dict_type");
 
 /*
  *根据dict_type查询字典类型
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 10:01:11
  */
 impl_select!(DictType{select_by_dict_type(dict_type:&str) -> Option => "`where dict_type = #{dict_type} limit 1`"}, "sys_dict_type");
 
 /*
  *分页查询字典类型
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 10:01:11
  */
 impl_select_page!(DictType{select_page() =>"
@@ -54,7 +54,7 @@ impl_select_page!(DictType{select_page() =>"
 
 /*
  *根据条件分页查询字典类型
- *author：刘飞华
+ *author：罗京生
  *date：2024/12/25 10:01:11
  */
 impl_select_page!(DictType{select_dict_type_list(req:&QueryDictTypeListReq) =>"
