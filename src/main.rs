@@ -131,7 +131,7 @@ struct RedisConfig {
         )
     ),
     tags(
-        (name = "axum-admin", description = "OpenAPI")
+        (name = "axum-zero", description = "OpenAPI")
     )
 )]
 struct ApiDoc;
@@ -175,9 +175,9 @@ async fn main() {
     // };
     // println!("{}",i.part);
 
-    let file_appender = rolling::daily("log", "axum-admin.log");
+    let file_appender = rolling::daily("log", "axum-zero.log");
     let (non_blocking, _guard) = tracing_appender::non_blocking(file_appender);
-    // let daily_writer = DailyLogFile::new("log", "axum-admin", "log");
+    // let daily_writer = DailyLogFile::new("log", "axum-zero", "log");
     tracing_subscriber::fmt()
         .with_writer(non_blocking)
         // .with_writer(daily_writer)
@@ -253,7 +253,7 @@ async fn main() {
 
     // 首页路由
     let home_router = Router::new().route("/", get(async||-> &'static str {
-        "Hello axum-admin!"
+        "Hello axum-zero!"
     }));
 
     let index_router = Router::new().route("/index", get(async||-> String{

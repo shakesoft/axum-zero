@@ -6,6 +6,6 @@ WORKDIR /app
 
 COPY ./src/config/log4rs.yaml /app/src/config/log4rs.yaml
 COPY ./config.toml /app/config.toml
-COPY ./target/release/axum-admin /app/
+COPY ./target/release/axum-zero /app/
 
-CMD ["./axum-admin"]
+CMD ["./axum-zero"]
