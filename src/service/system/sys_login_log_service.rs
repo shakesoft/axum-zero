@@ -1,16 +1,49 @@
-use log::info;
-use rbatis::RBatis;
+use crate::common::error::{AppError, AppResult, ServiceResult, ServiceResultPage};
+use crate::common::result::{ok_result, ok_result_data, ok_result_page};
+use crate::dao::system::sys_login_log_dao;
 use crate::model::system::sys_login_log_model::LoginLog;
 use crate::utils::user_agent_util::UserAgentUtil;
+use crate::vo::system::sys_login_log_vo::{DeleteLoginLogReq, LoginLogResp, QueryLoginLogDetailReq, QueryLoginLogListReq};
+use axum::Json;
+use log::info;
+use rbatis::plugin::page::PageRequest;
+use rbatis::RBatis;
+use rbs::value;
 
 pub struct SysLoginLogService;
 
-impl SysLoginLogService{
+impl SysLoginLogService {
+    pub async fn delete_sys_login_log(rb: &RBatis, item: DeleteLoginLogReq) -> ServiceResult<String> {
+        LoginLog::delete_by_map(rb, value! {"id": &item.ids}).await.map(|_| ok_result())?
+    }
+
+    pub async fn clean_sys_login_log(rb: &RBatis) -> ServiceResult<String> {
+        sys_login_log_dao::clean_login_log(rb).await.map(|_| ok_result())?
+    }
+
+    pub async fn query_sys_login_log_detail(rb: &RBatis, item: QueryLoginLogDetailReq) -> ServiceResult<LoginLogResp> {
+        LoginLog::select_by_id(rb, &item.id).await?.map_or_else(
+            || Err(AppError::BusinessError("系统访问记录不存在")),
+            |x| {
+                let data: LoginLogResp = x.into();
+                ok_result_data(data)
+            },
+        )
+    }
+
+    pub async fn query_sys_login_log_list(rb: &RBatis, item: QueryLoginLogListReq) -> ServiceResultPage<LoginLogResp> {
+        let page = &PageRequest::new(item.page_no, item.page_size);
+
+        LoginLog::select_login_log_list(rb, page, &item)
+            .await
+            .map(|x| ok_result_page(x.records.into_iter().map(|x| x.into()).collect::<Vec<LoginLogResp>>(), x.total))?
+    }
+
     /*
- *添加登录日志
- *author：罗京生
- *date：2025/01/02 17:01:13
- */
+     *添加登录日志
+     *author：罗京生
+     *date：2025/01/02 17:01:13
+     */
     pub async fn add_login_log(rb: &RBatis, name: String, status: i8, msg: &str, agent: UserAgentUtil) {
         let sys_login_log = LoginLog {
             id: None,                             //访问ID

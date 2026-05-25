@@ -1,4 +1,4 @@
-use crate::common::error::{AppError};
+use crate::common::error::{AppResult};
 use axum::Json;
 use rbatis::rbdc::DateTime;
 use serde::Serialize;
@@ -10,15 +10,7 @@ const SUCCESS_MSG:&str ="操作成功";
 const DATETIME_FORMAT:&str = "YYYY-MM-DD hh:mm:ss";
 const EMPTY_STRING:&str = "";
 
-pub type AppResult<T> = Result<T, AppError>;
-
-#[derive(Serialize, Debug, Clone,ToSchema)]
-pub struct EmptyResponse
-{
-    pub code: i32,
-    pub msg: String,
-    pub data: Option<()>,
-}
+pub type EmptyResponse = BaseResponse<()>;
 
 #[derive(Serialize, Debug, Clone,ToSchema)]
 pub struct BaseResponse<T> {

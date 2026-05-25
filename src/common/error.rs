@@ -1,4 +1,4 @@
-use crate::common::result::{AppResult, BaseResponse};
+use crate::common::result::{BaseResponse, PageResponse};
 use axum::extract::rejection::JsonRejection;
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
@@ -7,7 +7,14 @@ use redis::RedisError;
 use serde::Serialize;
 use thiserror::Error;
 use validator::ValidationErrors;
+
 const DEFAULT_ERROR_MSG:&str="服务器发生内部异常，请稍后再试";
+
+pub type AppResult<T> = Result<T, AppError>;
+
+pub type ServiceResult<T = ()> = AppResult<Json<BaseResponse<T>>>;
+
+pub type ServiceResultPage<T = ()> = AppResult<Json<PageResponse<Vec<T>>>>;
 
 #[derive(Serialize)]
 struct ValidationErrorItem {
