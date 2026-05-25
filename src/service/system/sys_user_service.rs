@@ -1,5 +1,5 @@
 use crate::common::error::{AppError, AppResult, ServiceResult, ServiceResultPage};
-use crate::common::result::{ok_result, ok_result_data, ok_result_page};
+use crate::common::result::{ok_result_empty, ok_result_data, ok_result_page};
 use crate::dao::system::sys_user_dao::SysUserDao;
 use crate::model::system::sys_dept_model::Dept;
 use crate::model::system::sys_menu_model::Menu;
@@ -52,7 +52,7 @@ impl SysUserService {
             user_post_list.push(UserPost { user_id: id.i64(), post_id })
         }
 
-        UserPost::insert_batch(rb, &user_post_list, user_post_list.len() as u64).await.map(|_| ok_result())?
+        UserPost::insert_batch(rb, &user_post_list, user_post_list.len() as u64).await.map(|_| ok_result_empty())?
     }
 
     pub async fn delete_sys_user(rb: &RBatis, redis: &redis::Client, headers: HeaderMap, item: DeleteUserReq) -> ServiceResult<String> {
@@ -75,7 +75,7 @@ impl SysUserService {
 
         UserRole::delete_by_map(rb, value! {"user_id": &ids}).await?;
         UserPost::delete_by_map(rb, value! {"user_id": &ids}).await?;
-        User::delete_by_map(rb, value! {"id": &item.ids}).await.map(|_| ok_result())?
+        User::delete_by_map(rb, value! {"id": &item.ids}).await.map(|_| ok_result_empty())?
     }
 
     pub async fn update_sys_user(rb: &RBatis, redis: &redis::Client, item: UserReq) -> ServiceResult<String> {
@@ -126,7 +126,7 @@ impl SysUserService {
 
         UserPost::delete_by_map(rb, value! {"user_id": &item.id}).await?;
         UserPost::insert_batch(rb, &user_post_list, user_post_list.len() as u64).await?;
-        User::update_by_map(rb, &User::from(item), value! {"id": &id}).await.map(|_| ok_result())?
+        User::update_by_map(rb, &User::from(item), value! {"id": &id}).await.map(|_| ok_result_empty())?
     }
 
     pub async fn update_sys_user_status(rb: &RBatis, redis: &redis::Client, item: UpdateUserStatusReq) -> ServiceResult<String> {
@@ -142,7 +142,7 @@ impl SysUserService {
             }
         }
 
-        SysUserDao::update_status(rb, &item.ids, item.status).await.map(|_| ok_result())?
+        SysUserDao::update_status(rb, &item.ids, item.status).await.map(|_| ok_result_empty())?
     }
 
     pub async fn reset_sys_user_password(rb: &RBatis, redis: &redis::Client, item: ResetUserPwdReq) -> ServiceResult<String> {
@@ -162,7 +162,7 @@ impl SysUserService {
             Some(x) => {
                 let mut user = x;
                 user.password = item.password;
-                User::update_by_map(rb, &user, value! {"id": &user.id}).await.map(|_| ok_result())?
+                User::update_by_map(rb, &user, value! {"id": &user.id}).await.map(|_| ok_result_empty())?
             }
         }
     }
@@ -178,7 +178,7 @@ impl SysUserService {
                     return Err(AppError::BusinessError("旧密码不正确"));
                 }
                 user.password = item.re_pwd;
-                User::update_by_map(rb, &user, value! {"id": &user.id}).await.map(|_| ok_result())?
+                User::update_by_map(rb, &user, value! {"id": &user.id}).await.map(|_| ok_result_empty())?
             }
         }
     }
@@ -293,7 +293,7 @@ impl SysUserService {
             })
         }
 
-        UserRole::insert_batch(rb, &list, len as u64).await.map(|_| ok_result())?
+        UserRole::insert_batch(rb, &list, len as u64).await.map(|_| ok_result_empty())?
     }
 
     pub async fn query_user_menu(rb: &RBatis, redis: &redis::Client, headers: HeaderMap) -> ServiceResult<QueryUserMenuResp> {

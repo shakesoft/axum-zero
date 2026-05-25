@@ -1,5 +1,5 @@
 use crate::common::error::{AppError, ServiceResult};
-use crate::common::result::{ok, ok_result, ok_result_data};
+use crate::common::result::{ok, ok_result_empty, ok_result_data};
 use crate::dao::system::sys_dept_dao;
 use crate::dao::system::sys_dept_dao::SysDeptDao;
 use crate::model::system::sys_dept_model::Dept;

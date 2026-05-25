@@ -1,5 +1,5 @@
 use crate::common::error::{AppError, AppResult, ServiceResult, ServiceResultPage};
-use crate::common::result::{ok_result, ok_result_data, ok_result_page};
+use crate::common::result::{ok_result_empty, ok_result_data, ok_result_page};
 use crate::dao::system::sys_login_log_dao;
 use crate::model::system::sys_login_log_model::LoginLog;
 use crate::utils::user_agent_util::UserAgentUtil;
@@ -14,11 +14,11 @@ pub struct SysLoginLogService;
 
 impl SysLoginLogService {
     pub async fn delete_sys_login_log(rb: &RBatis, item: DeleteLoginLogReq) -> ServiceResult<String> {
-        LoginLog::delete_by_map(rb, value! {"id": &item.ids}).await.map(|_| ok_result())?
+        LoginLog::delete_by_map(rb, value! {"id": &item.ids}).await.map(|_| ok_result_empty())?
     }
 
     pub async fn clean_sys_login_log(rb: &RBatis) -> ServiceResult<String> {
-        sys_login_log_dao::clean_login_log(rb).await.map(|_| ok_result())?
+        sys_login_log_dao::clean_login_log(rb).await.map(|_| ok_result_empty())?
     }
 
     pub async fn query_sys_login_log_detail(rb: &RBatis, item: QueryLoginLogDetailReq) -> ServiceResult<LoginLogResp> {

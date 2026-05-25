@@ -1,5 +1,5 @@
 use crate::common::error::{AppError, AppResult, ServiceResult, ServiceResultPage};
-use crate::common::result::{ok, ok_result, ok_result_data, ok_result_page};
+use crate::common::result::{ok, ok_result_empty, ok_result_data, ok_result_page};
 use crate::dao::system::sys_notice_dao::SysNoticeDao;
 use crate::model::system::sys_notice_model::Notice;
 use crate::vo::system::sys_notice_vo::{DeleteNoticeReq, NoticeReq, NoticeResp, QueryNoticeDetailReq, QueryNoticeListReq, UpdateNoticeStatusReq};
@@ -18,11 +18,11 @@ impl SysNoticeService {
         };
 
         item.id = None;
-        Notice::insert(rb, &Notice::from(item)).await.map(|_| ok_result())?
+        Notice::insert(rb, &Notice::from(item)).await.map(|_| ok_result_empty())?
     }
 
     pub async fn delete_sys_notice(rb: &RBatis, item: DeleteNoticeReq) -> ServiceResult<String> {
-        Notice::delete_by_map(rb, value! {"id": &item.ids}).await.map(|_| ok_result())?
+        Notice::delete_by_map(rb, value! {"id": &item.ids}).await.map(|_| ok_result_empty())?
     }
 
     pub async fn update_sys_notice(rb: &RBatis, item: NoticeReq) -> ServiceResult<String> {
@@ -41,11 +41,11 @@ impl SysNoticeService {
             }
         }
 
-        Notice::update_by_map(rb, &Notice::from(item), value! {"id": &id}).await.map(|_| ok_result())?
+        Notice::update_by_map(rb, &Notice::from(item), value! {"id": &id}).await.map(|_| ok_result_empty())?
     }
 
     pub async fn update_sys_notice_status(rb: &RBatis, item: UpdateNoticeStatusReq) -> ServiceResult<String> {
-        SysNoticeDao::update_status(rb, &item.ids, item.status).await.map(|_| ok_result())?
+        SysNoticeDao::update_status(rb, &item.ids, item.status).await.map(|_| ok_result_empty())?
     }
 
     pub async fn query_sys_notice_detail(rb: &RBatis, item: QueryNoticeDetailReq) -> ServiceResult<NoticeResp> {

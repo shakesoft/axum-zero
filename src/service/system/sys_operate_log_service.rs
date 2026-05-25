@@ -1,5 +1,5 @@
 use crate::common::error::{AppError, ServiceResult, ServiceResultPage};
-use crate::common::result::{ok_result, ok_result_data, ok_result_page};
+use crate::common::result::{ok_result_empty, ok_result_data, ok_result_page};
 use crate::dao::system::sys_operate_log_dao;
 use crate::model::system::sys_operate_log_model::OperateLog;
 use crate::vo::system::sys_operate_log_vo::{DeleteOperateLogReq, OperateLogResp, QueryOperateLogDetailReq, QueryOperateLogListReq};
@@ -12,11 +12,11 @@ pub struct SysOperateLogService;
 
 impl SysOperateLogService {
     pub async fn delete_sys_operate_log(rb: &RBatis, item: DeleteOperateLogReq) -> ServiceResult<String> {
-        OperateLog::delete_by_map(rb, value! {"id": &item.ids}).await.map(|_| ok_result())?
+        OperateLog::delete_by_map(rb, value! {"id": &item.ids}).await.map(|_| ok_result_empty())?
     }
 
     pub async fn clean_sys_operate_log(rb: &RBatis) -> ServiceResult<String> {
-        sys_operate_log_dao::clean_operate_log(rb).await.map(|_| ok_result())?
+        sys_operate_log_dao::clean_operate_log(rb).await.map(|_| ok_result_empty())?
     }
 
     pub async fn query_sys_operate_log_detail(rb: &RBatis, item: QueryOperateLogDetailReq) -> ServiceResult<OperateLogResp> {

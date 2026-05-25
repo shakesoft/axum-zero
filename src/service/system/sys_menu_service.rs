@@ -1,5 +1,5 @@
 use crate::common::error::{AppError, ServiceResult};
-use crate::common::result::{ok_result, ok_result_data};
+use crate::common::result::{ok_result_empty, ok_result_data};
 use crate::dao::system::sys_menu_dao;
 use crate::dao::system::sys_menu_dao::SysMenuDao;
 use crate::dao::system::sys_role_menu_dao;
@@ -24,7 +24,7 @@ impl SysMenuService {
         }
 
         item.id = None;
-        Menu::insert(rb, &Menu::from(item)).await.map(|_| ok_result())?
+        Menu::insert(rb, &Menu::from(item)).await.map(|_| ok_result_empty())?
     }
 
     pub async fn delete_sys_menu(rb: &RBatis, item: DeleteMenuReq) -> ServiceResult<String> {
@@ -36,7 +36,7 @@ impl SysMenuService {
             return Err(AppError::BusinessError("菜单已分配,不允许删除"));
         }
 
-        Menu::delete_by_map(rb, value! {"id": &item.id}).await.map(|_| ok_result())?
+        Menu::delete_by_map(rb, value! {"id": &item.id}).await.map(|_| ok_result_empty())?
     }
 
     pub async fn update_sys_menu(rb: &RBatis, item: MenuReq) -> ServiceResult<String> {
@@ -64,11 +64,11 @@ impl SysMenuService {
             }
         }
 
-        Menu::update_by_map(rb, &Menu::from(item), value! {"id": &id}).await.map(|_| ok_result())?
+        Menu::update_by_map(rb, &Menu::from(item), value! {"id": &id}).await.map(|_| ok_result_empty())?
     }
 
     pub async fn update_sys_menu_status(rb: &RBatis, item: UpdateMenuStatusReq) -> ServiceResult<String> {
-        SysMenuDao::update_menu_status(rb, item.status, &item.ids).await.map(|_| ok_result())?
+        SysMenuDao::update_menu_status(rb, item.status, &item.ids).await.map(|_| ok_result_empty())?
     }
 
     pub async fn query_sys_menu_detail(rb: &RBatis, item: QueryMenuDetailReq) -> ServiceResult<MenuResp> {

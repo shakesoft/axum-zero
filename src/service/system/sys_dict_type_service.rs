@@ -1,5 +1,5 @@
 use crate::common::error::{AppError, ServiceResult, ServiceResultPage};
-use crate::common::result::{ok_result, ok_result_data, ok_result_page};
+use crate::common::result::{ok_result_empty, ok_result_data, ok_result_page};
 use crate::dao::system::sys_dict_data_dao;
 use crate::dao::system::sys_dict_type_dao::SysDictTypeDao;
 use crate::model::system::sys_dict_type_model::DictType;
@@ -18,7 +18,7 @@ impl SysDictTypeService {
         }
 
         item.id = None;
-        DictType::insert(rb, &DictType::from(item)).await.map(|_| ok_result())?
+        DictType::insert(rb, &DictType::from(item)).await.map(|_| ok_result_empty())?
     }
 
     pub async fn delete_sys_dict_type(rb: &RBatis, item: DeleteDictTypeReq) -> ServiceResult<String> {
@@ -34,7 +34,7 @@ impl SysDictTypeService {
             }
         }
 
-        DictType::delete_by_map(rb, value! {"id": &item.ids}).await.map(|_| ok_result())?
+        DictType::delete_by_map(rb, value! {"id": &item.ids}).await.map(|_| ok_result_empty())?
     }
 
     pub async fn update_sys_dict_type(rb: &RBatis, item: DictTypeReq) -> ServiceResult<String> {
@@ -57,11 +57,11 @@ impl SysDictTypeService {
             sys_dict_data_dao::update_dict_data_type(rb, &*item.dict_type, &dict_type).await?;
         }
 
-        DictType::update_by_map(rb, &DictType::from(item), value! {"id": &id}).await.map(|_| ok_result())?
+        DictType::update_by_map(rb, &DictType::from(item), value! {"id": &id}).await.map(|_| ok_result_empty())?
     }
 
     pub async fn update_sys_dict_type_status(rb: &RBatis, item: UpdateDictTypeStatusReq) -> ServiceResult<String> {
-        SysDictTypeDao::update_dict_type_status(rb, item.status, &item.ids).await.map(|_| ok_result())?
+        SysDictTypeDao::update_dict_type_status(rb, item.status, &item.ids).await.map(|_| ok_result_empty())?
     }
 
     pub async fn query_sys_dict_type_detail(rb: &RBatis, item: QueryDictTypeDetailReq) -> ServiceResult<DictTypeResp> {

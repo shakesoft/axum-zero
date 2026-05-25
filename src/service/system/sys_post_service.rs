@@ -1,5 +1,5 @@
 use crate::common::error::{AppError, ServiceResult, ServiceResultPage};
-use crate::common::result::{ok_result, ok_result_data, ok_result_page};
+use crate::common::result::{ok_result_empty, ok_result_data, ok_result_page};
 use crate::dao::system::sys_post_dao::SysPostDao;
 use crate::dao::system::sys_user_post_dao;
 use crate::model::system::sys_post_model::Post;
@@ -22,7 +22,7 @@ impl SysPostService {
         }
 
         item.id = None;
-        Post::insert(rb, &Post::from(item)).await.map(|_| ok_result())?
+        Post::insert(rb, &Post::from(item)).await.map(|_| ok_result_empty())?
     }
 
     pub async fn delete_sys_post(rb: &RBatis, item: DeletePostReq) -> ServiceResult<String> {
@@ -33,7 +33,7 @@ impl SysPostService {
             }
         }
 
-        Post::delete_by_map(rb, value! {"id": &item.ids}).await.map(|_| ok_result())?
+        Post::delete_by_map(rb, value! {"id": &item.ids}).await.map(|_| ok_result_empty())?
     }
 
     pub async fn update_sys_post(rb: &RBatis, item: PostReq) -> ServiceResult<String> {
@@ -59,11 +59,11 @@ impl SysPostService {
             }
         }
 
-        Post::update_by_map(rb, &Post::from(item), value! {"id": &id}).await.map(|_| ok_result())?
+        Post::update_by_map(rb, &Post::from(item), value! {"id": &id}).await.map(|_| ok_result_empty())?
     }
 
     pub async fn update_sys_post_status(rb: &RBatis, item: UpdatePostStatusReq) -> ServiceResult<String> {
-        SysPostDao::update_status(rb, &item.ids, item.status).await.map(|_| ok_result())?
+        SysPostDao::update_status(rb, &item.ids, item.status).await.map(|_| ok_result_empty())?
     }
 
     pub async fn query_sys_post_detail(rb: &RBatis, item: QueryPostDetailReq) -> ServiceResult<PostResp> {

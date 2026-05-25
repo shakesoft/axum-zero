@@ -35,7 +35,7 @@ pub fn ok() -> AppResult<Json<EmptyResponse>> {
     }))
 }
 
-pub fn ok_result() -> AppResult<Json<BaseResponse<String>>> {
+pub fn ok_result_empty() -> AppResult<Json<BaseResponse<String>>> {
     ok_result_msg(SUCCESS_MSG)
 }
 

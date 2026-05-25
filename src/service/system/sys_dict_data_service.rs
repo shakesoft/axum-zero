@@ -1,5 +1,5 @@
 use crate::common::error::{AppError,ServiceResultPage, ServiceResult};
-use crate::common::result::{ok_result, ok_result_data, ok_result_page};
+use crate::common::result::{ok_result_empty, ok_result_data, ok_result_page};
 use crate::dao::system::sys_dict_data_dao::SysDictDataDao;
 use crate::model::system::sys_dict_data_model::DictData;
 use crate::vo::system::sys_dict_data_vo::{DeleteDictDataReq, DictDataReq, DictDataResp, QueryDictDataDetailReq, QueryDictDataListReq, UpdateDictDataStatusReq};
@@ -21,11 +21,11 @@ impl SysDictDataService {
         }
 
         item.id = None;
-        DictData::insert(rb, &DictData::from(item)).await.map(|_| ok_result())?
+        DictData::insert(rb, &DictData::from(item)).await.map(|_| ok_result_empty())?
     }
 
     pub async fn delete_sys_dict_data(rb: &RBatis, item: DeleteDictDataReq) -> ServiceResult<String> {
-        DictData::delete_by_map(rb, value! {"id": &item.ids}).await.map(|_| ok_result())?
+        DictData::delete_by_map(rb, value! {"id": &item.ids}).await.map(|_| ok_result_empty())?
     }
 
     pub async fn update_sys_dict_data(rb: &RBatis, item: DictDataReq) -> ServiceResult<String> {
@@ -51,11 +51,11 @@ impl SysDictDataService {
             }
         }
 
-        DictData::update_by_map(rb, &DictData::from(item), value! {"id": &id}).await.map(|_| ok_result())?
+        DictData::update_by_map(rb, &DictData::from(item), value! {"id": &id}).await.map(|_| ok_result_empty())?
     }
 
     pub async fn update_sys_dict_data_status(rb: &RBatis, item: UpdateDictDataStatusReq) -> ServiceResult<String> {
-        SysDictDataDao::update_dict_data_status(rb, item.status, &item.ids).await.map(|_| ok_result())?
+        SysDictDataDao::update_dict_data_status(rb, item.status, &item.ids).await.map(|_| ok_result_empty())?
     }
 
     pub async fn query_sys_dict_data_detail(rb: &RBatis, item: QueryDictDataDetailReq) -> ServiceResult<DictDataResp> {

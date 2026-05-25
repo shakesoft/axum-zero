@@ -1,5 +1,5 @@
 use crate::common::error::{AppError, ServiceResult, ServiceResultPage};
-use crate::common::result::{ok_result, ok_result_data, ok_result_page};
+use crate::common::result::{ok_result_empty, ok_result_data, ok_result_page};
 use crate::dao::system::sys_role_dao::SysRoleDao;
 use crate::dao::system::{sys_role_menu_dao, sys_user_dao, sys_user_role_dao};
 use crate::model::system::sys_menu_model::Menu;
@@ -27,7 +27,7 @@ impl SysRoleService {
         }
 
         item.id = None;
-        Role::insert(rb, &Role::from(item)).await.map(|_| ok_result())?
+        Role::insert(rb, &Role::from(item)).await.map(|_| ok_result_empty())?
     }
 
     pub async fn delete_sys_role(rb: &RBatis, item: DeleteRoleReq) -> ServiceResult<String> {
@@ -48,7 +48,7 @@ impl SysRoleService {
         }
 
         SysRoleDao::delete_role_and_relations(rb, &item.ids).await?;
-        ok_result()
+        ok_result_empty()
     }
 
     pub async fn update_sys_role(rb: &RBatis, item: RoleReq) -> ServiceResult<String> {
@@ -77,7 +77,7 @@ impl SysRoleService {
             }
         }
 
-        Role::update_by_map(rb, &Role::from(item), value! {"id": &id}).await.map(|_| ok_result())?
+        Role::update_by_map(rb, &Role::from(item), value! {"id": &id}).await.map(|_| ok_result_empty())?
     }
 
     pub async fn update_sys_role_status(rb: &RBatis, item: UpdateRoleStatusReq) -> ServiceResult<String> {
@@ -85,7 +85,7 @@ impl SysRoleService {
             return Err(AppError::BusinessError("不允许操作超级管理员角色"));
         }
 
-        SysRoleDao::update_status(rb, &item.ids, item.status).await.map(|_| ok_result())?
+        SysRoleDao::update_status(rb, &item.ids, item.status).await.map(|_| ok_result_empty())?
     }
 
     pub async fn query_sys_role_detail(rb: &RBatis, item: QueryRoleDetailReq) -> ServiceResult<RoleResp> {
@@ -159,7 +159,7 @@ impl SysRoleService {
             })
         }
 
-        RoleMenu::insert_batch(rb, &role_menu, item.menu_ids.len() as u64).await.map(|_| ok_result())?
+        RoleMenu::insert_batch(rb, &role_menu, item.menu_ids.len() as u64).await.map(|_| ok_result_empty())?
     }
 
     pub async fn query_allocated_list(rb: &RBatis, item: AllocatedListReq) -> ServiceResultPage<UserResp> {
@@ -201,11 +201,11 @@ impl SysRoleService {
     }
 
     pub async fn cancel_auth_user(rb: &RBatis, item: CancelAuthUserReq) -> ServiceResult<String> {
-        sys_user_role_dao::delete_user_role_by_role_id_user_id(rb, item.role_id, item.user_id).await.map(|_| ok_result())?
+        sys_user_role_dao::delete_user_role_by_role_id_user_id(rb, item.role_id, item.user_id).await.map(|_| ok_result_empty())?
     }
 
     pub async fn batch_cancel_auth_user(rb: &RBatis, item: CancelAuthUserAllReq) -> ServiceResult<String> {
-        SysRoleDao::batch_cancel_auth_user(rb, item.role_id, &item.user_ids).await.map(|_| ok_result())?
+        SysRoleDao::batch_cancel_auth_user(rb, item.role_id, &item.user_ids).await.map(|_| ok_result_empty())?
     }
 
     pub async fn batch_auth_user(rb: &RBatis, item: SelectAuthUserAllReq) -> ServiceResult<String> {
@@ -223,6 +223,6 @@ impl SysRoleService {
             })
         }
 
-        UserRole::insert_batch(rb, &user_role, item.user_ids.len() as u64).await.map(|_| ok_result())?
+        UserRole::insert_batch(rb, &user_role, item.user_ids.len() as u64).await.map(|_| ok_result_empty())?
     }
 }
