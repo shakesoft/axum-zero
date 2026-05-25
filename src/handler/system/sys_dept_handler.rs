@@ -33,15 +33,13 @@ use crate::vo::system::sys_user_vo::UserSession;
     responses((status = 200, description = "successfully", body = EmptyResponse))
 )]
 // #[instrument]
-// #[function_name::named]
+#[function_name::named]
 pub async fn add_sys_dept(State(state): State<Arc<AppState>>, ValidatedJson(item): ValidatedJson<DeptReq>) -> impl IntoResponse {
     // panic!("test");
     // sleep(Duration::from_secs(8)).await;
     // return AppError::interrupt();
     // info!("add sys_dept params: {:?}", &item);
-    // info!("{function_name}:{item:?}",function_name = function_name!());
-    // info!("{function_name}:{item:?}",function_name = function_name!());
-
+    info!("{function_name}:{item:?}",function_name = function_name!());
     // let container = &state.container;
     // let service: &dyn IDateWriter = container.resolve_ref();
     // service.write_date();
@@ -61,7 +59,6 @@ pub async fn add_sys_dept(State(state): State<Arc<AppState>>, ValidatedJson(item
     // info!("{}: {:?}", function_name!(), item);
     // info!("{}: {item:?}",function_name!());
     let rb = &state.batis;
-
     SysDeptService::add_sys_dept(rb, item).await
 }
 
@@ -92,7 +89,7 @@ pub async fn delete_sys_dept(State(state): State<Arc<AppState>>, Extension(_sess
     request_body = DeleteDeptReq,
     responses((status = 200, description = "successfully", body = EmptyResponse))
 )]
-// #[function_name::named]
+#[function_name::named]
 pub async fn delete_sys_dept1(
     writer: Inject<AutoFacModule, dyn IDateWriter>,
     hello_world: InjectProvided<AutoFacModule, dyn HelloWorld>,
@@ -104,14 +101,12 @@ pub async fn delete_sys_dept1(
     writer.get_date();
     let result = hello_world.greet();
     info!("{}", result);
-
-    // info!("{function_name}:{item:?}",function_name = function_name!());
+    info!("{function_name}:{item:?}",function_name = function_name!());
     // info!("{}: {:?}", function_name!(), item);
     // let user_id = &session.user_id;
-    ok()
     // let permissons = &session.permissions;
     // let rb = &state.batis;
-    //
+    ok()
     // if select_dept_count(rb, &item.id).await? > 0 {
     //     return Err(AppError::BusinessError("存在下级部门,不允许删除"));
     // }
