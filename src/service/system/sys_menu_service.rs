@@ -5,7 +5,6 @@ use crate::dao::system::sys_menu_dao::SysMenuDao;
 use crate::dao::system::sys_role_menu_dao;
 use crate::model::system::sys_menu_model::Menu;
 use crate::vo::system::sys_menu_vo::{DeleteMenuReq, MenuListSimpleDataResp, MenuReq, MenuResp, QueryMenuDetailReq, QueryMenuListReq, UpdateMenuStatusReq};
-use axum::Json;
 use rbatis::RBatis;
 use rbs::value;
 

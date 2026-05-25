@@ -3,7 +3,6 @@ use crate::common::result::{ok_result_empty, ok_result_data, ok_result_page};
 use crate::dao::system::sys_dict_data_dao::SysDictDataDao;
 use crate::model::system::sys_dict_data_model::DictData;
 use crate::vo::system::sys_dict_data_vo::{DeleteDictDataReq, DictDataReq, DictDataResp, QueryDictDataDetailReq, QueryDictDataListReq, UpdateDictDataStatusReq};
-use axum::Json;
 use rbatis::plugin::page::PageRequest;
 use rbatis::RBatis;
 use rbs::value;

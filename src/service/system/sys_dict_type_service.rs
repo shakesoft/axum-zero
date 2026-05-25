@@ -4,7 +4,6 @@ use crate::dao::system::sys_dict_data_dao;
 use crate::dao::system::sys_dict_type_dao::SysDictTypeDao;
 use crate::model::system::sys_dict_type_model::DictType;
 use crate::vo::system::sys_dict_type_vo::{DeleteDictTypeReq, DictTypeReq, DictTypeResp, QueryDictTypeDetailReq, QueryDictTypeListReq, UpdateDictTypeStatusReq};
-use axum::Json;
 use rbatis::plugin::page::PageRequest;
 use rbatis::RBatis;
 use rbs::value;

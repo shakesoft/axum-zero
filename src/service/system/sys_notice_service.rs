@@ -3,7 +3,6 @@ use crate::common::result::{ok, ok_result_empty, ok_result_data, ok_result_page}
 use crate::dao::system::sys_notice_dao::SysNoticeDao;
 use crate::model::system::sys_notice_model::Notice;
 use crate::vo::system::sys_notice_vo::{DeleteNoticeReq, NoticeReq, NoticeResp, QueryNoticeDetailReq, QueryNoticeListReq, UpdateNoticeStatusReq};
-use axum::Json;
 use log::info;
 use rbatis::plugin::page::PageRequest;
 use rbatis::RBatis;
