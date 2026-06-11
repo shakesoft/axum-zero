@@ -137,6 +137,43 @@ struct RedisConfig {
 )]
 struct ApiDoc;
 
+async fn test_mq()->() {
+    return ();
+    let addr = std::env::var("AMQP_ADDR")
+        .unwrap_or_else(|_| "amqp://guest:guest@127.0.0.1:5672/".into());
+
+    let conn = Connection::connect(&addr, ConnectionProperties::default()).await?;
+    let channel = conn.create_channel().await?;
+
+    channel
+        .queue_declare("hello".into(), QueueDeclareOptions::durable(), FieldTable::default())
+        .await?;
+
+    channel
+        .basic_publish(
+            "".into(),
+            "hello".into(),
+            BasicPublishOptions::default(),
+            b"Hello, world!",
+            BasicProperties::default(),
+        )
+        .await?
+        .await?;
+
+    let mut consumer = channel
+        .basic_consume(
+            "hello".into(),
+            "my_consumer".into(),
+            BasicConsumeOptions::default(),
+            FieldTable::default(),
+        )
+        .await?;
+
+    while let Some(delivery) = consumer.next().await {
+        let delivery = delivery?;
+        delivery.ack(BasicAckOptions::default()).await?;
+    }
+}
 // 主函数，使用tokio异步运行时
 #[tokio::main]
 async fn main() {

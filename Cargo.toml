@@ -45,5 +45,8 @@ aspect-core = { git = "https://github.com/shakesoft/aspect-rs", branch = "main",
 aspect-macros = { git = "https://github.com/shakesoft/aspect-rs", branch = "main", package = "aspect-macros" }
 aspect-std = { git = "https://github.com/shakesoft/aspect-rs", branch = "main", package = "aspect-std" }
 shaku = "0.6.2"
+dill = { version = "0.15.0"}
+lapin = "4.10.0"
+
 [dev-dependencies]
 env_logger = "0.10"
