@@ -53,6 +53,7 @@ use crate::common::error::AppError;
 // use crate::middleware::swagger::swagger_auth;
 use axum::routing::get;
 use chrono::{Local, Utc};
+use dill::Catalog;
 use rbatis::rbdc::DateTime;
 use reqwest::StatusCode;
 // use garde::rules::ip::IpKind::Any;
@@ -69,6 +70,7 @@ use lapin::{
     options::*, types::FieldTable, BasicProperties, Connection,
     ConnectionProperties, Result,
 };
+use crate::inject::autofac::{AImpl, BImpl};
 
 // 定义应用状态结构体，包含数据库连接池
 #[derive(Clone)]
@@ -76,6 +78,7 @@ pub struct AppState {
     pub batis: RBatis,
     pub redis: Client,
     pub container: Arc<AutoFacModule>,
+    pub catalog: Catalog,
 }
 
 impl FromRef<AppState> for Arc<AutoFacModule> {
@@ -241,6 +244,10 @@ async fn main() {
     let rb = init_db(config.db.url.as_str()).await;
     let rd = init_redis(config.redis.url.as_str()).await;
 
+    let catalog = Catalog::builder().add::<AImpl>().add::<BImpl>().build();
+    // let inst = catalog.get::<OneOf<dyn A>>().unwrap();
+    // info!("{}",inst.test());
+
     let module =Arc::new(
         AutoFacModule::builder()
             .with_component_parameters::<TodayWriter>(TodayWriterParameters {
@@ -250,7 +257,7 @@ async fn main() {
             .build());
 
     // 创建共享应用状态，包含数据库连接池
-    let shared_state = Arc::new(AppState { batis: rb, redis: rd,container:module });
+    let shared_state = Arc::new(AppState { batis: rb, redis: rd,container:module, catalog });
 
     // 跨域中间件
     let cors = CorsLayer::new()
