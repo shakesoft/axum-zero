@@ -119,7 +119,7 @@ pub async fn query_sys_user_list(State(state): State<Arc<AppState>>, Json(item):
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]
-#[aspect(Timer)]
+// #[aspect(Timer)]
 pub async fn login(headers: HeaderMap, ConnectInfo(remote_addr): ConnectInfo<SocketAddr>, State(state): State<Arc<AppState>>, Valid(Json(item)): Valid<Json<UserLoginReq>>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
     let rb = &state.batis;

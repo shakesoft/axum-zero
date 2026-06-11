@@ -414,26 +414,26 @@ pub fn json_data()->&'static str{
     data
 }
 
-pub async fn post_json(
-    url: &str,
-    json_body: &str,
-    app_key: &str,
-    timestamp: &str,
-    sign: &str,
-) -> Result<String, reqwest::Error> {
-    let client = reqwest::Client::new();
-    let resp = client
-        .post(url)
-        .header("Content-Type", "application/json")
-        .header("appKey", app_key)
-        .header("timestamp", timestamp)
-        .header("sign", sign)
-        .body(json_body.to_string())
-        .send()
-        .await?
-        .error_for_status()?   // 自动检查 4xx/5xx
-        .text()
-        .await?;
-
-    Ok(resp)
-}
+// pub async fn post_json(
+//     url: &str,
+//     json_body: &str,
+//     app_key: &str,
+//     timestamp: &str,
+//     sign: &str,
+// ) -> Result<String, reqwest::Error> {
+//     let client = reqwest::Client::new();
+//     let resp = client
+//         .post(url)
+//         .header("Content-Type", "application/json")
+//         .header("appKey", app_key)
+//         .header("timestamp", timestamp)
+//         .header("sign", sign)
+//         .body(json_body.to_string())
+//         .send()
+//         .await?
+//         .error_for_status()?   // 自动检查 4xx/5xx
+//         .text()
+//         .await?;
+//
+//     Ok(resp)
+// }
