@@ -185,12 +185,12 @@ dependencies = [
 [[package]]
 name = "aspect-core"
 version = "0.1.0"
-source = "git+https://github.com/shakesoft/aspect-rs?branch=main#41547030f1b54e975cfca235c873df2438dd34d7"
+source = "git+https://github.com/shakesoft/function-sharp?branch=main#16ec8ac756cc0803ae870890890bbeaff6a8fcd5"
 
 [[package]]
 name = "aspect-macros"
 version = "0.1.0"
-source = "git+https://github.com/shakesoft/aspect-rs?branch=main#41547030f1b54e975cfca235c873df2438dd34d7"
+source = "git+https://github.com/shakesoft/function-sharp?branch=main#16ec8ac756cc0803ae870890890bbeaff6a8fcd5"
 dependencies = [
  "aspect-core",
  "proc-macro2",
@@ -201,7 +201,7 @@ dependencies = [
 [[package]]
 name = "aspect-std"
 version = "0.1.0"
-source = "git+https://github.com/shakesoft/aspect-rs?branch=main#41547030f1b54e975cfca235c873df2438dd34d7"
+source = "git+https://github.com/shakesoft/function-sharp?branch=main#16ec8ac756cc0803ae870890890bbeaff6a8fcd5"
 dependencies = [
  "aspect-core",
  "log",
@@ -437,7 +437,6 @@ dependencies = [
  "base64 0.22.1",
  "chrono",
  "config",
- "dill",
  "env_logger",
  "function_name",
  "garde",
@@ -1125,29 +1124,6 @@ dependencies = [
  "const-oid",
  "crypto-common",
  "subtle",
-]
-
-[[package]]
-name = "dill"
-version = "0.15.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9c0318172d46b12727598ececda9f4991c984e31dcb1f57c38c94e3630a9df95"
-dependencies = [
- "dill-impl",
- "indoc",
- "multimap",
- "thiserror 2.0.16",
-]
-
-[[package]]
-name = "dill-impl"
-version = "0.15.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0712552907f5fa56bd104c524e81c33f8d183338a150d42ccc5edeee03f61c32"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 2.0.110",
 ]
 
 [[package]]
@@ -1996,15 +1972,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "indoc"
-version = "2.0.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "79cf5c93f93228cf8efb3ba362535fb11199ac548a09ce117c9b1adc3030d706"
-dependencies = [
- "rustversion",
-]
-
-[[package]]
 name = "inout"
 version = "0.1.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2384,15 +2351,6 @@ dependencies = [
  "smallvec",
  "tagptr",
  "uuid",
-]
-
-[[package]]
-name = "multimap"
-version = "0.10.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1d87ecb2933e8aeadb3e3a02b828fed80a7528047e68b4f424523a0981a3a084"
-dependencies = [
- "serde",
 ]
 
 [[package]]

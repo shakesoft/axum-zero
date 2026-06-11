@@ -41,11 +41,11 @@ tower = { version = "0.5.2", features = ["timeout"] }
 tower-http = { version = "0.6.6", features = ["catch-panic", "timeout", "trace", "validate-request","cors"] }
 uuid = { version = "1.17.0", features = ["v4"] }
 function_name = "0.3.0"
-aspect-core = { git = "https://github.com/shakesoft/aspect-rs", branch = "main", package = "aspect-core" }
-aspect-macros = { git = "https://github.com/shakesoft/aspect-rs", branch = "main", package = "aspect-macros" }
-aspect-std = { git = "https://github.com/shakesoft/aspect-rs", branch = "main", package = "aspect-std" }
+aspect-core = { git = "https://github.com/shakesoft/function-sharp", branch = "main", package = "aspect-core" }
+aspect-macros = { git = "https://github.com/shakesoft/function-sharp", branch = "main", package = "aspect-macros" }
+aspect-std = { git = "https://github.com/shakesoft/function-sharp", branch = "main", package = "aspect-std" }
 shaku = "0.6.2"
-dill = { version = "0.15.0"}
+#dill = { version = "0.15.0"}
 lapin = "4.10.0"
 
 [dev-dependencies]

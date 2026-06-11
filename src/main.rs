@@ -65,6 +65,10 @@ use crate::route::system::sys_account_route::build_sys_account_route;
 use crate::workflow::state::traffic_light::TrafficLight;
 // use crate::common::daily_logfile::DailyLogFile;
 // use crate::handler::system::sys_user_handler::reset_sys_user_password;
+use lapin::{
+    options::*, types::FieldTable, BasicProperties, Connection,
+    ConnectionProperties, Result,
+};
 
 // 定义应用状态结构体，包含数据库连接池
 #[derive(Clone)]
@@ -139,62 +143,62 @@ struct ApiDoc;
 
 async fn test_mq()->() {
     return ();
-    let addr = std::env::var("AMQP_ADDR")
-        .unwrap_or_else(|_| "amqp://guest:guest@127.0.0.1:5672/".into());
-
-    let conn = Connection::connect(&addr, ConnectionProperties::default()).await?;
-    let channel = conn.create_channel().await?;
-
-    channel
-        .queue_declare("hello".into(), QueueDeclareOptions::durable(), FieldTable::default())
-        .await?;
-
-    channel
-        .basic_publish(
-            "".into(),
-            "hello".into(),
-            BasicPublishOptions::default(),
-            b"Hello, world!",
-            BasicProperties::default(),
-        )
-        .await?
-        .await?;
-
-    let mut consumer = channel
-        .basic_consume(
-            "hello".into(),
-            "my_consumer".into(),
-            BasicConsumeOptions::default(),
-            FieldTable::default(),
-        )
-        .await?;
-
-    while let Some(delivery) = consumer.next().await {
-        let delivery = delivery?;
-        delivery.ack(BasicAckOptions::default()).await?;
-    }
+    // let addr = std::env::var("AMQP_ADDR")
+    //     .unwrap_or_else(|_| "amqp://guest:guest@127.0.0.1:5672/".into());
+    //
+    // let conn = Connection::connect(&addr, ConnectionProperties::default()).await?;
+    // let channel = conn.create_channel().await?;
+    //
+    // channel
+    //     .queue_declare("hello".into(), QueueDeclareOptions::durable(), FieldTable::default())
+    //     .await?;
+    //
+    // channel
+    //     .basic_publish(
+    //         "".into(),
+    //         "hello".into(),
+    //         BasicPublishOptions::default(),
+    //         b"Hello, world!",
+    //         BasicProperties::default(),
+    //     )
+    //     .await?
+    //     .await?;
+    //
+    // let mut consumer = channel
+    //     .basic_consume(
+    //         "hello".into(),
+    //         "my_consumer".into(),
+    //         BasicConsumeOptions::default(),
+    //         FieldTable::default(),
+    //     )
+    //     .await?;
+    //
+    // while let Some(delivery) = consumer.next().await {
+    //     let delivery = delivery?;
+    //     delivery.ack(BasicAckOptions::default()).await?;
+    // }
 }
 
 async fn test_workflow()->() {
     return ();
-    let light = TrafficLight::new(());
-    // Type is TrafficLight<Red>
-
-
-    let light = light.next().unwrap();
-    // Type is TrafficLight<Green>
-
-    let light = light.next().unwrap();
-    // Type is TrafficLight<Yellow>
-
-
-    let light = TrafficLight::new(());
-    let mut dynamic_light = light.into_dynamic();
-    // let dd = dynamic_light.into_yellow().unwrap();
-    // let ee = dd.into_dynamic().current_state();
-    // let cc = dynamic_light.into_green().unwrap();
-    let bb = dynamic_light.current_state();
-    println!("{}",bb);
+    // let light = TrafficLight::new(());
+    // // Type is TrafficLight<Red>
+    //
+    //
+    // let light = light.next().unwrap();
+    // // Type is TrafficLight<Green>
+    //
+    // let light = light.next().unwrap();
+    // // Type is TrafficLight<Yellow>
+    //
+    //
+    // let light = TrafficLight::new(());
+    // let mut dynamic_light = light.into_dynamic();
+    // // let dd = dynamic_light.into_yellow().unwrap();
+    // // let ee = dd.into_dynamic().current_state();
+    // // let cc = dynamic_light.into_green().unwrap();
+    // let bb = dynamic_light.current_state();
+    // println!("{}",bb);
 }
 // 主函数，使用tokio异步运行时
 #[tokio::main]
