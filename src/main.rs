@@ -174,15 +174,9 @@ async fn test_mq()->() {
         delivery.ack(BasicAckOptions::default()).await?;
     }
 }
-// 主函数，使用tokio异步运行时
-#[tokio::main]
-async fn main() {
-    // #[cfg(debug_assertions)]
-    // #[cfg(not(debug_assertions))]
-    // {
-    //     // 初始化日志配置
-    //     log4rs::init_file("src/config/log4rs.yaml", Default::default()).unwrap();
-    // }
+
+async fn test_workflow()->() {
+    return ();
     let light = TrafficLight::new(());
     // Type is TrafficLight<Red>
 
@@ -201,6 +195,16 @@ async fn main() {
     // let cc = dynamic_light.into_green().unwrap();
     let bb = dynamic_light.current_state();
     println!("{}",bb);
+}
+// 主函数，使用tokio异步运行时
+#[tokio::main]
+async fn main() {
+    // #[cfg(debug_assertions)]
+    // #[cfg(not(debug_assertions))]
+    // {
+    //     // 初始化日志配置
+    //     log4rs::init_file("src/config/log4rs.yaml", Default::default()).unwrap();
+    // }
 
     // #[derive(Debug)]
     // struct ImportantExcerpt<'a> {
