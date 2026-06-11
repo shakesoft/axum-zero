@@ -47,7 +47,7 @@ pub struct QueryRoleDetailReq {
 /*
 查询角色信息列表请求参数
 */
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize,Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct QueryRoleListReq {
     pub page_no: u64,
@@ -81,7 +81,7 @@ pub struct RoleResp {
 /*
 查询角色菜单信息参数
 */
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct QueryRoleMenuReq {
     pub role_id: i64, //角色id

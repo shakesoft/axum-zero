@@ -6,6 +6,8 @@ use axum::response::IntoResponse;
 use axum::Json;
 use log::info;
 use std::sync::Arc;
+use aspect_macros::aspect;
+use crate::aop::aspects::logger::Logger;
 
 // use std::time::Duration;
 // use tokio::time::sleep;
@@ -80,7 +82,7 @@ pub async fn query_sys_role_detail(State(state): State<Arc<AppState>>, Json(item
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]
-// #[aspect(Logger)]
+#[aspect(Logger)]
 pub async fn query_sys_role_list(State(state): State<Arc<AppState>>, Json(item): Json<QueryRoleListReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
     let rb = &state.batis;
@@ -94,6 +96,7 @@ pub async fn query_sys_role_list(State(state): State<Arc<AppState>>, Json(item):
  *date：2024/12/12 14:41:44
  */
 #[function_name::named]
+#[aspect(Logger)]
 pub async fn query_role_menu(State(state): State<Arc<AppState>>, Json(item): Json<QueryRoleMenuReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
     let rb = &state.batis;
