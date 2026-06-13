@@ -4021,9 +4021,8 @@ checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
 
 [[package]]
 name = "state-machines"
-version = "0.8.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b08593eedd523d615a423049378a93093365856a4ea71675bfcea8a1d220c96e"
+version = "0.9.0"
+source = "git+https://github.com/shakesoft/state-machines-rs?branch=master#a18a7405fa316622600417712e61196ece58985b"
 dependencies = [
  "state-machines-core",
  "state-machines-macro",
@@ -4031,15 +4030,13 @@ dependencies = [
 
 [[package]]
 name = "state-machines-core"
-version = "0.8.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e1e15be96b91f9d162ebb665099ba4ff3de50eb1f407db0a6fee481b6d5cd695"
+version = "0.9.0"
+source = "git+https://github.com/shakesoft/state-machines-rs?branch=master#a18a7405fa316622600417712e61196ece58985b"
 
 [[package]]
 name = "state-machines-macro"
-version = "0.8.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7fc20f1354c15c36730f900a4984e67ee3af69184c1bac449d51101ed0dcde9f"
+version = "0.9.0"
+source = "git+https://github.com/shakesoft/state-machines-rs?branch=master#a18a7405fa316622600417712e61196ece58985b"
 dependencies = [
  "proc-macro2",
  "quote",

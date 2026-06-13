@@ -26,7 +26,8 @@ log = "0.4"
 log4rs = "1.0"
 jsonwebtoken = "9.3.0"
 redis = "0.32.3"
-state-machines = { version = "0.8.1", features = ["dynamic"] }
+#state-machines = { version = "0.9.0", features = ["dynamic"] }
+state-machines = { git = "https://github.com/shakesoft/state-machines-rs", branch = "master", package = "state-machines", features = ["dynamic"] }
 thiserror = "2.0.3"
 regex = "1.11.1"
 config = "0.15.9"
