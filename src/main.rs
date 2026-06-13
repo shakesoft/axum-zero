@@ -217,7 +217,7 @@ async fn test_workflow()->() {
 // 主函数，使用tokio异步运行时
 #[tokio::main]
 async fn main() {
-    test_workflow().await;
+    // test_workflow().await;
     // #[cfg(debug_assertions)]
     // #[cfg(not(debug_assertions))]
     // {
