@@ -63,7 +63,7 @@ use tracing_appender::rolling;
 use inject::autofac::{AutoFacModule, TodayWriter, TodayWriterParameters};
 use crate::common::result::ok_result_msg;
 use crate::route::system::sys_account_route::build_sys_account_route;
-use crate::workflow::state::traffic_light::TrafficLight;
+use crate::workflow::state::traffic_light::{DynamicTrafficLight, TrafficLight, TrafficLightEvent, TrafficLightState};
 // use crate::common::daily_logfile::DailyLogFile;
 // use crate::handler::system::sys_user_handler::reset_sys_user_password;
 use lapin::{
@@ -183,29 +183,41 @@ async fn test_mq()->() {
 }
 
 async fn test_workflow()->() {
-    return ();
-    // let light = TrafficLight::new(());
-    // // Type is TrafficLight<Red>
-    //
-    //
-    // let light = light.next().unwrap();
-    // // Type is TrafficLight<Green>
-    //
-    // let light = light.next().unwrap();
-    // // Type is TrafficLight<Yellow>
-    //
-    //
-    // let light = TrafficLight::new(());
-    // let mut dynamic_light = light.into_dynamic();
-    // // let dd = dynamic_light.into_yellow().unwrap();
-    // // let ee = dd.into_dynamic().current_state();
-    // // let cc = dynamic_light.into_green().unwrap();
-    // let bb = dynamic_light.current_state();
-    // println!("{}",bb);
+    let mut light = DynamicTrafficLight::new(());
+
+    let mut light1 = DynamicTrafficLight::new_init_state((),TrafficLightState::Red);
+
+    let c = light1.get_available_events();
+    println!("{:?}", c);
+    // Type is TrafficLight<Red>
+
+    light.handle(TrafficLightEvent::Next).unwrap();
+    println!("{:?}", light.current_state().name());
+    // Type is TrafficLight<Green>
+
+    light.handle(TrafficLightEvent::Next).unwrap();
+    println!("{:?}", light.current_state().name());
+    // Type is TrafficLight<Yellow>
+
+    let a = light.into_yellow().unwrap();
+    println!("{:?}", a); //Yellow
+    // Type is TrafficLight<Yellow>
+
+    let light = TrafficLight::new(());
+    let mut dynamic_light = light.into_dynamic();
+    // let dd = dynamic_light.into_yellow().unwrap();
+    // let ee = dd.into_dynamic().current_state();
+    // let cc = dynamic_light.into_green().unwrap();
+    let bb = dynamic_light.current_state();
+    println!("{}", bb);
+
+    dynamic_light.handle(TrafficLightEvent::Next).unwrap();
+    println!("{}", dynamic_light.current_state());
 }
 // 主函数，使用tokio异步运行时
 #[tokio::main]
 async fn main() {
+    test_workflow().await;
     // #[cfg(debug_assertions)]
     // #[cfg(not(debug_assertions))]
     // {
