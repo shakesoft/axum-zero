@@ -1,5 +1,5 @@
-use crate::common::error::{AppError, ServiceResult, ServiceResultPage};
-use crate::common::result::{ok_result_empty, ok_result_data, ok_result_page};
+use crate::common::error::{AppError, ServiceResult};
+use crate::common::result::{ok_result_empty, ok_result_data, Paged};
 use crate::dao::system::sys_role_dao::SysRoleDao;
 use crate::dao::system::{sys_role_menu_dao, sys_user_dao, sys_user_role_dao};
 use crate::model::system::sys_menu_model::Menu;
@@ -97,12 +97,12 @@ impl SysRoleService {
         )
     }
 
-    pub async fn query_sys_role_list(rb: &RBatis, item: QueryRoleListReq) -> ServiceResultPage<RoleResp> {
+    pub async fn query_sys_role_list(rb: &RBatis, item: QueryRoleListReq) -> ServiceResult<Paged<RoleResp>> {
         let page = &PageRequest::new(item.page_no, item.page_size);
 
         Role::select_sys_role_list(rb, page, &item)
             .await
-            .map(|x| ok_result_page(x.records.into_iter().map(|x| x.into()).collect::<Vec<RoleResp>>(), x.total))?
+            .map(|x| ok_result_data(Paged { total: x.total, items: x.records.into_iter().map(|x| x.into()).collect() }))?
     }
 
     pub async fn query_role_menu(rb: &RBatis, item: QueryRoleMenuReq) -> ServiceResult<QueryRoleMenuData> {
@@ -161,7 +161,7 @@ impl SysRoleService {
         RoleMenu::insert_batch(rb, &role_menu, item.menu_ids.len() as u64).await.map(|_| ok_result_empty())?
     }
 
-    pub async fn query_allocated_list(rb: &RBatis, item: AllocatedListReq) -> ServiceResultPage<UserResp> {
+    pub async fn query_allocated_list(rb: &RBatis, item: AllocatedListReq) -> ServiceResult<Paged<UserResp>> {
         let page_no = item.page_no;
         let page_size = item.page_size;
         let role_id = item.role_id;
@@ -177,10 +177,10 @@ impl SysRoleService {
         }
 
         let total = sys_user_dao::count_allocated_list(rb, role_id, user_name, mobile).await?;
-        ok_result_page(list, total)
+        ok_result_data(Paged { total, items: list })
     }
 
-    pub async fn query_unallocated_list(rb: &RBatis, item: UnallocatedListReq) -> ServiceResultPage<UserResp> {
+    pub async fn query_unallocated_list(rb: &RBatis, item: UnallocatedListReq) -> ServiceResult<Paged<UserResp>> {
         let page_no = item.page_no;
         let page_size = item.page_size;
         let role_id = item.role_id;
@@ -196,7 +196,7 @@ impl SysRoleService {
         }
 
         let total = sys_user_dao::count_unallocated_list(rb, role_id, user_name, mobile).await?;
-        ok_result_page(list, total)
+        ok_result_data(Paged { total, items: list })
     }
 
     pub async fn cancel_auth_user(rb: &RBatis, item: CancelAuthUserReq) -> ServiceResult<String> {

@@ -1,5 +1,5 @@
-use crate::common::error::{AppError, ServiceResult, ServiceResultPage};
-use crate::common::result::{ok_result_empty, ok_result_data, ok_result_page};
+use crate::common::error::{AppError, ServiceResult};
+use crate::common::result::{ok_result_empty, ok_result_data, Paged};
 use crate::dao::system::sys_operate_log_dao;
 use crate::model::system::sys_operate_log_model::OperateLog;
 use crate::vo::system::sys_operate_log_vo::{DeleteOperateLogReq, OperateLogResp, QueryOperateLogDetailReq, QueryOperateLogListReq};
@@ -28,10 +28,10 @@ impl SysOperateLogService {
         )
     }
 
-    pub async fn query_sys_operate_log_list(rb: &RBatis, item: QueryOperateLogListReq) -> ServiceResultPage<OperateLogResp> {
+    pub async fn query_sys_operate_log_list(rb: &RBatis, item: QueryOperateLogListReq) -> ServiceResult<Paged<OperateLogResp>> {
         let page = &PageRequest::new(item.page_no, item.page_size);
         OperateLog::select_page_by_name(rb, page, &item)
             .await
-            .map(|x| ok_result_page(x.records.into_iter().map(|x| x.into()).collect::<Vec<OperateLogResp>>(), x.total))?
+            .map(|x| ok_result_data(Paged { total: x.total, items: x.records.into_iter().map(|x| x.into()).collect() }))?
     }
 }

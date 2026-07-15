@@ -1,5 +1,5 @@
-use crate::common::error::{AppError, AppResult, ServiceResult, ServiceResultPage};
-use crate::common::result::{ok_result_empty, ok_result_data, ok_result_page};
+use crate::common::error::{AppError, AppResult, ServiceResult};
+use crate::common::result::{ok_result_empty, ok_result_data, Paged};
 use crate::dao::system::sys_user_dao::SysUserDao;
 use crate::model::system::sys_dept_model::Dept;
 use crate::model::system::sys_menu_model::Menu;
@@ -208,13 +208,13 @@ impl SysUserService {
         ok_result_data(x)
     }
 
-    pub async fn query_sys_user_list(rb: &RBatis, item: QueryUserListReq) -> ServiceResultPage<UserResp> {
+    pub async fn query_sys_user_list(rb: &RBatis, item: QueryUserListReq) -> ServiceResult<Paged<UserResp>> {
         let _num = add(1, 2).await;
         let page = &PageRequest::new(item.page_no, item.page_size);
 
         User::select_sys_user_list(rb, page, &item)
             .await
-            .map(|x| ok_result_page(x.records.into_iter().map(|x| x.into()).collect::<Vec<UserResp>>(), x.total))?
+            .map(|x| ok_result_data(Paged { total: x.total, items: x.records.into_iter().map(|x| x.into()).collect() }))?
     }
 
     pub async fn login(rb: &RBatis, redis: &redis::Client, headers: HeaderMap, remote_addr: SocketAddr, item: UserLoginReq) -> ServiceResult<UserLoginResp> {

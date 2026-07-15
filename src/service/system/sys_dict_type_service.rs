@@ -1,5 +1,5 @@
-use crate::common::error::{AppError, ServiceResult, ServiceResultPage};
-use crate::common::result::{ok_result_empty, ok_result_data, ok_result_page};
+use crate::common::error::{AppError, ServiceResult};
+use crate::common::result::{ok_result_empty, ok_result_data, Paged};
 use crate::dao::system::sys_dict_data_dao;
 use crate::dao::system::sys_dict_type_dao::SysDictTypeDao;
 use crate::model::system::sys_dict_type_model::DictType;
@@ -73,11 +73,11 @@ impl SysDictTypeService {
         )
     }
 
-    pub async fn query_sys_dict_type_list(rb: &RBatis, item: QueryDictTypeListReq) -> ServiceResultPage<DictTypeResp> {
+    pub async fn query_sys_dict_type_list(rb: &RBatis, item: QueryDictTypeListReq) -> ServiceResult<Paged<DictTypeResp>> {
         let page = &PageRequest::new(item.page_no, item.page_size);
 
         DictType::select_dict_type_list(rb, page, &item)
             .await
-            .map(|x| ok_result_page(x.records.into_iter().map(|x| x.into()).collect::<Vec<DictTypeResp>>(), x.total))?
+            .map(|x| ok_result_data(Paged { total: x.total, items: x.records.into_iter().map(|x| x.into()).collect() }))?
     }
 }

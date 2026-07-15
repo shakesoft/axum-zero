@@ -1,5 +1,5 @@
-use crate::common::error::{AppError, AppResult, ServiceResult, ServiceResultPage};
-use crate::common::result::{ok_result_empty, ok_result_data, ok_result_page};
+use crate::common::error::{AppError, AppResult, ServiceResult};
+use crate::common::result::{ok_result_empty, ok_result_data, Paged};
 use crate::dao::system::sys_login_log_dao;
 use crate::model::system::sys_login_log_model::LoginLog;
 use crate::utils::user_agent_util::UserAgentUtil;
@@ -30,12 +30,12 @@ impl SysLoginLogService {
         )
     }
 
-    pub async fn query_sys_login_log_list(rb: &RBatis, item: QueryLoginLogListReq) -> ServiceResultPage<LoginLogResp> {
+    pub async fn query_sys_login_log_list(rb: &RBatis, item: QueryLoginLogListReq) -> ServiceResult<Paged<LoginLogResp>> {
         let page = &PageRequest::new(item.page_no, item.page_size);
 
         LoginLog::select_login_log_list(rb, page, &item)
             .await
-            .map(|x| ok_result_page(x.records.into_iter().map(|x| x.into()).collect::<Vec<LoginLogResp>>(), x.total))?
+            .map(|x| ok_result_data(Paged { total: x.total, items: x.records.into_iter().map(|x| x.into()).collect() }))?
     }
 
     /*

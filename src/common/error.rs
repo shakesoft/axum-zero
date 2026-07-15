@@ -1,4 +1,4 @@
-use crate::common::result::{BaseResponse, PageResponse};
+use crate::common::result::BaseResponse;
 use axum::extract::rejection::JsonRejection;
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
@@ -8,13 +8,11 @@ use serde::Serialize;
 use thiserror::Error;
 use validator::ValidationErrors;
 
-const DEFAULT_ERROR_MSG:&str="服务器发生内部异常，请稍后再试";
+const DEFAULT_ERROR_MSG: &str = "服务器发生内部异常，请稍后再试";
 
 pub type AppResult<T> = Result<T, AppError>;
 
 pub type ServiceResult<T = ()> = AppResult<Json<BaseResponse<T>>>;
-
-pub type ServiceResultPage<T = ()> = AppResult<Json<PageResponse<Vec<T>>>>;
 
 #[derive(Serialize)]
 struct ValidationErrorItem {
@@ -31,7 +29,7 @@ struct ValidationErrorData {
 pub enum AppError {
     #[error("Failed to read the cache file")]
     DiskCacheRead { source: std::io::Error },
-    
+
     #[error("认证错误：{0}")]
     JwtTokenError(String),
 
@@ -91,14 +89,11 @@ impl IntoResponse for AppError {
                     msg: message,
                     code: app_code,
                     data: Some(ValidationErrorData {
-                        validation_errors: messages
-                            .into_iter()
-                            .map(|message| ValidationErrorItem { message })
-                            .collect(),
+                        validation_errors: messages.into_iter().map(|message| ValidationErrorItem { message }).collect(),
                     }),
                 };
                 (status_code, Json(response)).into_response()
-            },
+            }
             _ => {
                 let response = BaseResponse {
                     msg: message,
@@ -106,11 +101,10 @@ impl IntoResponse for AppError {
                     data: Some(()),
                 };
                 (status_code, Json(response)).into_response()
-            },
+            }
         }
     }
 }
-
 
 impl AppError {
     fn app_code(&self) -> i32 {
@@ -130,12 +124,9 @@ impl AppError {
         match self {
             AppError::JwtTokenError(_) => StatusCode::UNAUTHORIZED,
             AppError::ValidationError(_) => StatusCode::BAD_REQUEST,
-            AppError::BusinessError(_)=> StatusCode::FORBIDDEN,
+            AppError::BusinessError(_) => StatusCode::FORBIDDEN,
             AppError::AuthorizationError(_) => StatusCode::UNAUTHORIZED,
-            AppError::DbError(_)
-            | AppError::RedisError(_)
-            | AppError::DiskCacheRead { .. }
-            | AppError::InternalError(_) => StatusCode::INTERNAL_SERVER_ERROR,
+            AppError::DbError(_) | AppError::RedisError(_) | AppError::DiskCacheRead { .. } | AppError::InternalError(_) => StatusCode::INTERNAL_SERVER_ERROR,
         }
     }
 

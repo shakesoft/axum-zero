@@ -11,7 +11,7 @@ use utoipa::ToSchema;
 /*
 删除部门表请求参数
 */
-#[derive(Debug, Serialize, Deserialize,ToSchema)]
+#[derive(Debug, Serialize, Deserialize,ToSchema,Clone)]
 pub struct DeleteDeptReq {
     pub id: i64,
 }
@@ -21,7 +21,7 @@ static PHONE_NUMBER: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\d{11}$").u
 /*
 更新部门表请求参数
 */
-#[derive(Debug, Serialize, Deserialize, Validate,ToSchema)]
+#[derive(Debug, Serialize, Deserialize, Validate,ToSchema,Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct DeptReq {
     pub id: Option<i64>, //部门id

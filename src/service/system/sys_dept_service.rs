@@ -1,5 +1,6 @@
+use aspect_macros::aspect;
 use crate::common::error::{AppError, ServiceResult};
-use crate::common::result::{ok, ok_result_data};
+use crate::common::result::{ok, ok_result_empty, ok_result_data};
 use crate::dao::system::sys_dept_dao;
 use crate::dao::system::sys_dept_dao::SysDeptDao;
 use crate::model::system::sys_dept_model::Dept;
@@ -7,11 +8,19 @@ use crate::vo::system::sys_dept_vo::{DeleteDeptReq, DeptReq, DeptResp, QueryDept
 use rbatis::rbatis_codegen::ops::AsProxy;
 use rbatis::RBatis;
 use rbs::value;
+use tracing::instrument;
 use validator::Validate;
+use crate::aop::aspects::logger::Logger;
+use aspect_std::LoggingAspect;
+use crate::aop::aspects::timer::Timer;
 
 pub struct SysDeptService;
 
 impl SysDeptService {
+
+    // #[aspect(Logger)]
+    // #[instrument]
+    #[aspect(Timer)]
     pub async fn add_sys_dept(rb: &RBatis, item: DeptReq) -> ServiceResult {
         if Dept::select_by_dept_name(rb, &item.dept_name, &item.parent_id).await?.is_some() {
             return Err(AppError::BusinessError("部门名称已存在"));
@@ -34,6 +43,7 @@ impl SysDeptService {
         }
     }
 
+    #[aspect(Logger)]
     pub async fn delete_sys_dept(rb: &RBatis, item: DeleteDeptReq) -> ServiceResult {
         if sys_dept_dao::select_dept_count(rb, &item.id).await? > 0 {
             return Err(AppError::BusinessError("存在下级部门,不允许删除"));
@@ -46,6 +56,7 @@ impl SysDeptService {
         Dept::delete_by_map(rb, value! {"id": &item.id}).await.map(|_| ok())?
     }
 
+    // #[aspect(LoggingAspect::new())]
     pub async fn update_sys_dept(rb: &RBatis, mut item: DeptReq) -> ServiceResult {
         let id = item.id;
 

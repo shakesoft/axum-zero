@@ -13,6 +13,7 @@ pub mod workflow;
 pub mod service;
 pub mod aop;
 pub mod inject;
+mod template;
 
 use std::net::SocketAddr;
 use axum::{middleware as md, Json, Router};
@@ -37,7 +38,7 @@ use std::time::Duration;
 use axum::body::Body;
 use axum::extract::FromRef;
 use axum::http::{Method, Request, Response};
-use axum::response::IntoResponse;
+use axum::response::{Html, IntoResponse};
 // use tower::{ServiceBuilder};
 use tower_http::{
     catch_panic::CatchPanicLayer, classify::ServerErrorsFailureClass, trace::TraceLayer,
@@ -71,6 +72,9 @@ use lapin::{
     ConnectionProperties, Result,
 };
 use crate::inject::autofac::{AImpl, BImpl};
+use sailfish::TemplateSimple;
+use crate::inject::inject_provided::InjectProvided;
+use crate::template::hello_template::HelloTemplate;
 
 // 定义应用状态结构体，包含数据库连接池
 #[derive(Clone)]
@@ -189,6 +193,9 @@ async fn test_workflow()->() {
 
     let c = light1.get_available_events();
     println!("{:?}", c);
+
+    let d = light1.is_available_event(&TrafficLightEvent::Next);
+    println!("{:?}", d);
     // Type is TrafficLight<Red>
 
     light.handle(TrafficLightEvent::Next).unwrap();
@@ -217,7 +224,7 @@ async fn test_workflow()->() {
 // 主函数，使用tokio异步运行时
 #[tokio::main]
 async fn main() {
-    // test_workflow().await;
+    test_workflow().await;
     // #[cfg(debug_assertions)]
     // #[cfg(not(debug_assertions))]
     // {
@@ -317,8 +324,12 @@ async fn main() {
     });
 
     // 首页路由
-    let home_router = Router::new().route("/", get(async||-> &'static str {
-        "Hello axum-zero!"
+    let home_router = Router::new().route("/", get(async || -> Html<String> {
+        let ctx = HelloTemplate {
+            messages: vec![String::from("Hello!"), String::from("axum-admin!")],
+        };
+        let content =  ctx.render_once().unwrap();
+        return Html(content);
     }));
 
     let index_router = Router::new().route("/index", get(async||-> String{

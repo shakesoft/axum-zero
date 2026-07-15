@@ -1,0 +1,12 @@
+<html>
+  <body>
+  <h1><a href="/">Home</a></h1>
+  <h1><a href="/index">Index</a></h1>
+  <h1><a href="/test">Test</a></h1>
+  <h1><a href="/test1">Test1</a></h1>
+  <h1><a href="/di">DI</a></h1>
+    <% for msg in &messages { %>
+      <div><%= msg %></div>
+    <% } %>
+  </body>
+</html>

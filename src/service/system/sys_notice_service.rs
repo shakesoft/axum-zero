@@ -1,5 +1,5 @@
-use crate::common::error::{AppError, AppResult, ServiceResult, ServiceResultPage};
-use crate::common::result::{ok, ok_result_empty, ok_result_data, ok_result_page};
+use crate::common::error::{AppError, AppResult, ServiceResult};
+use crate::common::result::{ok, ok_result_empty, ok_result_data, Paged};
 use crate::dao::system::sys_notice_dao::SysNoticeDao;
 use crate::model::system::sys_notice_model::Notice;
 use crate::vo::system::sys_notice_vo::{DeleteNoticeReq, NoticeReq, NoticeResp, QueryNoticeDetailReq, QueryNoticeListReq, UpdateNoticeStatusReq};
@@ -57,12 +57,12 @@ impl SysNoticeService {
         )
     }
 
-    pub async fn query_sys_notice_list(rb: &RBatis, item: QueryNoticeListReq) -> ServiceResultPage<NoticeResp> {
+    pub async fn query_sys_notice_list(rb: &RBatis, item: QueryNoticeListReq) -> ServiceResult<Paged<NoticeResp>> {
         let page = &PageRequest::new(item.page_no, item.page_size);
 
         Notice::select_sys_notice_list(rb, page, &item)
             .await
-            .map(|x| ok_result_page(x.records.into_iter().map(|x| x.into()).collect::<Vec<NoticeResp>>(), x.total))?
+            .map(|x| ok_result_data(Paged { total: x.total, items: x.records.into_iter().map(|x| x.into()).collect() }))?
     }
 
     pub async fn query_sys_notice_request(_rb: &RBatis, _item: QueryNoticeListReq) -> ServiceResult {
