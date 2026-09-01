@@ -46,8 +46,8 @@ function_name = "0.3.0"
 aspect-core = { git = "https://github.com/shakesoft/function-sharp", branch = "main", package = "aspect-core" }
 aspect-macros = { git = "https://github.com/shakesoft/function-sharp", branch = "main", package = "aspect-macros" }
 aspect-std = { git = "https://github.com/shakesoft/function-sharp", branch = "main", package = "aspect-std" }
-shaku = "0.6.2"
-dill = "0.15.0"
+shaku = "0.6.3"
+dill = "0.17.0"
 lapin = "4.10.0"
 sailfish = "0.11.1"
 askama = "0.16.0"
