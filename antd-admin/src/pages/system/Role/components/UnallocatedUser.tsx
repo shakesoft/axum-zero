@@ -71,8 +71,8 @@ const UnallocatedUser: React.FC<RoleDataProps> = ({roleVo, open, onCancel, onBat
         user.roleId = roleVo.id
         setParam(user)
         let res = await query_unallocated_list(user)
-        setTotal(res.total)
-        res.code === 0 ? setUserListData(res.data) : message.error(res.msg);
+        setTotal(res.data.total)
+        res.code === 0 ? setUserListData(res.data.items) : message.error(res.msg);
     };
 
     const handleResetOk = async () => {
@@ -88,15 +88,15 @@ const UnallocatedUser: React.FC<RoleDataProps> = ({roleVo, open, onCancel, onBat
             roleId: roleVo.id,
             userName: ""
         })
-        setTotal(res.total)
-        res.code === 0 ? setUserListData(res.data) : message.error(res.msg);
+        setTotal(res.data.total)
+        res.code === 0 ? setUserListData(res.data.items) : message.error(res.msg);
     };
 
     useEffect(() => {
         if (open){
             query_unallocated_list(param).then(res => {
-                setTotal(res.total)
-                res.code === 0 ? setUserListData(res.data) : message.error(res.msg);
+                setTotal(res.data.total)
+                res.code === 0 ? setUserListData(res.data.items) : message.error(res.msg);
             });
         }
     }, [open]);
@@ -123,8 +123,8 @@ const UnallocatedUser: React.FC<RoleDataProps> = ({roleVo, open, onCancel, onBat
                 roleId: roleVo.id,
                 userName: param.userName,
             })
-            setTotal(res.total)
-            res.code === 0 ? setUserListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setUserListData(res.data.items) : message.error(res.msg);
 
         }, //改变页码的函数
         onShowSizeChange: (current: number, size: number) => {

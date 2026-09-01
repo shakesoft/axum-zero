@@ -144,8 +144,8 @@ const SysUser: React.FC = () => {
                 return
             }
             let res = await queryUserList({pageNo: currentPage, pageSize});
-            setTotal(res.total);
-            res.code === 0 ? setUserListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total);
+            res.code === 0 ? setUserListData(res.data.items) : message.error(res.msg);
             message.success('更新状态成功');
             return true;
         } catch (error) {
@@ -162,8 +162,8 @@ const SysUser: React.FC = () => {
         if (handleResp(await addUser(user))) {
             setShowAddModal(false);
             let res = await queryUserList({pageNo: currentPage, pageSize})
-            setTotal(res.total)
-            res.code === 0 ? setUserListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setUserListData(res.data.items) : message.error(res.msg);
         }
     }
 
@@ -183,8 +183,8 @@ const SysUser: React.FC = () => {
             let res = await queryUserList({
                 pageNo: currentPage, pageSize,
             })
-            setTotal(res.total)
-            res.code === 0 ? setUserListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setUserListData(res.data.items) : message.error(res.msg);
         }
     };
 
@@ -213,8 +213,8 @@ const SysUser: React.FC = () => {
             let res = await queryUserList({
                 pageNo: currentPage, pageSize,
             })
-            setTotal(res.total)
-            res.code === 0 ? setUserListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setUserListData(res.data.items) : message.error(res.msg);
         }
     };
 
@@ -241,23 +241,23 @@ const SysUser: React.FC = () => {
     const handleRemove = async (ids: number[]) => {
         if (handleResp(await removeUser({ids: ids}))) {
             let res = await queryUserList({pageNo: currentPage, mobile: "", pageSize})
-            setTotal(res.total)
-            res.code === 0 ? setUserListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setUserListData(res.data.items) : message.error(res.msg);
         }
 
     };
 
     const handleSearchOk = async (user: UserListParam) => {
         let res = await queryUserList(user)
-        setTotal(res.total)
-        res.code === 0 ? setUserListData(res.data) : message.error(res.msg);
+        setTotal(res.data.total)
+        res.code === 0 ? setUserListData(res.data.items) : message.error(res.msg);
     };
 
     const handleResetOk = async () => {
         setCurrentPage(1)
         let res = await queryUserList({pageNo: 1, pageSize})
-        setTotal(res.total)
-        res.code === 0 ? setUserListData(res.data) : message.error(res.msg);
+        setTotal(res.data.total)
+        res.code === 0 ? setUserListData(res.data.items) : message.error(res.msg);
     };
 
     useEffect(() => {
@@ -267,8 +267,8 @@ const SysUser: React.FC = () => {
         queryUserList({
             pageNo: currentPage, pageSize
         }).then(res => {
-            setTotal(res.total)
-            res.code === 0 ? setUserListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setUserListData(res.data.items) : message.error(res.msg);
         });
     }, []);
 
@@ -288,8 +288,8 @@ const SysUser: React.FC = () => {
             setCurrentPage(page)
             setPageSize(pageSize)
             let res = await queryUserList({pageNo: page, pageSize})
-            setTotal(res.total)
-            res.code === 0 ? setUserListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setUserListData(res.data.items) : message.error(res.msg);
 
         }, //改变页码的函数
         onShowSizeChange: (current: number, size: number) => {
@@ -303,8 +303,8 @@ const SysUser: React.FC = () => {
         queryUserList({
             pageNo: currentPage, pageSize, deptId
         }).then(res => {
-            setTotal(res.total)
-            res.code === 0 ? setUserListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setUserListData(res.data.items) : message.error(res.msg);
         });
     };
 

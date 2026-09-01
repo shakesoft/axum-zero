@@ -8,7 +8,6 @@ export interface IResponse {
   code: number | string;
   data: any;
   msg: string;
-  total: number
 }
 
 let _instance: AxiosInstance | null = null;

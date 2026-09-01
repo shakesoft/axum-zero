@@ -4,7 +4,7 @@ import {Button, Checkbox, Form, Input, message} from 'antd';
 import "./index.less"
 import logo from '../../../assets/images/logo.svg'
 import {reqLogin} from "./service";
-import {IResponse} from "../../../api/ajax";
+import {IResponse} from "@/api/http-client.ts";
 import {useNavigate} from "react-router-dom";
 import {storageUtils} from "../../../utils/storageUtils";
 

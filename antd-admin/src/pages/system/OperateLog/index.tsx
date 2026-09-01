@@ -187,30 +187,30 @@ const OperateLog: React.FC = () => {
     const handleRemove = async (ids: number[]) => {
         if (handleResp(await removeOperateLog(ids))) {
             const res = await queryOperateLogList({pageNo: currentPage, pageSize})
-            setTotal(res.total)
-            res.code === 0 ? setOperateLogListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setOperateLogListData(res.data.items) : message.error(res.msg);
         }
 
     };
 
     const handleSearchOk = async (param: OperateLogListParam) => {
         const res = await queryOperateLogList(param)
-        setTotal(res.total)
-        res.code === 0 ? setOperateLogListData(res.data) : message.error(res.msg);
+        setTotal(res.data.total)
+        res.code === 0 ? setOperateLogListData(res.data.items) : message.error(res.msg);
     };
 
     const handleResetOk = async () => {
         const res = await queryOperateLogList({pageNo: currentPage, pageSize})
-        setTotal(res.total)
-        res.code === 0 ? setOperateLogListData(res.data) : message.error(res.msg);
+        setTotal(res.data.total)
+        res.code === 0 ? setOperateLogListData(res.data.items) : message.error(res.msg);
     };
 
     useEffect(() => {
         queryOperateLogList({
             pageNo: currentPage, pageSize
         }).then(res => {
-            setTotal(res.total)
-            res.code === 0 ? setOperateLogListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setOperateLogListData(res.data.items) : message.error(res.msg);
         });
     }, []);
 
@@ -230,8 +230,8 @@ const OperateLog: React.FC = () => {
             setCurrentPage(page)
             setPageSize(pageSize)
             const res = await queryOperateLogList({pageNo: page, pageSize})
-            setTotal(res.total)
-            res.code === 0 ? setOperateLogListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setOperateLogListData(res.data.items) : message.error(res.msg);
 
         }, //改变页码的函数
         onShowSizeChange: (current: number, size: number) => {

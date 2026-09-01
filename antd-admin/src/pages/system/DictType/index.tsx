@@ -100,8 +100,8 @@ const DictType: React.FC = () => {
         if (handleResp(await addDictType(param))) {
             setShowAddModal(false);
             const res = await queryDictTypeList({pageNo: currentPage, pageSize})
-            setTotal(res.total)
-            res.code === 0 ? setDictTypeListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setDictTypeListData(res.data.items) : message.error(res.msg);
         }
     }
 
@@ -121,8 +121,8 @@ const DictType: React.FC = () => {
             const res = await queryDictTypeList({
                 pageNo: currentPage, pageSize,
             })
-            setTotal(res.total)
-            res.code === 0 ? setDictTypeListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setDictTypeListData(res.data.items) : message.error(res.msg);
         }
     };
 
@@ -170,30 +170,30 @@ const DictType: React.FC = () => {
     const handleRemove = async (ids: number[]) => {
         if (handleResp(await removeDictType(ids))) {
             const res = await queryDictTypeList({pageNo: currentPage, pageSize})
-            setTotal(res.total)
-            res.code === 0 ? setDictTypeListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setDictTypeListData(res.data.items) : message.error(res.msg);
         }
 
     };
 
     const handleSearchOk = async (param: DictTypeListParam) => {
         const res = await queryDictTypeList(param)
-        setTotal(res.total)
-        res.code === 0 ? setDictTypeListData(res.data) : message.error(res.msg);
+        setTotal(res.data.total)
+        res.code === 0 ? setDictTypeListData(res.data.items) : message.error(res.msg);
     };
 
     const handleResetOk = async () => {
         const res = await queryDictTypeList({pageNo: currentPage, pageSize})
-        setTotal(res.total)
-        res.code === 0 ? setDictTypeListData(res.data) : message.error(res.msg);
+        setTotal(res.data.total)
+        res.code === 0 ? setDictTypeListData(res.data.items) : message.error(res.msg);
     };
 
     useEffect(() => {
         queryDictTypeList({
             pageNo: currentPage, pageSize
         }).then(res => {
-            setTotal(res.total)
-            res.code === 0 ? setDictTypeListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setDictTypeListData(res.data.items) : message.error(res.msg);
         });
     }, []);
 
@@ -213,8 +213,8 @@ const DictType: React.FC = () => {
             setCurrentPage(page)
             setPageSize(pageSize)
             const res = await queryDictTypeList({pageNo: page, pageSize})
-            setTotal(res.total)
-            res.code === 0 ? setDictTypeListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setDictTypeListData(res.data.items) : message.error(res.msg);
 
         }, //改变页码的函数
         onShowSizeChange: (current: number, size: number) => {

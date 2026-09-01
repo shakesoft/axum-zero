@@ -108,8 +108,8 @@ const AllocatedUser: React.FC<RoleDataProps> = ({roleVo, open, onCancel}) => {
             await batch_cancel_auth_user({userIds, roleId});
             hide();
             let res = await query_allocated_list(param);
-            setTotal(res.total);
-            res.code === 0 ? setUserListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total);
+            res.code === 0 ? setUserListData(res.data.items) : message.error(res.msg);
             message.success('更新状态成功');
             return true;
         } catch (error) {
@@ -130,8 +130,8 @@ const AllocatedUser: React.FC<RoleDataProps> = ({roleVo, open, onCancel}) => {
         if (handleResp(await batch_auth_user(params))) {
             setShowUnallocatedModal(false);
             let res = await query_allocated_list(param)
-            setTotal(res.total)
-            res.code === 0 ? setUserListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setUserListData(res.data.items) : message.error(res.msg);
         }
     }
 
@@ -145,8 +145,8 @@ const AllocatedUser: React.FC<RoleDataProps> = ({roleVo, open, onCancel}) => {
                 if (handleResp(await cancel_auth_user(params))) {
 
                     let res = await query_allocated_list(param)
-                    setTotal(res.total)
-                    res.code === 0 ? setUserListData(res.data) : message.error(res.msg);
+                    setTotal(res.data.total)
+                    res.code === 0 ? setUserListData(res.data.items) : message.error(res.msg);
                 }
             },
             onCancel() {
@@ -160,8 +160,8 @@ const AllocatedUser: React.FC<RoleDataProps> = ({roleVo, open, onCancel}) => {
         user.roleId = roleVo.id
         setParam(user)
         let res = await query_allocated_list(user)
-        setTotal(res.total)
-        res.code === 0 ? setUserListData(res.data) : message.error(res.msg);
+        setTotal(res.data.total)
+        res.code === 0 ? setUserListData(res.data.items) : message.error(res.msg);
     };
 
     const handleResetOk = async () => {
@@ -177,8 +177,8 @@ const AllocatedUser: React.FC<RoleDataProps> = ({roleVo, open, onCancel}) => {
             roleId: roleVo.id,
             userName: ""
         })
-        setTotal(res.total)
-        res.code === 0 ? setUserListData(res.data) : message.error(res.msg);
+        setTotal(res.data.total)
+        res.code === 0 ? setUserListData(res.data.items) : message.error(res.msg);
     };
 
     useEffect(() => {
@@ -191,8 +191,8 @@ const AllocatedUser: React.FC<RoleDataProps> = ({roleVo, open, onCancel}) => {
             query_allocated_list({
                 roleId: roleVo.id, pageNo: currentPage, pageSize
             }).then(res => {
-                setTotal(res.total)
-                res.code === 0 ? setUserListData(res.data) : message.error(res.msg);
+                setTotal(res.data.total)
+                res.code === 0 ? setUserListData(res.data.items) : message.error(res.msg);
             });
         }
     }, [open]);
@@ -213,8 +213,8 @@ const AllocatedUser: React.FC<RoleDataProps> = ({roleVo, open, onCancel}) => {
             setCurrentPage(page)
             setPageSize(pageSize)
             let res = await query_allocated_list({pageNo: 0, mobile: "", pageSize: 0, roleId: 0, userName: ""})
-            setTotal(res.total)
-            res.code === 0 ? setUserListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setUserListData(res.data.items) : message.error(res.msg);
 
         },
         onShowSizeChange: (current: number, size: number) => {

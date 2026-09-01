@@ -82,7 +82,7 @@ export class DeptServiceProxy {
      * @return successfully
      */
     deleteDept(body: DeleteDeptReq, cancelToken?: CancelToken): Promise<EmptyResponse> {
-        let url_ = this.baseUrl + "/api/system/dept/deleteDept";
+        let url_ = this.baseUrl + "/api/system/dept/deleteDept1";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);

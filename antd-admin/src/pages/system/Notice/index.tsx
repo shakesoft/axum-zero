@@ -108,8 +108,8 @@ const Notice: React.FC = () => {
         if (handleResp(await addNotice(param))) {
             setShowAddModal(false);
             const res = await queryNoticeList({pageNo: currentPage, pageSize})
-            setTotal(res.total)
-            res.code === 0 ? setNoticeListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setNoticeListData(res.data.items) : message.error(res.msg);
         }
     }
 
@@ -129,8 +129,8 @@ const Notice: React.FC = () => {
             const res = await queryNoticeList({
                 pageNo: currentPage, pageSize,
             })
-            setTotal(res.total)
-            res.code === 0 ? setNoticeListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setNoticeListData(res.data.items) : message.error(res.msg);
         }
     };
 
@@ -167,30 +167,30 @@ const Notice: React.FC = () => {
     const handleRemove = async (ids: number[]) => {
         if (handleResp(await removeNotice(ids))) {
             const res = await queryNoticeList({pageNo: currentPage, pageSize})
-            setTotal(res.total)
-            res.code === 0 ? setNoticeListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setNoticeListData(res.data.items) : message.error(res.msg);
         }
 
     };
 
     const handleSearchOk = async (param: NoticeListParam) => {
         const res = await queryNoticeList(param)
-        setTotal(res.total)
-        res.code === 0 ? setNoticeListData(res.data) : message.error(res.msg);
+        setTotal(res.data.total)
+        res.code === 0 ? setNoticeListData(res.data.items) : message.error(res.msg);
     };
 
     const handleResetOk = async () => {
         const res = await queryNoticeList({pageNo: currentPage, pageSize})
-        setTotal(res.total)
-        res.code === 0 ? setNoticeListData(res.data) : message.error(res.msg);
+        setTotal(res.data.total)
+        res.code === 0 ? setNoticeListData(res.data.items) : message.error(res.msg);
     };
 
     useEffect(() => {
         queryNoticeList({
             pageNo: currentPage, pageSize
         }).then(res => {
-            setTotal(res.total)
-            res.code === 0 ? setNoticeListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setNoticeListData(res.data.items) : message.error(res.msg);
         });
     }, []);
 
@@ -210,8 +210,8 @@ const Notice: React.FC = () => {
             setCurrentPage(page)
             setPageSize(pageSize)
             const res = await queryNoticeList({pageNo: page, pageSize})
-            setTotal(res.total)
-            res.code === 0 ? setNoticeListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setNoticeListData(res.data.items) : message.error(res.msg);
 
         }, //改变页码的函数
         onShowSizeChange: (current: number, size: number) => {

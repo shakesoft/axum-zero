@@ -36,7 +36,7 @@ const UpdateUserModal: React.FC<UpdateFormProps> = ({open, onCreate, onCancel, i
                 pageNo: 1, pageSize: 100
             }).then(res => {
                 console.log('res', res);
-                res.code === 0 ? setPostListData(res.data) : message.error(res.msg);
+                res.code === 0 ? setPostListData(res.data.items) : message.error(res.msg);
             });
 
             queryUserDetail({id}).then((res) => {

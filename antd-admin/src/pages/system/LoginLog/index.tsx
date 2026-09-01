@@ -132,30 +132,30 @@ const LoginLog: React.FC = () => {
     const handleRemove = async (ids: number[]) => {
         if (handleResp(await removeLoginLog(ids))) {
             const res = await queryLoginLogList({pageNo: currentPage, pageSize})
-            setTotal(res.total)
-            res.code === 0 ? setLoginLogListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setLoginLogListData(res.data.items) : message.error(res.msg);
         }
 
     };
 
     const handleSearchOk = async (param: LoginLogListParam) => {
         const res = await queryLoginLogList({...param, pageSize})
-        setTotal(res.total)
-        res.code === 0 ? setLoginLogListData(res.data) : message.error(res.msg);
+        setTotal(res.data.total)
+        res.code === 0 ? setLoginLogListData(res.data.items) : message.error(res.msg);
     };
 
     const handleResetOk = async () => {
         const res = await queryLoginLogList({pageNo: currentPage, pageSize})
-        setTotal(res.total)
-        res.code === 0 ? setLoginLogListData(res.data) : message.error(res.msg);
+        setTotal(res.data.total)
+        res.code === 0 ? setLoginLogListData(res.data.items) : message.error(res.msg);
     };
 
     useEffect(() => {
         queryLoginLogList({
             pageNo: currentPage, pageSize
         }).then(res => {
-            setTotal(res.total)
-            res.code === 0 ? setLoginLogListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setLoginLogListData(res.data.items) : message.error(res.msg);
         });
     }, []);
 
@@ -175,8 +175,8 @@ const LoginLog: React.FC = () => {
             setCurrentPage(page)
             setPageSize(pageSize)
             const res = await queryLoginLogList({pageNo: page, pageSize})
-            setTotal(res.total)
-            res.code === 0 ? setLoginLogListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setLoginLogListData(res.data.items) : message.error(res.msg);
 
         }, //改变页码的函数
         onShowSizeChange: (current: number, size: number) => {

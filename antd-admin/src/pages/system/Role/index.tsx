@@ -162,8 +162,8 @@ const SysRole: React.FC = () => {
                 return
             }
             let res = await queryRoleList({pageNo: currentPage, pageSize})
-            setTotal(res.total)
-            res.code === 0 ? setRoleListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setRoleListData(res.data.items) : message.error(res.msg);
             message.success('更新状态成功');
             return true;
         } catch (error) {
@@ -181,8 +181,8 @@ const SysRole: React.FC = () => {
         if (handleResp(await addRole(role))) {
             setShowAddModal(false);
             let res = await queryRoleList({pageNo: currentPage, pageSize})
-            setTotal(res.total)
-            res.code === 0 ? setRoleListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setRoleListData(res.data.items) : message.error(res.msg);
         }
     }
 
@@ -202,8 +202,8 @@ const SysRole: React.FC = () => {
             let res = await queryRoleList({
                 pageNo: currentPage, pageSize
             })
-            setTotal(res.total)
-            res.code === 0 ? setRoleListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setRoleListData(res.data.items) : message.error(res.msg);
         }
     };
 
@@ -232,8 +232,8 @@ const SysRole: React.FC = () => {
             let res = await queryRoleList({
                 pageNo: currentPage, pageSize
             })
-            setTotal(res.total)
-            res.code === 0 ? setRoleListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setRoleListData(res.data.items) : message.error(res.msg);
         }
     };
 
@@ -269,31 +269,31 @@ const SysRole: React.FC = () => {
     const handleRemove = async (ids: number[]) => {
         if (handleResp(await removeRole({ids}))) {
             let res = await queryRoleList({pageNo: currentPage, pageSize})
-            setTotal(res.total)
-            res.code === 0 ? setRoleListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setRoleListData(res.data.items) : message.error(res.msg);
         }
 
     };
 
     const handleSearchOk = async (role: RoleListParam) => {
         let res = await queryRoleList(role)
-        setTotal(res.total)
-        res.code === 0 ? setRoleListData(res.data) : message.error(res.msg);
+        setTotal(res.data.total)
+        res.code === 0 ? setRoleListData(res.data.items) : message.error(res.msg);
     };
 
     const handleResetOk = async () => {
         setCurrentPage(1)
         let res = await queryRoleList({pageNo: 1, pageSize})
-        setTotal(res.total)
-        res.code === 0 ? setRoleListData(res.data) : message.error(res.msg);
+        setTotal(res.data.total)
+        res.code === 0 ? setRoleListData(res.data.items) : message.error(res.msg);
     };
 
     useEffect(() => {
         queryRoleList({
             pageNo: currentPage, pageSize
         }).then(res => {
-            setTotal(res.total)
-            res.code === 0 ? setRoleListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setRoleListData(res.data.items) : message.error(res.msg);
         });
     }, []);
 
@@ -313,8 +313,8 @@ const SysRole: React.FC = () => {
             setCurrentPage(page)
             setPageSize(pageSize)
             let res = await queryRoleList({pageNo: page, pageSize})
-            setTotal(res.total)
-            res.code === 0 ? setRoleListData(res.data) : message.error(res.msg);
+            setTotal(res.data.total)
+            res.code === 0 ? setRoleListData(res.data.items) : message.error(res.msg);
 
         }, //改变页码的函数
         onShowSizeChange: (current: number, size: number) => {
