@@ -238,12 +238,12 @@ dependencies = [
 [[package]]
 name = "aspect-core"
 version = "0.1.0"
-source = "git+https://github.com/shakesoft/function-sharp?branch=main#16ec8ac756cc0803ae870890890bbeaff6a8fcd5"
+source = "git+https://github.com/shakesoft/function-sharp?branch=main#fe825103c43ba56d44f2861fc46fd2a18f2036d7"
 
 [[package]]
 name = "aspect-macros"
 version = "0.1.0"
-source = "git+https://github.com/shakesoft/function-sharp?branch=main#16ec8ac756cc0803ae870890890bbeaff6a8fcd5"
+source = "git+https://github.com/shakesoft/function-sharp?branch=main#fe825103c43ba56d44f2861fc46fd2a18f2036d7"
 dependencies = [
  "aspect-core",
  "proc-macro2",
@@ -254,7 +254,7 @@ dependencies = [
 [[package]]
 name = "aspect-std"
 version = "0.1.0"
-source = "git+https://github.com/shakesoft/function-sharp?branch=main#16ec8ac756cc0803ae870890890bbeaff6a8fcd5"
+source = "git+https://github.com/shakesoft/function-sharp?branch=main#fe825103c43ba56d44f2861fc46fd2a18f2036d7"
 dependencies = [
  "aspect-core",
  "log",

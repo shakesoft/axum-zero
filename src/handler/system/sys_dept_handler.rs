@@ -75,8 +75,7 @@ pub async fn add_sys_dept(State(state): State<Arc<AppState>>, ValidatedJson(item
 )]
 #[function_name::named]
 pub async fn delete_sys_dept(State(state): State<Arc<AppState>>, Extension(_session): Extension<UserSession>, Json(item): Json<DeleteDeptReq>) -> impl IntoResponse {
-    // info!("{function_name}:{item:?}",function_name = function_name!());
-    info!("{}: {:?}", function_name!(), item);
+    info!("{function_name}:{item:?}",function_name = function_name!());
     // panic!("test");
     let rb = &state.batis;
 
