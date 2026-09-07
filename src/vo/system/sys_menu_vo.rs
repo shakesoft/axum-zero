@@ -4,11 +4,12 @@
 use crate::common::result::serialize_datetime;
 use rbatis::rbdc::DateTime;
 use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
 
 /*
 删除菜单信息请求参数
 */
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub struct DeleteMenuReq {
     pub id: i64,
 }
@@ -16,7 +17,7 @@ pub struct DeleteMenuReq {
 /*
 更新菜单信息请求参数
 */
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct MenuReq {
     pub id: Option<i64>,           //主键
@@ -35,7 +36,7 @@ pub struct MenuReq {
 /*
 更新菜单信息状态请求参数
 */
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub struct UpdateMenuStatusReq {
     pub ids: Vec<i64>,
     pub status: i8,
@@ -44,7 +45,7 @@ pub struct UpdateMenuStatusReq {
 /*
 查询菜单信息详情请求参数
 */
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub struct QueryMenuDetailReq {
     pub id: i64,
 }
@@ -52,7 +53,7 @@ pub struct QueryMenuDetailReq {
 /*
 查询菜单信息列表请求参数
 */
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct QueryMenuListReq {
     pub menu_name: Option<String>, //菜单名称

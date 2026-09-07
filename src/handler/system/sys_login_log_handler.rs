@@ -1,3 +1,4 @@
+use crate::common::result::EmptyResponse;
 use crate::service::system::sys_login_log_service::SysLoginLogService;
 use crate::vo::system::sys_login_log_vo::*;
 use crate::AppState;
@@ -11,6 +12,12 @@ use std::sync::Arc;
  *author：罗京生
  *date：2024/12/25 11:36:48
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/loginLog/deleteLoginLog",
+    request_body = DeleteLoginLogReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn delete_sys_login_log(State(state): State<Arc<AppState>>, Json(item): Json<DeleteLoginLogReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -24,6 +31,11 @@ pub async fn delete_sys_login_log(State(state): State<Arc<AppState>>, Json(item)
  *author：罗京生
  *date：2024/12/25 11:36:48
  */
+#[utoipa::path(
+    get,
+    path = "/api/system/loginLog/cleanLoginLog",
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn clean_sys_login_log(State(state): State<Arc<AppState>>) -> impl IntoResponse {
     info!("{function_name}", function_name = function_name!());
@@ -37,6 +49,12 @@ pub async fn clean_sys_login_log(State(state): State<Arc<AppState>>) -> impl Int
  *author：罗京生
  *date：2024/12/25 11:36:48
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/loginLog/queryLoginLogDetail",
+    request_body = QueryLoginLogDetailReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn query_sys_login_log_detail(State(state): State<Arc<AppState>>, Json(item): Json<QueryLoginLogDetailReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -50,6 +68,12 @@ pub async fn query_sys_login_log_detail(State(state): State<Arc<AppState>>, Json
  *author：罗京生
  *date：2024/12/25 11:36:48
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/loginLog/queryLoginLogList",
+    request_body = QueryLoginLogListReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn query_sys_login_log_list(State(state): State<Arc<AppState>>, Json(item): Json<QueryLoginLogListReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());

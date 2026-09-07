@@ -3,11 +3,12 @@
 use crate::common::result::serialize_datetime;
 use rbatis::rbdc::DateTime;
 use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
 
 /*
 删除系统访问记录请求参数
 */
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub struct DeleteLoginLogReq {
     pub ids: Vec<i64>,
 }
@@ -15,7 +16,7 @@ pub struct DeleteLoginLogReq {
 /*
 查询系统访问记录详情请求参数
 */
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub struct QueryLoginLogDetailReq {
     pub id: i64,
 }
@@ -23,7 +24,7 @@ pub struct QueryLoginLogDetailReq {
 /*
 查询系统访问记录列表请求参数
 */
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct QueryLoginLogListReq {
     pub page_no: u64,

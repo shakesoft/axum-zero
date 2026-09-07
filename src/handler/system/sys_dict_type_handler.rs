@@ -1,3 +1,4 @@
+use crate::common::result::EmptyResponse;
 use crate::service::system::sys_dict_type_service::SysDictTypeService;
 use crate::vo::system::sys_dict_type_vo::*;
 use crate::AppState;
@@ -11,6 +12,12 @@ use std::sync::Arc;
  *author：罗京生
  *date：2024/12/25 11:36:48
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/dictType/addDictType",
+    request_body = DictTypeReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn add_sys_dict_type(State(state): State<Arc<AppState>>, Json(item): Json<DictTypeReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -24,6 +31,12 @@ pub async fn add_sys_dict_type(State(state): State<Arc<AppState>>, Json(item): J
  *author：罗京生
  *date：2024/12/25 11:36:48
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/dictType/deleteDictType",
+    request_body = DeleteDictTypeReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn delete_sys_dict_type(State(state): State<Arc<AppState>>, Json(item): Json<DeleteDictTypeReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -37,6 +50,12 @@ pub async fn delete_sys_dict_type(State(state): State<Arc<AppState>>, Json(item)
  *author：罗京生
  *date：2024/12/25 11:36:48
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/dictType/updateDictType",
+    request_body = DictTypeReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn update_sys_dict_type(State(state): State<Arc<AppState>>, Json(item): Json<DictTypeReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -50,6 +69,12 @@ pub async fn update_sys_dict_type(State(state): State<Arc<AppState>>, Json(item)
  *author：罗京生
  *date：2024/12/25 11:36:48
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/dictType/updateDictTypeStatus",
+    request_body = UpdateDictTypeStatusReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn update_sys_dict_type_status(State(state): State<Arc<AppState>>, Json(item): Json<UpdateDictTypeStatusReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -63,6 +88,12 @@ pub async fn update_sys_dict_type_status(State(state): State<Arc<AppState>>, Jso
  *author：罗京生
  *date：2024/12/25 11:36:48
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/dictType/queryDictTypeDetail",
+    request_body = QueryDictTypeDetailReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn query_sys_dict_type_detail(State(state): State<Arc<AppState>>, Json(item): Json<QueryDictTypeDetailReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -76,6 +107,12 @@ pub async fn query_sys_dict_type_detail(State(state): State<Arc<AppState>>, Json
  *author：罗京生
  *date：2024/12/25 11:36:48
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/dictType/queryDictTypeList",
+    request_body = QueryDictTypeListReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn query_sys_dict_type_list(State(state): State<Arc<AppState>>, Json(item): Json<QueryDictTypeListReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());

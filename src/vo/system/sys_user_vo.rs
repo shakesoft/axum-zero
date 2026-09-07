@@ -11,7 +11,7 @@ use validator::Validate;
 /*
 删除用户信息请求参数
 */
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub struct DeleteUserReq {
     pub ids: Vec<i64>,
 }
@@ -19,7 +19,7 @@ pub struct DeleteUserReq {
 /*
 更新用户信息请求参数
 */
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct UserReq {
     pub id: Option<i64>,          //主键
@@ -41,7 +41,7 @@ fn default_avatar() -> Option<String> {
 /*
 更新用户信息状态请求参数
 */
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub struct UpdateUserStatusReq {
     pub ids: Vec<i64>,
     pub status: i8,
@@ -50,7 +50,7 @@ pub struct UpdateUserStatusReq {
 /*
 查询用户信息详情请求参数
 */
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub struct QueryUserDetailReq {
     pub id: i64,
 }
@@ -58,7 +58,7 @@ pub struct QueryUserDetailReq {
 /*
 查询用户信息列表请求参数
 */
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct QueryUserListReq {
     pub page_no: u64,
@@ -161,7 +161,7 @@ pub struct MenuList {
 /*
 查询用户关联角色请求参数
 */
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct QueryUserRoleReq {
     pub user_id: i64,
@@ -180,7 +180,7 @@ pub struct QueryUserRoleResp {
 /*
 更新用户关联角色请求参数
 */
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct UpdateUserRoleReq {
     pub user_id: i64,       //用户主键
@@ -190,7 +190,7 @@ pub struct UpdateUserRoleReq {
 /*
 重置密码
 */
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, ToSchema)]
 pub struct ResetUserPwdReq {
     pub id: i64,          //用户主键
     pub password: String, //用户密码
@@ -199,7 +199,7 @@ pub struct ResetUserPwdReq {
 /*
 重置密码
 */
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct UpdateUserPwdReq {
     pub pwd: String,    //用户密码

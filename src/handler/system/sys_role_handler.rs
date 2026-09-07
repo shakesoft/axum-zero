@@ -1,3 +1,4 @@
+use crate::common::result::EmptyResponse;
 use crate::service::system::sys_role_service::SysRoleService;
 use crate::vo::system::sys_role_vo::*;
 use crate::AppState;
@@ -16,6 +17,12 @@ use crate::aop::aspects::logger::Logger;
  *author：罗京生
  *date：2024/12/12 14:41:44
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/role/addRole",
+    request_body = RoleReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn add_sys_role(State(state): State<Arc<AppState>>, Json(item): Json<RoleReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -29,6 +36,12 @@ pub async fn add_sys_role(State(state): State<Arc<AppState>>, Json(item): Json<R
  *author：罗京生
  *date：2024/12/12 14:41:44
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/role/deleteRole",
+    request_body = DeleteRoleReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn delete_sys_role(State(state): State<Arc<AppState>>, Json(item): Json<DeleteRoleReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -42,6 +55,12 @@ pub async fn delete_sys_role(State(state): State<Arc<AppState>>, Json(item): Jso
  *author：罗京生
  *date：2024/12/12 14:41:44
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/role/updateRole",
+    request_body = RoleReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn update_sys_role(State(state): State<Arc<AppState>>, Json(item): Json<RoleReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -55,6 +74,12 @@ pub async fn update_sys_role(State(state): State<Arc<AppState>>, Json(item): Jso
  *author：罗京生
  *date：2024/12/12 14:41:44
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/role/updateRoleStatus",
+    request_body = UpdateRoleStatusReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn update_sys_role_status(State(state): State<Arc<AppState>>, Json(item): Json<UpdateRoleStatusReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -68,6 +93,12 @@ pub async fn update_sys_role_status(State(state): State<Arc<AppState>>, Json(ite
  *author：罗京生
  *date：2024/12/12 14:41:44
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/role/queryRoleDetail",
+    request_body = QueryRoleDetailReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn query_sys_role_detail(State(state): State<Arc<AppState>>, Json(item): Json<QueryRoleDetailReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -81,6 +112,12 @@ pub async fn query_sys_role_detail(State(state): State<Arc<AppState>>, Json(item
  *author：罗京生
  *date：2024/12/12 14:41:44
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/role/queryRoleList",
+    request_body = QueryRoleListReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 #[aspect(Logger)]
 pub async fn query_sys_role_list(State(state): State<Arc<AppState>>, Json(item): Json<QueryRoleListReq>) -> impl IntoResponse {
@@ -95,6 +132,12 @@ pub async fn query_sys_role_list(State(state): State<Arc<AppState>>, Json(item):
  *author：罗京生
  *date：2024/12/12 14:41:44
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/role/queryRoleMenu",
+    request_body = QueryRoleMenuReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 #[aspect(Logger)]
 pub async fn query_role_menu(State(state): State<Arc<AppState>>, Json(item): Json<QueryRoleMenuReq>) -> impl IntoResponse {
@@ -109,6 +152,12 @@ pub async fn query_role_menu(State(state): State<Arc<AppState>>, Json(item): Jso
  *author：罗京生
  *date：2024/12/12 14:41:44
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/role/updateRoleMenu",
+    request_body = UpdateRoleMenuReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn update_role_menu(State(state): State<Arc<AppState>>, Json(item): Json<UpdateRoleMenuReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -122,6 +171,12 @@ pub async fn update_role_menu(State(state): State<Arc<AppState>>, Json(item): Js
  *author：罗京生
  *date：2024/12/12 14:41:44
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/role/queryAllocatedList",
+    request_body = AllocatedListReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn query_allocated_list(State(state): State<Arc<AppState>>, Json(item): Json<AllocatedListReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -136,6 +191,12 @@ pub async fn query_allocated_list(State(state): State<Arc<AppState>>, Json(item)
  *author：罗京生
  *date：2024/12/12 14:41:44
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/role/queryUnallocatedList",
+    request_body = UnallocatedListReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn query_unallocated_list(State(state): State<Arc<AppState>>, Json(item): Json<UnallocatedListReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -150,6 +211,12 @@ pub async fn query_unallocated_list(State(state): State<Arc<AppState>>, Json(ite
  *author：罗京生
  *date：2024/12/12 14:41:44
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/role/cancelAuthUser",
+    request_body = CancelAuthUserReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn cancel_auth_user(State(state): State<Arc<AppState>>, Json(item): Json<CancelAuthUserReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -164,6 +231,12 @@ pub async fn cancel_auth_user(State(state): State<Arc<AppState>>, Json(item): Js
  *author：罗京生
  *date：2024/12/12 14:41:44
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/role/batchCancelAuthUser",
+    request_body = CancelAuthUserAllReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn batch_cancel_auth_user(State(state): State<Arc<AppState>>, Json(item): Json<CancelAuthUserAllReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -178,6 +251,12 @@ pub async fn batch_cancel_auth_user(State(state): State<Arc<AppState>>, Json(ite
  *author：罗京生
  *date：2024/12/12 14:41:44
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/role/batchAuthUser",
+    request_body = SelectAuthUserAllReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn batch_auth_user(State(state): State<Arc<AppState>>, Json(item): Json<SelectAuthUserAllReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());

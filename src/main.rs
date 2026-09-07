@@ -14,6 +14,7 @@ pub mod service;
 pub mod aop;
 pub mod inject;
 mod template;
+pub mod config;
 
 use std::net::SocketAddr;
 use axum::{middleware as md, Json, Router};
@@ -25,7 +26,7 @@ use crate::route::system::sys_notice_route::build_sys_notice_route;
 use crate::route::system::sys_operate_log_route::build_sys_operate_log_route;
 use crate::route::system::sys_post_route::build_sys_post_route;
 use crate::utils::redis_util::init_redis;
-use config::{Config, File};
+use ::config::{Config, File}; // 与本地 config 模块重名，走 crate 根
 use middleware::auth::auth;
 use rbatis::RBatis;
 use redis::Client;
@@ -50,6 +51,7 @@ use utoipa_swagger_ui::SwaggerUi;
 use uuid::Uuid;
 use utils::db::init_db;
 use crate::common::error::AppError;
+use crate::config::api_doc::ApiDoc;
 // use crate::middleware::error::{ handle_middleware_error};
 // use crate::middleware::swagger::swagger_auth;
 use axum::routing::get;
@@ -125,28 +127,6 @@ struct RedisConfig {
     url: String,
 }
 
-//这个宏用于生成OpenAPI文档，有没有办法可以通过脚本自动生成？
-#[derive(OpenApi)]
-#[openapi(
-    paths(
-        handler::system::sys_dept_handler::add_sys_dept,
-        handler::system::sys_dept_handler::delete_sys_dept,
-        handler::system::sys_dept_handler::update_sys_dept,
-        handler::system::sys_dept_handler::update_sys_dept_status,
-        handler::system::sys_dept_handler::query_sys_dept_detail,
-        handler::system::sys_dept_handler::query_sys_dept_list,
-    ),
-    components(
-        schemas(
-            vo::system::sys_dept_vo::DeptReq,
-            vo::system::sys_dept_vo::DeleteDeptReq
-        )
-    ),
-    tags(
-        (name = "axum-zero", description = "OpenAPI")
-    )
-)]
-struct ApiDoc;
 
 async fn test_mq()->() {
     return ();

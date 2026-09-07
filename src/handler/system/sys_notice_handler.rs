@@ -1,3 +1,4 @@
+use crate::common::result::EmptyResponse;
 use crate::service::system::sys_notice_service::SysNoticeService;
 use crate::vo::system::sys_notice_vo::*;
 use crate::AppState;
@@ -11,6 +12,12 @@ use std::sync::Arc;
  *author：罗京生
  *date：2024/12/25 11:36:48
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/notice/addNotice",
+    request_body = NoticeReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn add_sys_notice(State(state): State<Arc<AppState>>, Json(item): Json<NoticeReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -24,6 +31,12 @@ pub async fn add_sys_notice(State(state): State<Arc<AppState>>, Json(item): Json
  *author：罗京生
  *date：2024/12/25 11:36:48
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/notice/deleteNotice",
+    request_body = DeleteNoticeReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn delete_sys_notice(State(state): State<Arc<AppState>>, Json(item): Json<DeleteNoticeReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -37,6 +50,12 @@ pub async fn delete_sys_notice(State(state): State<Arc<AppState>>, Json(item): J
  *author：罗京生
  *date：2024/12/25 11:36:48
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/notice/updateNotice",
+    request_body = NoticeReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn update_sys_notice(State(state): State<Arc<AppState>>, Json(item): Json<NoticeReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -50,6 +69,12 @@ pub async fn update_sys_notice(State(state): State<Arc<AppState>>, Json(item): J
  *author：罗京生
  *date：2024/12/25 11:36:48
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/notice/updateNoticeStatus",
+    request_body = UpdateNoticeStatusReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn update_sys_notice_status(State(state): State<Arc<AppState>>, Json(item): Json<UpdateNoticeStatusReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -63,6 +88,12 @@ pub async fn update_sys_notice_status(State(state): State<Arc<AppState>>, Json(i
  *author：罗京生
  *date：2024/12/25 11:36:48
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/notice/queryNoticeDetail",
+    request_body = QueryNoticeDetailReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn query_sys_notice_detail(State(state): State<Arc<AppState>>, Json(item): Json<QueryNoticeDetailReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -76,6 +107,12 @@ pub async fn query_sys_notice_detail(State(state): State<Arc<AppState>>, Json(it
  *author：罗京生
  *date：2024/12/25 11:36:48
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/notice/queryNoticeList",
+    request_body = QueryNoticeListReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn query_sys_notice_list(State(state): State<Arc<AppState>>, Json(item): Json<QueryNoticeListReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -84,6 +121,12 @@ pub async fn query_sys_notice_list(State(state): State<Arc<AppState>>, Json(item
     SysNoticeService::query_sys_notice_list(rb, item).await
 }
 
+#[utoipa::path(
+    post,
+    path = "/api/system/notice/request",
+    request_body = QueryNoticeListReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn query_sys_notice_request(State(state): State<Arc<AppState>>, Json(item): Json<QueryNoticeListReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());

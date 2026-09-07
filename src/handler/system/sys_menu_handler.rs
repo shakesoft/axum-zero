@@ -1,3 +1,4 @@
+use crate::common::result::EmptyResponse;
 use crate::service::system::sys_menu_service::SysMenuService;
 use crate::vo::system::sys_menu_vo::*;
 use crate::AppState;
@@ -11,6 +12,12 @@ use std::sync::Arc;
  *author：罗京生
  *date：2024/12/12 14:41:44
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/menu/addMenu",
+    request_body = MenuReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn add_sys_menu(State(state): State<Arc<AppState>>, Json(item): Json<MenuReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -24,6 +31,12 @@ pub async fn add_sys_menu(State(state): State<Arc<AppState>>, Json(item): Json<M
  *author：罗京生
  *date：2024/12/12 14:41:44
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/menu/deleteMenu",
+    request_body = DeleteMenuReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn delete_sys_menu(State(state): State<Arc<AppState>>, Json(item): Json<DeleteMenuReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -37,6 +50,12 @@ pub async fn delete_sys_menu(State(state): State<Arc<AppState>>, Json(item): Jso
  *author：罗京生
  *date：2024/12/12 14:41:44
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/menu/updateMenu",
+    request_body = MenuReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn update_sys_menu(State(state): State<Arc<AppState>>, Json(item): Json<MenuReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -50,6 +69,12 @@ pub async fn update_sys_menu(State(state): State<Arc<AppState>>, Json(item): Jso
  *author：罗京生
  *date：2024/12/12 14:41:44
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/menu/updateMenuStatus",
+    request_body = UpdateMenuStatusReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn update_sys_menu_status(State(state): State<Arc<AppState>>, Json(item): Json<UpdateMenuStatusReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -63,6 +88,12 @@ pub async fn update_sys_menu_status(State(state): State<Arc<AppState>>, Json(ite
  *author：罗京生
  *date：2024/12/12 14:41:44
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/menu/queryMenuDetail",
+    request_body = QueryMenuDetailReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn query_sys_menu_detail(State(state): State<Arc<AppState>>, Json(item): Json<QueryMenuDetailReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -76,6 +107,12 @@ pub async fn query_sys_menu_detail(State(state): State<Arc<AppState>>, Json(item
  *author：罗京生
  *date：2024/12/12 14:41:44
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/menu/queryMenuList",
+    request_body = QueryMenuListReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn query_sys_menu_list(State(state): State<Arc<AppState>>, Json(item): Json<QueryMenuListReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -89,6 +126,11 @@ pub async fn query_sys_menu_list(State(state): State<Arc<AppState>>, Json(item):
  *author：罗京生
  *date：2024/12/12 14:41:44
  */
+#[utoipa::path(
+    get,
+    path = "/api/system/menu/queryMenuListSimple",
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn query_sys_menu_list_simple(State(state): State<Arc<AppState>>) -> impl IntoResponse {
     info!("{function_name}", function_name = function_name!());

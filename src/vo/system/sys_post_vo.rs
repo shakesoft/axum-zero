@@ -4,11 +4,12 @@
 use crate::common::result::serialize_datetime;
 use rbatis::rbdc::DateTime;
 use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
 
 /*
 删除岗位信息表请求参数
 */
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub struct DeletePostReq {
     pub ids: Vec<i64>,
 }
@@ -16,7 +17,7 @@ pub struct DeletePostReq {
 /*
 更新岗位信息表请求参数
 */
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct PostReq {
     pub id: Option<i64>,        //岗位id
@@ -30,7 +31,7 @@ pub struct PostReq {
 /*
 更新岗位信息表状态请求参数
 */
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub struct UpdatePostStatusReq {
     pub ids: Vec<i64>,
     pub status: i8,
@@ -39,7 +40,7 @@ pub struct UpdatePostStatusReq {
 /*
 查询岗位信息表详情请求参数
 */
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 pub struct QueryPostDetailReq {
     pub id: i64,
 }
@@ -47,7 +48,7 @@ pub struct QueryPostDetailReq {
 /*
 查询岗位信息表列表请求参数
 */
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct QueryPostListReq {
     pub page_no: u64,

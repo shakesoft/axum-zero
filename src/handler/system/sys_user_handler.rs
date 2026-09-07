@@ -1,3 +1,4 @@
+use crate::common::result::EmptyResponse;
 use crate::aop::aspects::timer::Timer;
 use crate::service::system::sys_user_service::SysUserService;
 use crate::vo::system::sys_user_vo::*;
@@ -19,6 +20,12 @@ use std::sync::Arc;
  *author：罗京生
  *date：2024/12/12 14:41:44
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/user/addUser",
+    request_body = UserReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn add_sys_user(State(state): State<Arc<AppState>>, Json(item): Json<UserReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -31,6 +38,12 @@ pub async fn add_sys_user(State(state): State<Arc<AppState>>, Json(item): Json<U
  *author：罗京生
  *date：2024/12/12 14:41:44
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/user/deleteUser",
+    request_body = DeleteUserReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn delete_sys_user(headers: HeaderMap, State(state): State<Arc<AppState>>, Json(item): Json<DeleteUserReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -43,6 +56,12 @@ pub async fn delete_sys_user(headers: HeaderMap, State(state): State<Arc<AppStat
  *author：罗京生
  *date：2024/12/12 14:41:44
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/user/updateUser",
+    request_body = UserReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn update_sys_user(State(state): State<Arc<AppState>>, Json(item): Json<UserReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -55,6 +74,12 @@ pub async fn update_sys_user(State(state): State<Arc<AppState>>, Json(item): Jso
  *author：罗京生
  *date：2024/12/12 14:41:44
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/user/updateUserStatus",
+    request_body = UpdateUserStatusReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn update_sys_user_status(State(state): State<Arc<AppState>>, Json(item): Json<UpdateUserStatusReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -67,6 +92,12 @@ pub async fn update_sys_user_status(State(state): State<Arc<AppState>>, Json(ite
  *author：罗京生
  *date：2024/12/12 14:41:44
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/user/resetUserPassword",
+    request_body = ResetUserPwdReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn reset_sys_user_password(State(state): State<Arc<AppState>>, Json(item): Json<ResetUserPwdReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -79,6 +110,12 @@ pub async fn reset_sys_user_password(State(state): State<Arc<AppState>>, Json(it
  *author：罗京生
  *date：2024/12/12 14:41:44
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/user/updateUserPassword",
+    request_body = UpdateUserPwdReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn update_sys_user_password(headers: HeaderMap, State(state): State<Arc<AppState>>, Json(item): Json<UpdateUserPwdReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -91,6 +128,12 @@ pub async fn update_sys_user_password(headers: HeaderMap, State(state): State<Ar
  *author：罗京生
  *date：2024/12/12 14:41:44
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/user/queryUserDetail",
+    request_body = QueryUserDetailReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn query_sys_user_detail(State(state): State<Arc<AppState>>, Json(item): Json<QueryUserDetailReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -106,6 +149,12 @@ pub async fn query_sys_user_detail(State(state): State<Arc<AppState>>, Json(item
 #[function_name::named]
 // #[aspect(Timer)]
 // #[aspect(Logger)]
+#[utoipa::path(
+    post,
+    path = "/api/system/user/queryUserList",
+    request_body = QueryUserListReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[aspect(LoggingAspect::new())]
 pub async fn query_sys_user_list(State(state): State<Arc<AppState>>, Json(item): Json<QueryUserListReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -120,6 +169,12 @@ pub async fn query_sys_user_list(State(state): State<Arc<AppState>>, Json(item):
  */
 #[function_name::named]
 // #[aspect(Timer)]
+#[utoipa::path(
+    post,
+    path = "/api/system/user/login",
+    request_body = UserLoginReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 pub async fn login(headers: HeaderMap, ConnectInfo(remote_addr): ConnectInfo<SocketAddr>, State(state): State<Arc<AppState>>, Valid(Json(item)): Valid<Json<UserLoginReq>>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
     let rb = &state.batis;
@@ -131,6 +186,12 @@ pub async fn login(headers: HeaderMap, ConnectInfo(remote_addr): ConnectInfo<Soc
  *author：罗京生
  *date：2024/12/12 14:41:44
  */
+#[utoipa::path(
+    post,
+    path = "/api/system/user/queryUserRole",
+    request_body = QueryUserRoleReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn query_user_role(State(state): State<Arc<AppState>>, Json(item): Json<QueryUserRoleReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -139,6 +200,12 @@ pub async fn query_user_role(State(state): State<Arc<AppState>>, Json(item): Jso
 }
 
 // 更新用户角色
+#[utoipa::path(
+    post,
+    path = "/api/system/user/updateUserRole",
+    request_body = UpdateUserRoleReq,
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn update_user_role(State(state): State<Arc<AppState>>, Json(item): Json<UpdateUserRoleReq>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -147,6 +214,11 @@ pub async fn update_user_role(State(state): State<Arc<AppState>>, Json(item): Js
 }
 
 // 查询用户菜单
+#[utoipa::path(
+    get,
+    path = "/api/system/user/queryUserMenu",
+    responses((status = 200, description = "successfully", body = EmptyResponse))
+)]
 #[function_name::named]
 pub async fn query_user_menu(headers: HeaderMap, State(state): State<Arc<AppState>>) -> impl IntoResponse {
     let user_id = headers.get("user_id").unwrap().to_str().unwrap().parse::<i64>().unwrap();
