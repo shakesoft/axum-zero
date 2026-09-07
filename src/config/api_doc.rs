@@ -78,9 +78,9 @@ use crate::{handler, vo};
         handler::system::sys_user_handler::update_sys_user_status,
         handler::system::sys_user_handler::update_user_role,
     ),
-    components(
-        // BaseResponse<()> 的 data 指向 TupleUnit, 自动收集拿不到, 其余 schema 由 paths 自动收集
-        schemas(utoipa::TupleUnit)
+    components(schemas(
+            utoipa::TupleUnit,
+        )
     ),
     tags(
         (name = "axum-zero", description = "OpenAPI")
