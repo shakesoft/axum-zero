@@ -1,4 +1,4 @@
-use crate::common::result::EmptyResponse;
+use crate::common::result::BaseResponse;
 use crate::service::system::sys_post_service::SysPostService;
 use crate::vo::system::sys_post_vo::*;
 use crate::AppState;
@@ -16,7 +16,7 @@ use std::sync::Arc;
     post,
     path = "/api/system/post/addPost",
     request_body = PostReq,
-    responses((status = 200, description = "successfully", body = EmptyResponse))
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
 )]
 #[function_name::named]
 pub async fn add_sys_post(State(state): State<Arc<AppState>>, Json(item): Json<PostReq>) -> impl IntoResponse {
@@ -35,7 +35,7 @@ pub async fn add_sys_post(State(state): State<Arc<AppState>>, Json(item): Json<P
     post,
     path = "/api/system/post/deletePost",
     request_body = DeletePostReq,
-    responses((status = 200, description = "successfully", body = EmptyResponse))
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
 )]
 #[function_name::named]
 pub async fn delete_sys_post(State(state): State<Arc<AppState>>, Json(item): Json<DeletePostReq>) -> impl IntoResponse {
@@ -54,7 +54,7 @@ pub async fn delete_sys_post(State(state): State<Arc<AppState>>, Json(item): Jso
     post,
     path = "/api/system/post/updatePost",
     request_body = PostReq,
-    responses((status = 200, description = "successfully", body = EmptyResponse))
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
 )]
 #[function_name::named]
 pub async fn update_sys_post(State(state): State<Arc<AppState>>, Json(item): Json<PostReq>) -> impl IntoResponse {
@@ -73,7 +73,7 @@ pub async fn update_sys_post(State(state): State<Arc<AppState>>, Json(item): Jso
     post,
     path = "/api/system/post/updatePostStatus",
     request_body = UpdatePostStatusReq,
-    responses((status = 200, description = "successfully", body = EmptyResponse))
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
 )]
 #[function_name::named]
 pub async fn update_sys_post_status(State(state): State<Arc<AppState>>, Json(item): Json<UpdatePostStatusReq>) -> impl IntoResponse {
@@ -92,7 +92,7 @@ pub async fn update_sys_post_status(State(state): State<Arc<AppState>>, Json(ite
     post,
     path = "/api/system/post/queryPostDetail",
     request_body = QueryPostDetailReq,
-    responses((status = 200, description = "successfully", body = EmptyResponse))
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
 )]
 #[function_name::named]
 pub async fn query_sys_post_detail(State(state): State<Arc<AppState>>, Json(item): Json<QueryPostDetailReq>) -> impl IntoResponse {
@@ -111,7 +111,7 @@ pub async fn query_sys_post_detail(State(state): State<Arc<AppState>>, Json(item
     post,
     path = "/api/system/post/queryPostList",
     request_body = QueryPostListReq,
-    responses((status = 200, description = "successfully", body = EmptyResponse))
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
 )]
 #[function_name::named]
 pub async fn query_sys_post_list(State(state): State<Arc<AppState>>, Json(item): Json<QueryPostListReq>) -> impl IntoResponse {

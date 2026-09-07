@@ -1,4 +1,4 @@
-use crate::common::result::EmptyResponse;
+use crate::common::result::BaseResponse;
 use crate::aop::aspects::timer::Timer;
 use crate::service::system::sys_user_service::SysUserService;
 use crate::vo::system::sys_user_vo::*;
@@ -24,7 +24,7 @@ use std::sync::Arc;
     post,
     path = "/api/system/user/addUser",
     request_body = UserReq,
-    responses((status = 200, description = "successfully", body = EmptyResponse))
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
 )]
 #[function_name::named]
 pub async fn add_sys_user(State(state): State<Arc<AppState>>, Json(item): Json<UserReq>) -> impl IntoResponse {
@@ -42,7 +42,7 @@ pub async fn add_sys_user(State(state): State<Arc<AppState>>, Json(item): Json<U
     post,
     path = "/api/system/user/deleteUser",
     request_body = DeleteUserReq,
-    responses((status = 200, description = "successfully", body = EmptyResponse))
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
 )]
 #[function_name::named]
 pub async fn delete_sys_user(headers: HeaderMap, State(state): State<Arc<AppState>>, Json(item): Json<DeleteUserReq>) -> impl IntoResponse {
@@ -60,7 +60,7 @@ pub async fn delete_sys_user(headers: HeaderMap, State(state): State<Arc<AppStat
     post,
     path = "/api/system/user/updateUser",
     request_body = UserReq,
-    responses((status = 200, description = "successfully", body = EmptyResponse))
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
 )]
 #[function_name::named]
 pub async fn update_sys_user(State(state): State<Arc<AppState>>, Json(item): Json<UserReq>) -> impl IntoResponse {
@@ -78,7 +78,7 @@ pub async fn update_sys_user(State(state): State<Arc<AppState>>, Json(item): Jso
     post,
     path = "/api/system/user/updateUserStatus",
     request_body = UpdateUserStatusReq,
-    responses((status = 200, description = "successfully", body = EmptyResponse))
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
 )]
 #[function_name::named]
 pub async fn update_sys_user_status(State(state): State<Arc<AppState>>, Json(item): Json<UpdateUserStatusReq>) -> impl IntoResponse {
@@ -96,7 +96,7 @@ pub async fn update_sys_user_status(State(state): State<Arc<AppState>>, Json(ite
     post,
     path = "/api/system/user/resetUserPassword",
     request_body = ResetUserPwdReq,
-    responses((status = 200, description = "successfully", body = EmptyResponse))
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
 )]
 #[function_name::named]
 pub async fn reset_sys_user_password(State(state): State<Arc<AppState>>, Json(item): Json<ResetUserPwdReq>) -> impl IntoResponse {
@@ -114,7 +114,7 @@ pub async fn reset_sys_user_password(State(state): State<Arc<AppState>>, Json(it
     post,
     path = "/api/system/user/updateUserPassword",
     request_body = UpdateUserPwdReq,
-    responses((status = 200, description = "successfully", body = EmptyResponse))
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
 )]
 #[function_name::named]
 pub async fn update_sys_user_password(headers: HeaderMap, State(state): State<Arc<AppState>>, Json(item): Json<UpdateUserPwdReq>) -> impl IntoResponse {
@@ -132,7 +132,7 @@ pub async fn update_sys_user_password(headers: HeaderMap, State(state): State<Ar
     post,
     path = "/api/system/user/queryUserDetail",
     request_body = QueryUserDetailReq,
-    responses((status = 200, description = "successfully", body = EmptyResponse))
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
 )]
 #[function_name::named]
 pub async fn query_sys_user_detail(State(state): State<Arc<AppState>>, Json(item): Json<QueryUserDetailReq>) -> impl IntoResponse {
@@ -153,7 +153,7 @@ pub async fn query_sys_user_detail(State(state): State<Arc<AppState>>, Json(item
     post,
     path = "/api/system/user/queryUserList",
     request_body = QueryUserListReq,
-    responses((status = 200, description = "successfully", body = EmptyResponse))
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
 )]
 #[aspect(LoggingAspect::new())]
 pub async fn query_sys_user_list(State(state): State<Arc<AppState>>, Json(item): Json<QueryUserListReq>) -> impl IntoResponse {
@@ -173,7 +173,7 @@ pub async fn query_sys_user_list(State(state): State<Arc<AppState>>, Json(item):
     post,
     path = "/api/system/user/login",
     request_body = UserLoginReq,
-    responses((status = 200, description = "successfully", body = EmptyResponse))
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
 )]
 pub async fn login(headers: HeaderMap, ConnectInfo(remote_addr): ConnectInfo<SocketAddr>, State(state): State<Arc<AppState>>, Valid(Json(item)): Valid<Json<UserLoginReq>>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -190,7 +190,7 @@ pub async fn login(headers: HeaderMap, ConnectInfo(remote_addr): ConnectInfo<Soc
     post,
     path = "/api/system/user/queryUserRole",
     request_body = QueryUserRoleReq,
-    responses((status = 200, description = "successfully", body = EmptyResponse))
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
 )]
 #[function_name::named]
 pub async fn query_user_role(State(state): State<Arc<AppState>>, Json(item): Json<QueryUserRoleReq>) -> impl IntoResponse {
@@ -204,7 +204,7 @@ pub async fn query_user_role(State(state): State<Arc<AppState>>, Json(item): Jso
     post,
     path = "/api/system/user/updateUserRole",
     request_body = UpdateUserRoleReq,
-    responses((status = 200, description = "successfully", body = EmptyResponse))
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
 )]
 #[function_name::named]
 pub async fn update_user_role(State(state): State<Arc<AppState>>, Json(item): Json<UpdateUserRoleReq>) -> impl IntoResponse {
@@ -217,7 +217,7 @@ pub async fn update_user_role(State(state): State<Arc<AppState>>, Json(item): Js
 #[utoipa::path(
     get,
     path = "/api/system/user/queryUserMenu",
-    responses((status = 200, description = "successfully", body = EmptyResponse))
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
 )]
 #[function_name::named]
 pub async fn query_user_menu(headers: HeaderMap, State(state): State<Arc<AppState>>) -> impl IntoResponse {

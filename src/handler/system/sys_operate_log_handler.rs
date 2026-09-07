@@ -1,4 +1,4 @@
-use crate::common::result::EmptyResponse;
+use crate::common::result::BaseResponse;
 use crate::service::system::sys_operate_log_service::SysOperateLogService;
 use crate::vo::system::sys_operate_log_vo::*;
 use crate::AppState;
@@ -16,7 +16,7 @@ use std::sync::Arc;
     post,
     path = "/api/system/operateLog/deleteOperateLog",
     request_body = DeleteOperateLogReq,
-    responses((status = 200, description = "successfully", body = EmptyResponse))
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
 )]
 #[function_name::named]
 pub async fn delete_sys_operate_log(State(state): State<Arc<AppState>>, Json(item): Json<DeleteOperateLogReq>) -> impl IntoResponse {
@@ -34,7 +34,7 @@ pub async fn delete_sys_operate_log(State(state): State<Arc<AppState>>, Json(ite
 #[utoipa::path(
     get,
     path = "/api/system/operateLog/cleanOperateLog",
-    responses((status = 200, description = "successfully", body = EmptyResponse))
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
 )]
 #[function_name::named]
 pub async fn clean_sys_operate_log(State(state): State<Arc<AppState>>) -> impl IntoResponse {
@@ -53,7 +53,7 @@ pub async fn clean_sys_operate_log(State(state): State<Arc<AppState>>) -> impl I
     post,
     path = "/api/system/operateLog/queryOperateLogDetail",
     request_body = QueryOperateLogDetailReq,
-    responses((status = 200, description = "successfully", body = EmptyResponse))
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
 )]
 #[function_name::named]
 pub async fn query_sys_operate_log_detail(State(state): State<Arc<AppState>>, Json(item): Json<QueryOperateLogDetailReq>) -> impl IntoResponse {
@@ -71,7 +71,7 @@ pub async fn query_sys_operate_log_detail(State(state): State<Arc<AppState>>, Js
     post,
     path = "/api/system/operateLog/queryOperateLogList",
     request_body = QueryOperateLogListReq,
-    responses((status = 200, description = "successfully", body = EmptyResponse))
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
 )]
 #[function_name::named]
 pub async fn query_sys_operate_log_list(State(state): State<Arc<AppState>>, Json(item): Json<QueryOperateLogListReq>) -> impl IntoResponse {

@@ -1,4 +1,4 @@
-use crate::common::result::EmptyResponse;
+use crate::common::result::BaseResponse;
 use crate::service::system::sys_menu_service::SysMenuService;
 use crate::vo::system::sys_menu_vo::*;
 use crate::AppState;
@@ -16,7 +16,7 @@ use std::sync::Arc;
     post,
     path = "/api/system/menu/addMenu",
     request_body = MenuReq,
-    responses((status = 200, description = "successfully", body = EmptyResponse))
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
 )]
 #[function_name::named]
 pub async fn add_sys_menu(State(state): State<Arc<AppState>>, Json(item): Json<MenuReq>) -> impl IntoResponse {
@@ -35,7 +35,7 @@ pub async fn add_sys_menu(State(state): State<Arc<AppState>>, Json(item): Json<M
     post,
     path = "/api/system/menu/deleteMenu",
     request_body = DeleteMenuReq,
-    responses((status = 200, description = "successfully", body = EmptyResponse))
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
 )]
 #[function_name::named]
 pub async fn delete_sys_menu(State(state): State<Arc<AppState>>, Json(item): Json<DeleteMenuReq>) -> impl IntoResponse {
@@ -54,7 +54,7 @@ pub async fn delete_sys_menu(State(state): State<Arc<AppState>>, Json(item): Jso
     post,
     path = "/api/system/menu/updateMenu",
     request_body = MenuReq,
-    responses((status = 200, description = "successfully", body = EmptyResponse))
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
 )]
 #[function_name::named]
 pub async fn update_sys_menu(State(state): State<Arc<AppState>>, Json(item): Json<MenuReq>) -> impl IntoResponse {
@@ -73,7 +73,7 @@ pub async fn update_sys_menu(State(state): State<Arc<AppState>>, Json(item): Jso
     post,
     path = "/api/system/menu/updateMenuStatus",
     request_body = UpdateMenuStatusReq,
-    responses((status = 200, description = "successfully", body = EmptyResponse))
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
 )]
 #[function_name::named]
 pub async fn update_sys_menu_status(State(state): State<Arc<AppState>>, Json(item): Json<UpdateMenuStatusReq>) -> impl IntoResponse {
@@ -92,7 +92,7 @@ pub async fn update_sys_menu_status(State(state): State<Arc<AppState>>, Json(ite
     post,
     path = "/api/system/menu/queryMenuDetail",
     request_body = QueryMenuDetailReq,
-    responses((status = 200, description = "successfully", body = EmptyResponse))
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
 )]
 #[function_name::named]
 pub async fn query_sys_menu_detail(State(state): State<Arc<AppState>>, Json(item): Json<QueryMenuDetailReq>) -> impl IntoResponse {
@@ -111,7 +111,7 @@ pub async fn query_sys_menu_detail(State(state): State<Arc<AppState>>, Json(item
     post,
     path = "/api/system/menu/queryMenuList",
     request_body = QueryMenuListReq,
-    responses((status = 200, description = "successfully", body = EmptyResponse))
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
 )]
 #[function_name::named]
 pub async fn query_sys_menu_list(State(state): State<Arc<AppState>>, Json(item): Json<QueryMenuListReq>) -> impl IntoResponse {
@@ -129,7 +129,7 @@ pub async fn query_sys_menu_list(State(state): State<Arc<AppState>>, Json(item):
 #[utoipa::path(
     get,
     path = "/api/system/menu/queryMenuListSimple",
-    responses((status = 200, description = "successfully", body = EmptyResponse))
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
 )]
 #[function_name::named]
 pub async fn query_sys_menu_list_simple(State(state): State<Arc<AppState>>) -> impl IntoResponse {
