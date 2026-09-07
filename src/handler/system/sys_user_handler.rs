@@ -1,4 +1,4 @@
-use crate::common::result::BaseResponse;
+use crate::common::result::{BaseResponse, Paged};
 use crate::aop::aspects::timer::Timer;
 use crate::service::system::sys_user_service::SysUserService;
 use crate::vo::system::sys_user_vo::*;
@@ -132,7 +132,7 @@ pub async fn update_sys_user_password(headers: HeaderMap, State(state): State<Ar
     post,
     path = "/api/system/user/queryUserDetail",
     request_body = QueryUserDetailReq,
-    responses((status = 200, description = "successfully", body = BaseResponse<String>))
+    responses((status = 200, description = "successfully", body = BaseResponse<UserResp>))
 )]
 #[function_name::named]
 pub async fn query_sys_user_detail(State(state): State<Arc<AppState>>, Json(item): Json<QueryUserDetailReq>) -> impl IntoResponse {
@@ -153,7 +153,7 @@ pub async fn query_sys_user_detail(State(state): State<Arc<AppState>>, Json(item
     post,
     path = "/api/system/user/queryUserList",
     request_body = QueryUserListReq,
-    responses((status = 200, description = "successfully", body = BaseResponse<String>))
+    responses((status = 200, description = "successfully", body = BaseResponse<Paged<UserResp>>))
 )]
 #[aspect(LoggingAspect::new())]
 pub async fn query_sys_user_list(State(state): State<Arc<AppState>>, Json(item): Json<QueryUserListReq>) -> impl IntoResponse {
@@ -173,7 +173,7 @@ pub async fn query_sys_user_list(State(state): State<Arc<AppState>>, Json(item):
     post,
     path = "/api/system/user/login",
     request_body = UserLoginReq,
-    responses((status = 200, description = "successfully", body = BaseResponse<String>))
+    responses((status = 200, description = "successfully", body = BaseResponse<UserLoginResp>))
 )]
 pub async fn login(headers: HeaderMap, ConnectInfo(remote_addr): ConnectInfo<SocketAddr>, State(state): State<Arc<AppState>>, Valid(Json(item)): Valid<Json<UserLoginReq>>) -> impl IntoResponse {
     info!("{function_name}:{item:?}", function_name = function_name!());
@@ -190,7 +190,7 @@ pub async fn login(headers: HeaderMap, ConnectInfo(remote_addr): ConnectInfo<Soc
     post,
     path = "/api/system/user/queryUserRole",
     request_body = QueryUserRoleReq,
-    responses((status = 200, description = "successfully", body = BaseResponse<String>))
+    responses((status = 200, description = "successfully", body = BaseResponse<QueryUserRoleResp>))
 )]
 #[function_name::named]
 pub async fn query_user_role(State(state): State<Arc<AppState>>, Json(item): Json<QueryUserRoleReq>) -> impl IntoResponse {
@@ -217,7 +217,7 @@ pub async fn update_user_role(State(state): State<Arc<AppState>>, Json(item): Js
 #[utoipa::path(
     get,
     path = "/api/system/user/queryUserMenu",
-    responses((status = 200, description = "successfully", body = BaseResponse<String>))
+    responses((status = 200, description = "successfully", body = BaseResponse<QueryUserMenuResp>))
 )]
 #[function_name::named]
 pub async fn query_user_menu(headers: HeaderMap, State(state): State<Arc<AppState>>) -> impl IntoResponse {

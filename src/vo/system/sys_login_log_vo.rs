@@ -43,7 +43,7 @@ fn default_status() -> Option<i8> {
 /*
 查询系统访问记录列表响应参数
 */
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct LoginLogResp {
     pub id: Option<i64>,        //访问ID
@@ -61,5 +61,6 @@ pub struct LoginLogResp {
     pub status: i8,             //登录状态(0:失败,1:成功)
     pub msg: String,            //提示消息
     #[serde(serialize_with = "serialize_datetime")]
+    #[schema(value_type = Option<String>)]
     pub login_time: Option<DateTime>, //访问时间
 }

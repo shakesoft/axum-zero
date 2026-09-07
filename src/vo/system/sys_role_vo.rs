@@ -64,7 +64,7 @@ fn default_status() -> Option<i8> {
 /*
 查询角色信息列表响应参数
 */
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct RoleResp {
     pub id: Option<i64>,        //主键
@@ -74,8 +74,10 @@ pub struct RoleResp {
     pub status: i8,             //状态(1:正常，0:禁用)
     pub remark: Option<String>, //备注
     #[serde(serialize_with = "serialize_datetime")]
+    #[schema(value_type = Option<String>)]
     pub create_time: Option<DateTime>, //创建时间
     #[serde(serialize_with = "serialize_datetime")]
+    #[schema(value_type = Option<String>)]
     pub update_time: Option<DateTime>, //修改时间
 }
 
@@ -91,7 +93,7 @@ pub struct QueryRoleMenuReq {
 /*
 角色菜单信息参数
 */
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct QueryRoleMenuData {
     pub menu_ids: Vec<Option<i64>>,   //菜单Ids
@@ -101,7 +103,7 @@ pub struct QueryRoleMenuData {
 /*
 菜单信息参数
 */
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct MenuDataList {
     pub id: Option<i64>,        //主键

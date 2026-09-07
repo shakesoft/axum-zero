@@ -1,6 +1,7 @@
-use crate::common::result::BaseResponse;
+use crate::common::result::{BaseResponse, Paged};
 use crate::service::system::sys_role_service::SysRoleService;
 use crate::vo::system::sys_role_vo::*;
+use crate::vo::system::sys_user_vo::UserResp;
 use crate::AppState;
 use axum::extract::State;
 use axum::response::IntoResponse;
@@ -97,7 +98,7 @@ pub async fn update_sys_role_status(State(state): State<Arc<AppState>>, Json(ite
     post,
     path = "/api/system/role/queryRoleDetail",
     request_body = QueryRoleDetailReq,
-    responses((status = 200, description = "successfully", body = BaseResponse<String>))
+    responses((status = 200, description = "successfully", body = BaseResponse<RoleResp>))
 )]
 #[function_name::named]
 pub async fn query_sys_role_detail(State(state): State<Arc<AppState>>, Json(item): Json<QueryRoleDetailReq>) -> impl IntoResponse {
@@ -116,7 +117,7 @@ pub async fn query_sys_role_detail(State(state): State<Arc<AppState>>, Json(item
     post,
     path = "/api/system/role/queryRoleList",
     request_body = QueryRoleListReq,
-    responses((status = 200, description = "successfully", body = BaseResponse<String>))
+    responses((status = 200, description = "successfully", body = BaseResponse<Paged<RoleResp>>))
 )]
 #[function_name::named]
 #[aspect(Logger)]
@@ -136,7 +137,7 @@ pub async fn query_sys_role_list(State(state): State<Arc<AppState>>, Json(item):
     post,
     path = "/api/system/role/queryRoleMenu",
     request_body = QueryRoleMenuReq,
-    responses((status = 200, description = "successfully", body = BaseResponse<String>))
+    responses((status = 200, description = "successfully", body = BaseResponse<QueryRoleMenuData>))
 )]
 #[function_name::named]
 #[aspect(Logger)]
@@ -175,7 +176,7 @@ pub async fn update_role_menu(State(state): State<Arc<AppState>>, Json(item): Js
     post,
     path = "/api/system/role/queryAllocatedList",
     request_body = AllocatedListReq,
-    responses((status = 200, description = "successfully", body = BaseResponse<String>))
+    responses((status = 200, description = "successfully", body = BaseResponse<Paged<UserResp>>))
 )]
 #[function_name::named]
 pub async fn query_allocated_list(State(state): State<Arc<AppState>>, Json(item): Json<AllocatedListReq>) -> impl IntoResponse {
@@ -195,7 +196,7 @@ pub async fn query_allocated_list(State(state): State<Arc<AppState>>, Json(item)
     post,
     path = "/api/system/role/queryUnallocatedList",
     request_body = UnallocatedListReq,
-    responses((status = 200, description = "successfully", body = BaseResponse<String>))
+    responses((status = 200, description = "successfully", body = BaseResponse<Paged<UserResp>>))
 )]
 #[function_name::named]
 pub async fn query_unallocated_list(State(state): State<Arc<AppState>>, Json(item): Json<UnallocatedListReq>) -> impl IntoResponse {

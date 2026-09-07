@@ -1,4 +1,4 @@
-use crate::common::result::BaseResponse;
+use crate::common::result::{BaseResponse, Paged};
 use crate::service::system::sys_login_log_service::SysLoginLogService;
 use crate::vo::system::sys_login_log_vo::*;
 use crate::AppState;
@@ -53,7 +53,7 @@ pub async fn clean_sys_login_log(State(state): State<Arc<AppState>>) -> impl Int
     post,
     path = "/api/system/loginLog/queryLoginLogDetail",
     request_body = QueryLoginLogDetailReq,
-    responses((status = 200, description = "successfully", body = BaseResponse<String>))
+    responses((status = 200, description = "successfully", body = BaseResponse<LoginLogResp>))
 )]
 #[function_name::named]
 pub async fn query_sys_login_log_detail(State(state): State<Arc<AppState>>, Json(item): Json<QueryLoginLogDetailReq>) -> impl IntoResponse {
@@ -72,7 +72,7 @@ pub async fn query_sys_login_log_detail(State(state): State<Arc<AppState>>, Json
     post,
     path = "/api/system/loginLog/queryLoginLogList",
     request_body = QueryLoginLogListReq,
-    responses((status = 200, description = "successfully", body = BaseResponse<String>))
+    responses((status = 200, description = "successfully", body = BaseResponse<Paged<LoginLogResp>>))
 )]
 #[function_name::named]
 pub async fn query_sys_login_log_list(State(state): State<Arc<AppState>>, Json(item): Json<QueryLoginLogListReq>) -> impl IntoResponse {

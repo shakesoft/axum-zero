@@ -1,4 +1,4 @@
-use crate::common::result::BaseResponse;
+use crate::common::result::{BaseResponse, Paged};
 use crate::service::system::sys_post_service::SysPostService;
 use crate::vo::system::sys_post_vo::*;
 use crate::AppState;
@@ -92,7 +92,7 @@ pub async fn update_sys_post_status(State(state): State<Arc<AppState>>, Json(ite
     post,
     path = "/api/system/post/queryPostDetail",
     request_body = QueryPostDetailReq,
-    responses((status = 200, description = "successfully", body = BaseResponse<String>))
+    responses((status = 200, description = "successfully", body = BaseResponse<PostResp>))
 )]
 #[function_name::named]
 pub async fn query_sys_post_detail(State(state): State<Arc<AppState>>, Json(item): Json<QueryPostDetailReq>) -> impl IntoResponse {
@@ -111,7 +111,7 @@ pub async fn query_sys_post_detail(State(state): State<Arc<AppState>>, Json(item
     post,
     path = "/api/system/post/queryPostList",
     request_body = QueryPostListReq,
-    responses((status = 200, description = "successfully", body = BaseResponse<String>))
+    responses((status = 200, description = "successfully", body = BaseResponse<Paged<PostResp>>))
 )]
 #[function_name::named]
 pub async fn query_sys_post_list(State(state): State<Arc<AppState>>, Json(item): Json<QueryPostListReq>) -> impl IntoResponse {

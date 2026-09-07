@@ -62,7 +62,7 @@ pub struct QueryMenuListReq {
 /*
 查询菜单信息列表响应参数
 */
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct MenuResp {
     pub id: Option<i64>,           //主键
@@ -77,15 +77,17 @@ pub struct MenuResp {
     pub menu_icon: Option<String>, //菜单图标
     pub remark: Option<String>,    //备注
     #[serde(serialize_with = "serialize_datetime")]
+    #[schema(value_type = Option<String>)]
     pub create_time: Option<DateTime>, //创建时间
     #[serde(serialize_with = "serialize_datetime")]
+    #[schema(value_type = Option<String>)]
     pub update_time: Option<DateTime>, //修改时间
 }
 
 /*
 查询菜单信息列表响应参数
 */
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct MenuListSimpleDataResp {
     pub id: Option<i64>,        //主键

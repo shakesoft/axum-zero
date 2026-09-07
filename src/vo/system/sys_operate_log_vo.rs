@@ -48,7 +48,7 @@ fn default_status() -> Option<i8> {
 /*
 查询操作日志记录列表响应参数
 */
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct OperateLogResp {
     pub id: Option<i64>,                  //日志主键
@@ -67,6 +67,7 @@ pub struct OperateLogResp {
     pub status: Option<i8>,               //操作状态(0:异常,正常)
     pub error_msg: Option<String>,        //错误消息
     #[serde(serialize_with = "serialize_datetime")]
+    #[schema(value_type = Option<String>)]
     pub operate_time: Option<DateTime>, //操作时间
     pub cost_time: Option<i64>,           //消耗时间
 }

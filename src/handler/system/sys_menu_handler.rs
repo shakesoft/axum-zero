@@ -92,7 +92,7 @@ pub async fn update_sys_menu_status(State(state): State<Arc<AppState>>, Json(ite
     post,
     path = "/api/system/menu/queryMenuDetail",
     request_body = QueryMenuDetailReq,
-    responses((status = 200, description = "successfully", body = BaseResponse<String>))
+    responses((status = 200, description = "successfully", body = BaseResponse<MenuResp>))
 )]
 #[function_name::named]
 pub async fn query_sys_menu_detail(State(state): State<Arc<AppState>>, Json(item): Json<QueryMenuDetailReq>) -> impl IntoResponse {
@@ -111,7 +111,7 @@ pub async fn query_sys_menu_detail(State(state): State<Arc<AppState>>, Json(item
     post,
     path = "/api/system/menu/queryMenuList",
     request_body = QueryMenuListReq,
-    responses((status = 200, description = "successfully", body = BaseResponse<String>))
+    responses((status = 200, description = "successfully", body = BaseResponse<Vec<MenuResp>>))
 )]
 #[function_name::named]
 pub async fn query_sys_menu_list(State(state): State<Arc<AppState>>, Json(item): Json<QueryMenuListReq>) -> impl IntoResponse {
@@ -129,7 +129,7 @@ pub async fn query_sys_menu_list(State(state): State<Arc<AppState>>, Json(item):
 #[utoipa::path(
     get,
     path = "/api/system/menu/queryMenuListSimple",
-    responses((status = 200, description = "successfully", body = BaseResponse<String>))
+    responses((status = 200, description = "successfully", body = BaseResponse<Vec<MenuListSimpleDataResp>>))
 )]
 #[function_name::named]
 pub async fn query_sys_menu_list_simple(State(state): State<Arc<AppState>>) -> impl IntoResponse {

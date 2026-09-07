@@ -1,4 +1,4 @@
-use crate::common::result::BaseResponse;
+use crate::common::result::{BaseResponse, Paged};
 use crate::service::system::sys_dict_type_service::SysDictTypeService;
 use crate::vo::system::sys_dict_type_vo::*;
 use crate::AppState;
@@ -92,7 +92,7 @@ pub async fn update_sys_dict_type_status(State(state): State<Arc<AppState>>, Jso
     post,
     path = "/api/system/dictType/queryDictTypeDetail",
     request_body = QueryDictTypeDetailReq,
-    responses((status = 200, description = "successfully", body = BaseResponse<String>))
+    responses((status = 200, description = "successfully", body = BaseResponse<DictTypeResp>))
 )]
 #[function_name::named]
 pub async fn query_sys_dict_type_detail(State(state): State<Arc<AppState>>, Json(item): Json<QueryDictTypeDetailReq>) -> impl IntoResponse {
@@ -111,7 +111,7 @@ pub async fn query_sys_dict_type_detail(State(state): State<Arc<AppState>>, Json
     post,
     path = "/api/system/dictType/queryDictTypeList",
     request_body = QueryDictTypeListReq,
-    responses((status = 200, description = "successfully", body = BaseResponse<String>))
+    responses((status = 200, description = "successfully", body = BaseResponse<Paged<DictTypeResp>>))
 )]
 #[function_name::named]
 pub async fn query_sys_dict_type_list(State(state): State<Arc<AppState>>, Json(item): Json<QueryDictTypeListReq>) -> impl IntoResponse {

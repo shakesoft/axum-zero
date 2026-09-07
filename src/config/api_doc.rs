@@ -145,3 +145,22 @@ use crate::{handler, vo};
     )
 )]
 pub struct ApiDoc;
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn openapi_refs_resolve() {
+        let json = ApiDoc::openapi().to_json().unwrap();
+        let v: serde_json::Value = serde_json::from_str(&json).unwrap();
+        let comps: Vec<String> = v["components"]["schemas"].as_object().unwrap().keys().cloned().collect();
+        let mut missing = vec![];
+        for r in regex::Regex::new(r###""\$ref": *"#/components/schemas/([^"]+)""###).unwrap().captures_iter(&json) {
+            let n = r[1].to_string();
+            if !comps.contains(&n) { missing.push(n); }
+        }
+        missing.sort(); missing.dedup();
+        assert!(comps.len() > 30, "schemas auto-collection broke: {}", comps.len());
+        assert!(missing.is_empty(), "dangling refs: {missing:?}");
+    }
+}

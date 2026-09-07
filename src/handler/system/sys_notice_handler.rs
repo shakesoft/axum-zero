@@ -1,4 +1,4 @@
-use crate::common::result::BaseResponse;
+use crate::common::result::{BaseResponse, EmptyResponse, Paged};
 use crate::service::system::sys_notice_service::SysNoticeService;
 use crate::vo::system::sys_notice_vo::*;
 use crate::AppState;
@@ -92,7 +92,7 @@ pub async fn update_sys_notice_status(State(state): State<Arc<AppState>>, Json(i
     post,
     path = "/api/system/notice/queryNoticeDetail",
     request_body = QueryNoticeDetailReq,
-    responses((status = 200, description = "successfully", body = BaseResponse<String>))
+    responses((status = 200, description = "successfully", body = BaseResponse<NoticeResp>))
 )]
 #[function_name::named]
 pub async fn query_sys_notice_detail(State(state): State<Arc<AppState>>, Json(item): Json<QueryNoticeDetailReq>) -> impl IntoResponse {
@@ -111,7 +111,7 @@ pub async fn query_sys_notice_detail(State(state): State<Arc<AppState>>, Json(it
     post,
     path = "/api/system/notice/queryNoticeList",
     request_body = QueryNoticeListReq,
-    responses((status = 200, description = "successfully", body = BaseResponse<String>))
+    responses((status = 200, description = "successfully", body = BaseResponse<Paged<NoticeResp>>))
 )]
 #[function_name::named]
 pub async fn query_sys_notice_list(State(state): State<Arc<AppState>>, Json(item): Json<QueryNoticeListReq>) -> impl IntoResponse {
@@ -125,7 +125,7 @@ pub async fn query_sys_notice_list(State(state): State<Arc<AppState>>, Json(item
     post,
     path = "/api/system/notice/request",
     request_body = QueryNoticeListReq,
-    responses((status = 200, description = "successfully", body = BaseResponse<String>))
+    responses((status = 200, description = "successfully", body = EmptyResponse))
 )]
 #[function_name::named]
 pub async fn query_sys_notice_request(State(state): State<Arc<AppState>>, Json(item): Json<QueryNoticeListReq>) -> impl IntoResponse {

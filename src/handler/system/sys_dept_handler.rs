@@ -1,5 +1,5 @@
 use crate::common::extractor::ValidatedJson;
-use crate::common::result::{ok, BaseResponse};
+use crate::common::result::{ok, BaseResponse, EmptyResponse};
 use crate::vo::system::sys_dept_vo::*;
 use crate::AppState;
 use aspect_macros::aspect;
@@ -30,7 +30,7 @@ use crate::vo::system::sys_user_vo::UserSession;
     post,
     path = "/api/system/dept/addDept",
     request_body = DeptReq,
-    responses((status = 200, description = "successfully", body = BaseResponse<String>))
+    responses((status = 200, description = "successfully", body = EmptyResponse))
 )]
 // #[instrument]
 #[function_name::named]
@@ -71,7 +71,7 @@ pub async fn add_sys_dept(State(state): State<Arc<AppState>>, ValidatedJson(item
     post,
     path = "/api/system/dept/deleteDept",
     request_body = DeleteDeptReq,
-    responses((status = 200, description = "successfully", body = BaseResponse<String>))
+    responses((status = 200, description = "successfully", body = EmptyResponse))
 )]
 #[function_name::named]
 pub async fn delete_sys_dept(State(state): State<Arc<AppState>>, Extension(_session): Extension<UserSession>, Json(item): Json<DeleteDeptReq>) -> impl IntoResponse {
@@ -86,7 +86,7 @@ pub async fn delete_sys_dept(State(state): State<Arc<AppState>>, Extension(_sess
     post,
     path = "/api/system/dept/deleteDept1",
     request_body = DeleteDeptReq,
-    responses((status = 200, description = "successfully", body = BaseResponse<String>))
+    responses((status = 200, description = "successfully", body = EmptyResponse))
 )]
 #[function_name::named]
 pub async fn delete_sys_dept1(
@@ -126,7 +126,7 @@ pub async fn delete_sys_dept1(
     post,
     path = "/api/system/dept/updateDept",
     request_body = DeptReq,
-    responses((status = 200, description = "successfully", body = BaseResponse<String>))
+    responses((status = 200, description = "successfully", body = EmptyResponse))
 )]
 #[function_name::named]
 pub async fn update_sys_dept(State(state): State<Arc<AppState>>, ValidatedJson(item): ValidatedJson<DeptReq>) -> impl IntoResponse {
@@ -145,7 +145,7 @@ pub async fn update_sys_dept(State(state): State<Arc<AppState>>, ValidatedJson(i
     post,
     path = "/api/system/dept/updateDeptStatus",
     request_body = UpdateDeptStatusReq,
-    responses((status = 200, description = "successfully", body = BaseResponse<String>))
+    responses((status = 200, description = "successfully", body = EmptyResponse))
 )]
 #[function_name::named]
 pub async fn update_sys_dept_status(State(state): State<Arc<AppState>>, Json(item): Json<UpdateDeptStatusReq>) -> impl IntoResponse {
