@@ -4170,9 +4170,9 @@ checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
 
 [[package]]
 name = "state-machines"
-version = "0.20.1"
+version = "0.21.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4085a22c58f0cb2e44848846197b7aa1e270ac080554e2c27fe318ba8f5d3ad2"
+checksum = "2f47a189a4799c870b5f7c7aaa7fb9cf232ba53724dfb9f70c6df6f6fcc5457c"
 dependencies = [
  "state-machines-core",
  "state-machines-macro",
@@ -4180,15 +4180,15 @@ dependencies = [
 
 [[package]]
 name = "state-machines-core"
-version = "0.9.0"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b53079921cf97a990334cd0296c1efa4f16631ed3f30a3010bb2f2d5c76cb37b"
+checksum = "44c9ff2addb025d92b75ddc3984f6a2751cba4b5a86259f4dec6a251a1aac901"
 
 [[package]]
 name = "state-machines-macro"
-version = "0.21.0"
+version = "0.22.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2cda45f33b02ad3a74b0b38cf704586230e3fcbf0178e0cf4824ded7b088961b"
+checksum = "d080f1606ea7ed35fd0870d051573df2c0a99251186005f0da13c32260086e1a"
 dependencies = [
  "proc-macro2",
  "quote",
