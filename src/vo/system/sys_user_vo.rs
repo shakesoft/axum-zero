@@ -123,6 +123,18 @@ pub struct UserLoginReq {
 pub struct UserLoginResp {
     pub token: String, //登录成功后返回token
     pub expires_at: usize, //token过期时间，时间戳
+    pub refresh_token: String, //用于换取新token
+    pub refresh_expires_at: usize, //refresh_token过期时间，时间戳
+}
+
+/*
+刷新token/退出登录请求参数
+*/
+#[derive(Debug, Deserialize, Clone, Validate, ToSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct RefreshTokenReq {
+    #[validate(length(min = 1, message = "refreshToken不能为空"))]
+    pub refresh_token: String,
 }
 
 

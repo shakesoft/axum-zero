@@ -33,6 +33,9 @@ pub enum AppError {
     #[error("认证错误：{0}")]
     JwtTokenError(String),
 
+    #[error("认证错误：TokenExpired")]
+    TokenExpired,
+
     #[error("授权错误：{0}")]
     AuthorizationError(String),
 
@@ -111,6 +114,7 @@ impl AppError {
         match self {
             AppError::DiskCacheRead { .. } => 9003,
             AppError::JwtTokenError(_) => 3001,
+            AppError::TokenExpired => 3002, //前端据此调用refresh_token
             AppError::AuthorizationError(_) => 4001,
             AppError::DbError(_) => 9001,
             AppError::RedisError(_) => 9002,
@@ -122,7 +126,7 @@ impl AppError {
 
     fn status_code(&self) -> StatusCode {
         match self {
-            AppError::JwtTokenError(_) => StatusCode::UNAUTHORIZED,
+            AppError::JwtTokenError(_) | AppError::TokenExpired => StatusCode::UNAUTHORIZED,
             AppError::ValidationError(_) => StatusCode::BAD_REQUEST,
             AppError::BusinessError(_) => StatusCode::FORBIDDEN,
             AppError::AuthorizationError(_) => StatusCode::UNAUTHORIZED,

@@ -68,6 +68,8 @@ use crate::{handler, vo};
         handler::system::sys_user_handler::add_sys_user,
         handler::system::sys_user_handler::delete_sys_user,
         handler::system::sys_user_handler::login,
+        handler::system::sys_user_handler::refresh_token,
+        handler::system::sys_user_handler::logout,
         handler::system::sys_user_handler::query_sys_user_detail,
         handler::system::sys_user_handler::query_sys_user_list,
         handler::system::sys_user_handler::query_user_menu,

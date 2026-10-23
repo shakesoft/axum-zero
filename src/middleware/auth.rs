@@ -22,6 +22,7 @@ pub async fn auth(State(state): State<Arc<AppState>>, mut req: Request, next: Ne
         "/system/user/login",
         "/system/user/register",
         "/system/user/logout",
+        "/system/user/refresh_token",
     ];
     if ignore_paths.iter().any(|ignore_path| path.starts_with(ignore_path)) {
         return Ok(next.run(req).await);
@@ -34,16 +35,9 @@ pub async fn auth(State(state): State<Arc<AppState>>, mut req: Request, next: Ne
 
     let authorization = auth_header.unwrap();
     let token = authorization.to_string().replace("Bearer ", "");
-    let jwt_token_error = JwtToken::verify(jwt_util::JWT_SECRET, &token);
-    let jwt_token = match jwt_token_error {
+    let jwt_token = match JwtToken::verify(jwt_util::JWT_SECRET, &token) {
         Ok(data) => data,
-        Err(err) => {
-            let er = match err {
-                AppError::JwtTokenError(s) => s,
-                _ => "no math error".to_string(),
-            };
-            return Ok(AppError::JwtTokenError(er).into_response());
-        }
+        Err(err) => return Ok(err.into_response()), // TokenExpired(3002) 或 JwtTokenError(3001)
     };
 
     match validate_and_get_user_info(&state.redis, jwt_token.id).await {

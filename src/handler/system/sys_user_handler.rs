@@ -182,6 +182,32 @@ pub async fn login(headers: HeaderMap, ConnectInfo(remote_addr): ConnectInfo<Soc
 }
 
 /*
+ *刷新token
+ */
+#[utoipa::path(
+    post,
+    path = "/api/system/user/refresh_token",
+    request_body = RefreshTokenReq,
+    responses((status = 200, description = "successfully", body = BaseResponse<UserLoginResp>))
+)]
+pub async fn refresh_token(State(state): State<Arc<AppState>>, Valid(Json(item)): Valid<Json<RefreshTokenReq>>) -> impl IntoResponse {
+    SysUserService::refresh_token(&state.batis, &state.redis, item).await
+}
+
+/*
+ *退出登录
+ */
+#[utoipa::path(
+    post,
+    path = "/api/system/user/logout",
+    request_body = RefreshTokenReq,
+    responses((status = 200, description = "successfully", body = BaseResponse<String>))
+)]
+pub async fn logout(State(state): State<Arc<AppState>>, Valid(Json(item)): Valid<Json<RefreshTokenReq>>) -> impl IntoResponse {
+    SysUserService::logout(&state.redis, item).await
+}
+
+/*
  *查询用户角色
  *author：罗京生
  *date：2024/12/12 14:41:44

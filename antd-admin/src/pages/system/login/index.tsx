@@ -16,9 +16,10 @@ const Login: React.FC = () => {
         const {mobile, password} = values;
         const res: IResponse = await reqLogin({mobile, password})
         if (res.code === 0) {
-            const {token,expiresAt} = res.data;
+            const {token,expiresAt,refreshToken} = res.data;
             storageUtils.saveToken(token);
             storageUtils.saveExpiresAt(expiresAt);
+            storageUtils.saveRefreshToken(refreshToken);
             navigate('/home')
         } else {
             message.error(res.msg);

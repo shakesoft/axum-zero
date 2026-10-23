@@ -12,6 +12,35 @@ export interface IResponse {
 
 let _instance: AxiosInstance | null = null;
 
+const TOKEN_EXPIRED_CODE = 3002;
+// 并发请求同时过期时只刷新一次，其余请求等待同一个结果
+let refreshing: Promise<string> | null = null;
+
+function refreshAccessToken(): Promise<string> {
+  if (!refreshing) {
+    const refreshToken = storageUtils.getRefreshToken();
+    refreshing = (refreshToken
+      ? axios.post("api/system/user/refresh_token", { refreshToken }, { baseURL: AppConsts.remoteServiceBaseUrl })
+          .then((r) => {
+            const { token, expiresAt, refreshToken } = r.data.data;
+            storageUtils.saveToken(token);
+            storageUtils.saveExpiresAt(expiresAt);
+            storageUtils.saveRefreshToken(refreshToken);
+            return token as string;
+          })
+      : Promise.reject(new Error("no refresh token"))
+    ).finally(() => {
+      refreshing = null;
+    });
+  }
+  return refreshing;
+}
+
+function redirectToLogin() {
+  storageUtils.logout();
+  window.location.href = `${import.meta.env.VITE_APP_DEPLOY_PATH || ""}/login`.replace(/\/{2,}/g, "/");
+}
+
 export function apiHttp(): AxiosInstance {
   if (!_instance) {
     _instance = axios.create({
@@ -27,7 +56,19 @@ export function apiHttp(): AxiosInstance {
         // }
         return r;
       },
-      (error) => {
+      async (error) => {
+        const cfg = error?.config;
+        if (error?.response?.data?.code === TOKEN_EXPIRED_CODE && cfg && !cfg._retried) {
+          cfg._retried = true;
+          try {
+            const token = await refreshAccessToken();
+            cfg.headers["Authorization"] = `Bearer ${token}`;
+            return _instance!(cfg);
+          } catch (e) {
+            redirectToLogin();
+            return Promise.reject(e);
+          }
+        }
         handleError(error);
         return Promise.reject(error);
       },

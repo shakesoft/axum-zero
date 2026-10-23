@@ -364,32 +364,14 @@ impl SysUserService {
     pub async fn user_login_successful(rb: &RBatis, conn: &mut redis::Connection, user: &mut User, mobile: String, agent: UserAgentUtil, client_ip: String) -> Result<UserLoginResp, AppError> {
         let user_id = user.id.unwrap();
 
-        //获取用户权限列表
-        let (btn_menu, is_admin) = SysUserDao::query_btn_menu(rb, &user_id).await;
-        if btn_menu.len() == 0 {
-            SysLoginLogService::add_login_log(rb, mobile, 0, "用户没有分配角色或者菜单,不能登录", agent).await;
-            return Err(AppError::BusinessError("用户没有分配角色或者菜单,不能登录"));
-        }
-
-        //获取用户角色列表
-        let vec_user_role = UserRole::select_by_map(rb, value! {"user_id": &user_id}).await?;
-        let vec_role_id = vec_user_role.into_iter().map(|x| x.role_id.to_string()).collect::<Vec<String>>();
-
-        // generate token
-        let jwt = JwtToken::new(user_id, &user.user_name);
-        let expires_at = jwt.get_exp();
-        let expires_time = time_util::timestamp_to_local(expires_at as i64);
-        let token = jwt.create_token(jwt_util::JWT_SECRET)?;
-
-        // persist session info to redis
-        let key = format!("axum:admin:user:info:{:?}", user_id);
-        conn.hset::<_, _, _, ()>(&key, "permissions", &btn_menu.join(","))?; // permissions
-        conn.hset::<_, _, _, ()>(&key, "roles", &vec_role_id.join(","))?; // role ids
-        conn.hset::<_, _, _, ()>(&key, "user_name", &user.user_name)?; // user name
-        conn.hset::<_, _, _, ()>(&key, "is_admin", is_admin)?; // is super
-        conn.hset::<_, _, _, ()>(&key, "token", &token)?; // token
-        conn.hset::<_, _, _, ()>(&key, "last_login", Local::now().format("%Y-%m-%d %H:%M:%S").to_string())?;
-        conn.hset::<_, _, _, ()>(&key, "expires_at", expires_time.unwrap_or_default().format("%Y-%m-%d %H:%M:%S").to_string())?;
+        let resp = match Self::issue_tokens(rb, conn, user_id, &user.user_name).await {
+            Ok(resp) => resp,
+            Err(AppError::BusinessError(msg)) => {
+                SysLoginLogService::add_login_log(rb, mobile, 0, msg, agent).await;
+                return Err(AppError::BusinessError(msg));
+            }
+            Err(e) => return Err(e),
+        };
 
         // record login log
         SysLoginLogService::add_login_log(rb, mobile, 1, "登录成功", agent.clone()).await;
@@ -403,7 +385,84 @@ impl SysUserService {
         // persist changes to DB
         User::update_by_map(rb, &user, value! {"id": &user_id}).await?;
 
-        Ok(UserLoginResp { token, expires_at })
+        Ok(resp)
+    }
+
+    /// 签发 AccessToken + RefreshToken，并把会话写入 redis（登录和刷新共用）
+    /// 每次签发都会作废该用户上一个 RefreshToken（单会话 + 轮换）
+    async fn issue_tokens(rb: &RBatis, conn: &mut redis::Connection, user_id: i64, user_name: &str) -> Result<UserLoginResp, AppError> {
+        //获取用户权限列表
+        let (btn_menu, is_admin) = SysUserDao::query_btn_menu(rb, &user_id).await;
+        if btn_menu.len() == 0 {
+            return Err(AppError::BusinessError("用户没有分配角色或者菜单,不能登录"));
+        }
+
+        //获取用户角色列表
+        let vec_user_role = UserRole::select_by_map(rb, value! {"user_id": &user_id}).await?;
+        let vec_role_id = vec_user_role.into_iter().map(|x| x.role_id.to_string()).collect::<Vec<String>>();
+
+        // generate token
+        let jwt = JwtToken::new(user_id, user_name);
+        let expires_at = jwt.get_exp();
+        let expires_time = time_util::timestamp_to_local(expires_at as i64);
+        let token = jwt.create_token(jwt_util::JWT_SECRET)?;
+        let refresh_token = uuid::Uuid::new_v4().to_string();
+        let refresh_expires_at = expires_at - jwt_util::JWT_EXPIRATION_SECONDS as usize + jwt_util::REFRESH_TOKEN_EXPIRATION_SECONDS as usize;
+
+        let key = format!("axum:admin:user:info:{}", user_id);
+        // revoke previous refresh token
+        let old_refresh: Option<String> = conn.hget(&key, "refresh_token")?;
+        if let Some(old) = old_refresh {
+            conn.del::<_, ()>(refresh_token_key(&old))?;
+        }
+
+        // persist session info to redis
+        conn.hset::<_, _, _, ()>(&key, "permissions", &btn_menu.join(","))?; // permissions
+        conn.hset::<_, _, _, ()>(&key, "roles", &vec_role_id.join(","))?; // role ids
+        conn.hset::<_, _, _, ()>(&key, "user_name", user_name)?; // user name
+        conn.hset::<_, _, _, ()>(&key, "is_admin", is_admin)?; // is super
+        conn.hset::<_, _, _, ()>(&key, "token", &token)?; // token
+        conn.hset::<_, _, _, ()>(&key, "refresh_token", &refresh_token)?; // refresh token
+        conn.hset::<_, _, _, ()>(&key, "last_login", Local::now().format("%Y-%m-%d %H:%M:%S").to_string())?;
+        conn.hset::<_, _, _, ()>(&key, "expires_at", expires_time.unwrap_or_default().format("%Y-%m-%d %H:%M:%S").to_string())?;
+        // 会话随 RefreshToken 一起过期
+        conn.expire::<_, ()>(&key, jwt_util::REFRESH_TOKEN_EXPIRATION_SECONDS as i64)?;
+        conn.set_ex::<_, _, ()>(refresh_token_key(&refresh_token), user_id, jwt_util::REFRESH_TOKEN_EXPIRATION_SECONDS)?;
+
+        Ok(UserLoginResp { token, expires_at, refresh_token, refresh_expires_at })
+    }
+
+    /// 用 RefreshToken 换取新的 AccessToken + RefreshToken（旧的立即作废）
+    pub async fn refresh_token(rb: &RBatis, redis: &redis::Client, item: RefreshTokenReq) -> ServiceResult<UserLoginResp> {
+        let mut conn = redis.get_connection()?;
+        let invalid = || AppError::JwtTokenError("RefreshToken无效或已过期".to_string());
+
+        let user_id: Option<i64> = conn.get(refresh_token_key(&item.refresh_token))?;
+        let user_id = user_id.ok_or_else(invalid)?;
+
+        // 只认会话里最新的那个，防止旧 token 重放；会话被删（删除/禁用用户）也会在这里失败
+        let current: Option<String> = conn.hget(format!("axum:admin:user:info:{}", user_id), "refresh_token")?;
+        if current.as_deref() != Some(item.refresh_token.as_str()) {
+            return Err(invalid());
+        }
+
+        let user = User::select_by_id(rb, user_id).await?.ok_or_else(invalid)?;
+        if user.status != 1 {
+            return Err(AppError::JwtTokenError("用户已被禁用".to_string()));
+        }
+
+        ok_result_data(Self::issue_tokens(rb, &mut conn, user_id, &user.user_name).await?)
+    }
+
+    /// 退出登录：删除会话和 RefreshToken
+    pub async fn logout(redis: &redis::Client, item: RefreshTokenReq) -> ServiceResult<String> {
+        let mut conn = redis.get_connection()?;
+        let key = refresh_token_key(&item.refresh_token);
+        let user_id: Option<i64> = conn.get(&key)?;
+        if let Some(user_id) = user_id {
+            conn.del::<_, ()>(&[key, format!("axum:admin:user:info:{}", user_id)])?;
+        }
+        ok_result_empty()
     }
 
     /// Fetch raw session fields from redis for a user
@@ -414,7 +473,7 @@ impl SysUserService {
         // check key existence first
         let exists: bool = conn.exists(&key).map_err(AppError::RedisError)?;
         if !exists {
-            return Err(AppError::BusinessError("用户没有登录"));
+            return Err(AppError::BusinessError("用户未登录")); // auth中间件按此文案转成401
         }
 
         let token: String = conn.hget(&key, "token").map_err(AppError::RedisError)?;
@@ -425,6 +484,10 @@ impl SysUserService {
         //info!("Fetched session info for user_id {}: token={}, is_admin={}, permissions={}, roles={}, expires_at={}", user_id, token, is_admin, permissions_str,roles_str, expires_at);
         Ok((permissions_str, roles_str, token, is_admin))
     }
+}
+
+fn refresh_token_key(refresh_token: &str) -> String {
+    format!("axum:admin:user:refresh:{}", refresh_token)
 }
 
 async fn add2(num1: i32, num2: i32) -> i32 {

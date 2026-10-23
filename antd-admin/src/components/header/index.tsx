@@ -3,6 +3,7 @@ import type {MenuProps} from 'antd';
 import {Avatar, Dropdown, Space} from 'antd';
 import {DownOutlined, LogoutOutlined, SettingOutlined, UserOutlined} from "@ant-design/icons";
 import {storageUtils} from "../../utils/storageUtils";
+import {reqLogout} from "@/pages/system/login/service";
 import {useNavigate} from "react-router-dom";
 import useStore from "../../store";
 
@@ -38,6 +39,8 @@ const MyHeader: React.FC = () => {
         } else if (key === "2") {
             navigate("/setting")
         } else {
+            const refreshToken = storageUtils.getRefreshToken();
+            if (refreshToken) reqLogout(refreshToken).catch(() => {}); // ponytail: 失败也照常退出，服务端会话7天后自动过期
             storageUtils.logout()
             navigate("/login", {replace: true})
         }

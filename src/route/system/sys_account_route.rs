@@ -12,5 +12,7 @@ use std::sync::Arc;
 pub fn build_sys_account_route() -> Router<Arc<AppState>> {
     Router::new()
         .route("/system/user/login", post(sys_user_handler::login))
+        .route("/system/user/refresh_token", post(sys_user_handler::refresh_token))
+        .route("/system/user/logout", post(sys_user_handler::logout))
     //记得在main.rs中添加路由build_sys_account_route()
 }

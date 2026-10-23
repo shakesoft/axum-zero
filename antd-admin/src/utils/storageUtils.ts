@@ -1,5 +1,6 @@
 const USER_TOKEN = 'token'
 const USER_TOKEN_EXPIRES = 'expires_at'
+const REFRESH_TOKEN = 'refresh_token'
 const USER_Name = 'name'
 const BTN_MENU = 'btnMenu'
 const TREE_MENU = 'treeMenu'
@@ -19,6 +20,12 @@ export const storageUtils = {
     },
     getExpiresAt() {
         return localStorage.getItem(USER_TOKEN_EXPIRES)
+    },
+    saveRefreshToken(refreshToken: string) {
+        localStorage.setItem(REFRESH_TOKEN, refreshToken)
+    },
+    getRefreshToken() {
+        return localStorage.getItem(REFRESH_TOKEN)
     },
 
     saveUserName(userName: string) {
@@ -47,6 +54,7 @@ export const storageUtils = {
     logout() {
         localStorage.removeItem(USER_TOKEN)
         localStorage.removeItem(USER_TOKEN_EXPIRES)
+        localStorage.removeItem(REFRESH_TOKEN)
         localStorage.removeItem(USER_Name)
         localStorage.removeItem(BTN_MENU)
         localStorage.removeItem(TREE_MENU)

@@ -1,11 +1,12 @@
 use crate::common::error::AppError;
-use crate::common::error::AppError::JwtTokenError;
+use crate::common::error::AppError::{JwtTokenError, TokenExpired};
 use jsonwebtoken::{decode, encode, errors::ErrorKind, Algorithm, DecodingKey, EncodingKey, Header, Validation};
 use serde::{Deserialize, Serialize};
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use nameof::name_of;
 
-pub const JWT_EXPIRATION_SECONDS: u64 = 86400; // 24小时过期时间，单位为秒
+pub const JWT_EXPIRATION_SECONDS: u64 = 1800; // AccessToken 30分钟过期，单位为秒
+pub const REFRESH_TOKEN_EXPIRATION_SECONDS: u64 = 7 * 86400; // RefreshToken 7天过期，单位为秒
 pub const JWT_SECRET: &str = "123";
 pub const JWT_ISSUER: &str = "koobe";
 pub const JWT_AUDIENCE: &str = "rust_admin";
@@ -74,7 +75,7 @@ impl JwtToken {
             Err(err) => match *err.kind() {
                 ErrorKind::InvalidToken => Err(JwtTokenError("InvalidToken".to_string())),
                 ErrorKind::InvalidIssuer => Err(JwtTokenError("InvalidIssuer".to_string())),
-                ErrorKind::ExpiredSignature => Err(JwtTokenError("TokenExpired".to_string())),
+                ErrorKind::ExpiredSignature => Err(TokenExpired),
                 _ => Err(JwtTokenError("InvalidToken Errors".to_string())),
             },
         }
