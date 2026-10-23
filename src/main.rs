@@ -108,6 +108,7 @@ struct Config1 {
     server: ServerConfig,
     db: DbConfig,
     redis: RedisConfig,
+    jwt: JwtConfig,
 }
 
 // 服务器配置结构体，包含服务器地址
@@ -125,6 +126,18 @@ struct DbConfig {
 #[derive(Debug, Deserialize)]
 struct RedisConfig {
     url: String,
+}
+
+#[derive(Deserialize)]
+struct JwtConfig {
+    secret: String,
+}
+
+// 不在启动日志里打印密钥
+impl std::fmt::Debug for JwtConfig {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("JwtConfig { secret: \"***\" }")
+    }
 }
 
 
@@ -238,6 +251,7 @@ async fn main() {
     // 加载和解析配置文件
     let config = Config::builder().add_source(File::with_name("config.toml")).build().unwrap().try_deserialize::<Config1>().unwrap();
     println!("Config: {:?}", config);
+    utils::jwt_util::init_secret(config.jwt.secret);
 
     // 初始化数据库连接
     let rb = init_db(config.db.url.as_str()).await;

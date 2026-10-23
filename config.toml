@@ -9,3 +9,7 @@ addr = "127.0.0.1:3000"
 url = "mysql://root:111111@127.0.0.1:3306/rustdb"
 [redis]
 url = "redis://:@127.0.0.1:6379"
+
+# JWT签名密钥，生产环境务必替换为足够长的随机串
+[jwt]
+secret = "yNSfgJt5TQY2_VydLJkuj1H2XuzUQyPM3-SgLy8dAKv24rKEgA1hJJS-vyAplwwL"

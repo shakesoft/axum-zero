@@ -2,16 +2,27 @@ use crate::common::error::AppError;
 use crate::common::error::AppError::{JwtTokenError, TokenExpired};
 use jsonwebtoken::{decode, encode, errors::ErrorKind, Algorithm, DecodingKey, EncodingKey, Header, Validation};
 use serde::{Deserialize, Serialize};
+use std::sync::OnceLock;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use nameof::name_of;
 
 pub const JWT_EXPIRATION_SECONDS: u64 = 1800; // AccessToken 30分钟过期，单位为秒
 pub const REFRESH_TOKEN_EXPIRATION_SECONDS: u64 = 7 * 86400; // RefreshToken 7天过期，单位为秒
-pub const JWT_SECRET: &str = "123";
+static JWT_SECRET: OnceLock<String> = OnceLock::new();
 pub const JWT_ISSUER: &str = "koobe";
 pub const JWT_AUDIENCE: &str = "rust_admin";
 pub const JWT_SUBJECT: &str = "rust_admin";
 pub const JWT_JTI: &str = "ignore";
+
+/// 启动时从 config.toml 的 [jwt].secret 设置
+pub fn init_secret(secret: String) {
+    assert!(!secret.trim().is_empty(), "config.toml 中 [jwt].secret 不能为空");
+    JWT_SECRET.set(secret).expect("JWT_SECRET 只能初始化一次");
+}
+
+pub fn secret() -> &'static str {
+    JWT_SECRET.get().expect("JWT_SECRET 未初始化，需先调用 jwt_util::init_secret")
+}
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct JwtToken {
@@ -85,15 +96,16 @@ impl JwtToken {
 #[cfg(test)]
 mod tests {
     use tracing::info;
-    use crate::utils::jwt_util;
     use crate::utils::jwt_util::JwtToken;
 
     #[test]
     fn test_jwt() {
         let jwt = JwtToken::new(1, "koobe");
-        let res = jwt.create_token(jwt_util::JWT_SECRET).unwrap_or_default();
+        let res = jwt.create_token("test-secret").unwrap_or_default();
         info!("{:?}", res);
-        let token = JwtToken::verify(jwt_util::JWT_SECRET, &res);
-        info!("{:?}", token)
+        let token = JwtToken::verify("test-secret", &res);
+        info!("{:?}", token);
+        assert!(token.is_ok());
+        assert!(JwtToken::verify("wrong-secret", &res).is_err());
     }
 }

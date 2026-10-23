@@ -35,7 +35,7 @@ pub async fn auth(State(state): State<Arc<AppState>>, mut req: Request, next: Ne
 
     let authorization = auth_header.unwrap();
     let token = authorization.to_string().replace("Bearer ", "");
-    let jwt_token = match JwtToken::verify(jwt_util::JWT_SECRET, &token) {
+    let jwt_token = match JwtToken::verify(jwt_util::secret(), &token) {
         Ok(data) => data,
         Err(err) => return Ok(err.into_response()), // TokenExpired(3002) 或 JwtTokenError(3001)
     };
